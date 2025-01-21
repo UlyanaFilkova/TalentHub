@@ -1,9 +1,9 @@
 <template>
 	<NuxtLink
 		:to="item.link"
-		class="flex items-center space-x-3 rounded-md p-3 transition-colors duration-300 hover:bg-gray-200 hover:text-blue-600"
+		class="hover:bg-sidebar-hover flex items-center gap-4 rounded-br-[31px] rounded-tr-[31px] py-4 pl-4"
 	>
-		<div class="icon h-6 w-6">
+		<div>
 			<component :is="item.icon" :color="color" width="22px" />
 		</div>
 
