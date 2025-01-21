@@ -1,7 +1,11 @@
 :root {
 	--color-global-background: #353535;
+	--color-active-text: #ffffff;
+	--color-inactive-text: #c3c3c3;
 }
 
 .dark {
 	--color-global-background: #353535;
+	--color-active-text: #ffffff;
+	--color-inactive-text: #c3c3c3;
 }

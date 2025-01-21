@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-background flex min-h-screen flex-col">
+	<div class="flex min-h-screen flex-col bg-background">
 		<div class="flex flex-1 gap-6">
 			<TheSidebar class="w-52" />
 
@@ -12,5 +12,3 @@
 		</div>
 	</div>
 </template>
-
-<style scoped></style>
