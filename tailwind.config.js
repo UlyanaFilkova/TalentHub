@@ -16,6 +16,9 @@ export default {
 				'active-color': 'var(--color-active-text)',
 				'inactive-color': 'var(--color-inactive-text)',
 			},
+			fontFamily: {
+				sans: ['Roboto', 'ui-sans-serif', 'system-ui'],
+			},
 		},
 	},
 	plugins: [],

@@ -1,6 +1,6 @@
 <template>
 	<aside>
-		<nav>
+		<nav class="gap- flex flex-col">
 			<SidebarItem v-for="item in items" :key="item.text" :item="item" />
 		</nav>
 	</aside>

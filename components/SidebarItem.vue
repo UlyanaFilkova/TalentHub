@@ -1,13 +1,19 @@
 <template>
 	<NuxtLink
 		:to="item.link"
-		class="hover:bg-sidebar-hover flex items-center gap-4 rounded-br-[31px] rounded-tr-[31px] py-4 pl-4"
+		:class="[
+			'flex items-center gap-4 rounded-br-[31px] rounded-tr-[31px] py-3 pl-4 transition duration-200 ease-in-out hover:bg-sidebar-hover',
+			item.isActive ? 'bg-sidebar-hover text-active-color' : '',
+		]"
 	>
 		<div>
 			<component :is="item.icon" :color="color" width="22px" />
 		</div>
 
-		<span class="text-sm font-medium" :style="{ color: color }">
+		<span
+			class="text-sm"
+			:class="item.isActive ? 'text-active-color' : 'text-inactive-color'"
+		>
 			{{ item.text }}
 		</span>
 	</NuxtLink>
