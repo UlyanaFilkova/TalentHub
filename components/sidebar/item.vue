@@ -2,7 +2,7 @@
 	<NuxtLink
 		:to="item.link"
 		:class="[
-			'flex items-center gap-4 rounded-br-[31px] rounded-tr-[31px] py-3 pl-4 transition duration-200 ease-in-out hover:bg-sidebar-hover',
+			'flex items-center gap-4 rounded-br-[31px] rounded-tr-[31px] py-3 pl-4 transition duration-300 ease-in-out hover:bg-sidebar-hover',
 			item.isActive ? 'bg-sidebar-hover text-active-color' : '',
 			isCollapsed ? 'text-transparent' : '',
 		]"
@@ -13,7 +13,7 @@
 
 		<span
 			:class="[
-				'text-sm transition-all duration-200 ease-in-out',
+				'text-sm transition-all duration-300 ease-in-out',
 				isCollapsed
 					? 'visibility-hidden opacity-0'
 					: 'visibility-visible opacity-100',

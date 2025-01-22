@@ -1,9 +1,9 @@
 <template>
 	<button
-		class="mt-auto w-min rounded-md px-3 py-2 transition-colors duration-200"
+		class="mt-auto flex h-10 w-10 items-center justify-center rounded-[20px] transition duration-300 ease-in-out hover:bg-sidebar-hover"
 		@click="onToggleSidebar"
 	>
-		<IconsBackArrow :is-toggled="isToggled" />
+		<IconsBackArrow :is-toggled="isToggled" :color="color" width="20px" />
 	</button>
 </template>
 
@@ -19,4 +19,6 @@
 	const onToggleSidebar = () => {
 		emit('toggle');
 	};
+
+	const color = 'var(--color-active-text)';
 </script>

@@ -1,11 +1,11 @@
 <template>
 	<svg
-		class="h-5 w-5"
-		xmlns="http://www.w3.org/2000/svg"
+		:width="width"
 		fill="none"
+		xmlns="http://www.w3.org/2000/svg"
 		viewBox="0 0 24 24"
-		stroke="currentColor"
-		:class="isToggled ? 'rotate-180' : ''"
+		:class="{ 'rotate-180': isToggled }"
+		:style="{ stroke: color, transition: 'transform 0.3s ease' }"
 	>
 		<path
 			stroke-linecap="round"
@@ -19,5 +19,7 @@
 <script setup lang="ts">
 	const props = defineProps<{
 		isToggled: boolean;
+		color: string;
+		width: string;
 	}>();
 </script>

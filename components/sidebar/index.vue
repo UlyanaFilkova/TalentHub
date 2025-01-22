@@ -13,7 +13,11 @@
 				:is-collapsed="isCollapsed"
 			/>
 		</nav>
-		<SidebarToggleButton :is-toggled="isCollapsed" @toggle="toggleSidebar" />
+		<SidebarToggleButton
+			:is-toggled="isCollapsed"
+			class="mb-4 ml-2"
+			@toggle="toggleSidebar"
+		/>
 	</aside>
 </template>
 
