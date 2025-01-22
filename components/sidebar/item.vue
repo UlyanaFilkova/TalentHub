@@ -2,13 +2,24 @@
 	<NuxtLink
 		:to="item.link"
 		:class="[
-			'flex items-center gap-4 rounded-br-[31px] rounded-tr-[31px] py-3 pl-4 transition duration-300 ease-in-out hover:bg-sidebar-hover',
+			'flex items-center rounded-br-[31px] rounded-tr-[31px] py-3 pr-4 transition duration-300 ease-in-out hover:bg-sidebar-hover',
 			item.isActive ? 'bg-sidebar-hover text-active-color' : '',
 			isCollapsed ? 'text-transparent' : '',
+			item.photo ? 'gap-2 pl-2' : 'gap-4 pl-4',
 		]"
 	>
 		<div>
-			<component :is="item.icon" :color="color" width="22px" />
+			<template v-if="item.photo">
+				<img
+					:src="item.photo"
+					alt="photo"
+					class="h-10 w-10 rounded-full bg-white object-cover"
+				/>
+			</template>
+
+			<template v-else>
+				<component :is="item.icon" :color="color" width="22px" />
+			</template>
 		</div>
 
 		<span
@@ -18,6 +29,8 @@
 					? 'visibility-hidden opacity-0'
 					: 'visibility-visible opacity-100',
 				item.isActive ? 'text-active-color' : 'text-inactive-color',
+				'truncate',
+				'max-w-full',
 			]"
 		>
 			{{ item.text }}
@@ -27,10 +40,11 @@
 
 <script setup lang="ts">
 	interface SidebarItem {
-		icon: object;
 		text: string;
 		link: string;
 		isActive: boolean;
+		icon?: object;
+		photo?: string;
 	}
 
 	const props = defineProps<{ item: SidebarItem; isCollapsed: boolean }>();

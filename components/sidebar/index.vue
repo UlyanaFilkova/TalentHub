@@ -1,7 +1,7 @@
 <template>
 	<aside
 		:class="[
-			'flex flex-col transition-all duration-300',
+			'flex flex-col gap-3 transition-all duration-300',
 			isCollapsed ? 'w-14' : 'w-48',
 		]"
 	>
@@ -13,6 +13,7 @@
 				:is-collapsed="isCollapsed"
 			/>
 		</nav>
+		<SidebarItem :item="user" :is-collapsed="isCollapsed" class="mt-auto" />
 		<SidebarToggleButton
 			:is-toggled="isCollapsed"
 			class="mb-4 ml-2"
@@ -52,6 +53,13 @@
 			isActive: false,
 		},
 	];
+
+	const user = {
+		photo: '...',
+		text: 'username@usernameemail.com',
+		link: '/profile',
+		isActive: false,
+	};
 	const isCollapsed = ref(false);
 
 	const toggleSidebar = () => {
