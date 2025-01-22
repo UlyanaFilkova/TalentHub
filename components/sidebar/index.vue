@@ -2,7 +2,7 @@
 	<aside
 		:class="[
 			'flex flex-col transition-all duration-300',
-			isCollapsed ? 'w-16' : 'w-64',
+			isCollapsed ? 'w-14' : 'w-48',
 		]"
 	>
 		<nav class="flex flex-col gap-3">
@@ -13,7 +13,7 @@
 				:is-collapsed="isCollapsed"
 			/>
 		</nav>
-		<SidebarToggleButton :is-collapsed="isCollapsed" @toggle="toggleSidebar" />
+		<SidebarToggleButton :is-toggled="isCollapsed" @toggle="toggleSidebar" />
 	</aside>
 </template>
 

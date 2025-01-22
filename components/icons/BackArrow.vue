@@ -5,7 +5,7 @@
 		fill="none"
 		viewBox="0 0 24 24"
 		stroke="currentColor"
-		:class="isCollapsed ? 'rotate-180' : ''"
+		:class="isToggled ? 'rotate-180' : ''"
 	>
 		<path
 			stroke-linecap="round"
@@ -18,6 +18,6 @@
 
 <script setup lang="ts">
 	const props = defineProps<{
-		isCollapsed: boolean;
+		isToggled: boolean;
 	}>();
 </script>
