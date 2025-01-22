@@ -4,6 +4,7 @@
 		:class="[
 			'flex items-center gap-4 rounded-br-[31px] rounded-tr-[31px] py-3 pl-4 transition duration-200 ease-in-out hover:bg-sidebar-hover',
 			item.isActive ? 'bg-sidebar-hover text-active-color' : '',
+			isCollapsed ? 'text-transparent' : '',
 		]"
 	>
 		<div>
@@ -11,8 +12,13 @@
 		</div>
 
 		<span
-			class="text-sm"
-			:class="item.isActive ? 'text-active-color' : 'text-inactive-color'"
+			:class="[
+				'text-sm transition-all duration-200 ease-in-out',
+				isCollapsed
+					? 'visibility-hidden opacity-0'
+					: 'visibility-visible opacity-100',
+				item.isActive ? 'text-active-color' : 'text-inactive-color',
+			]"
 		>
 			{{ item.text }}
 		</span>
@@ -27,7 +33,7 @@
 		isActive: boolean;
 	}
 
-	const props = defineProps<{ item: SidebarItem }>();
+	const props = defineProps<{ item: SidebarItem; isCollapsed: boolean }>();
 	const color = computed(() =>
 		props.item.isActive
 			? 'var(--color-active-text)'

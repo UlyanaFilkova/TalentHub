@@ -1,8 +1,19 @@
 <template>
-	<aside>
-		<nav class="gap- flex flex-col">
-			<SidebarItem v-for="item in items" :key="item.text" :item="item" />
+	<aside
+		:class="[
+			'flex flex-col transition-all duration-300',
+			isCollapsed ? 'w-16' : 'w-64',
+		]"
+	>
+		<nav class="flex flex-col gap-3">
+			<SidebarItem
+				v-for="item in items"
+				:key="item.text"
+				:item="item"
+				:is-collapsed="isCollapsed"
+			/>
 		</nav>
+		<SidebarToggleButton :is-collapsed="isCollapsed" @toggle="toggleSidebar" />
 	</aside>
 </template>
 
@@ -37,4 +48,9 @@
 			isActive: false,
 		},
 	];
+	const isCollapsed = ref(false);
+
+	const toggleSidebar = () => {
+		isCollapsed.value = !isCollapsed.value;
+	};
 </script>
