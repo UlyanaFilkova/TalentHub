@@ -1,7 +1,7 @@
 <template>
-	<div class="bg-background flex min-h-screen flex-col">
+	<div class="flex min-h-screen flex-col bg-background">
 		<div class="flex flex-1 gap-6">
-			<TheSidebar class="w-52" />
+			<Sidebar class="w-48 pt-10" />
 
 			<div class="flex flex-1 flex-col gap-3">
 				<TheHeader class="h-10" />
@@ -12,5 +12,3 @@
 		</div>
 	</div>
 </template>
-
-<style scoped></style>
