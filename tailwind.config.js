@@ -15,6 +15,7 @@ export default {
 				'sidebar-hover': 'var(--color-sidebar-hover)',
 				'active-color': 'var(--color-active-text)',
 				'inactive-color': 'var(--color-inactive-text)',
+				'second-color': 'var(--color-second-text)',
 			},
 			fontFamily: {
 				sans: ['Roboto', 'ui-sans-serif', 'system-ui'],
