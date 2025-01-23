@@ -16,9 +16,9 @@
 </template>
 
 <script lang="ts" setup>
+	import { useRouter } from '#app';
 	import { ref } from 'vue';
 	import { signUp } from '~/composables/services/auth/auth-service';
-	import { useRouter } from '#app';
 
 	const form = ref({ email: '', password: '' });
 	const router = useRouter();
