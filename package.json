@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@nuxt/eslint": "^0.7.5",
+    "@nuxtjs/google-fonts": "^3.2.0",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.18.0",
     "eslint-plugin-prettier": "^5.2.3",

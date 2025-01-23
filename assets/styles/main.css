@@ -4,3 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+	@apply font-sans;
+}

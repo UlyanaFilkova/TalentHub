@@ -11,9 +11,9 @@
 </template>
 
 <script lang="ts" setup>
+	import { useRouter } from '#app';
 	import { ref } from 'vue';
 	import { forgotPassword } from '~/composables/services/auth/auth-service';
-	import { useRouter } from '#app';
 
 	const email = ref('');
 	const router = useRouter();
