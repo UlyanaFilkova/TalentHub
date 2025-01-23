@@ -7,7 +7,11 @@
 				class="flex items-center"
 			>
 				<template v-if="index !== breadcrumbs.length - 1">
-					<a :href="breadcrumb.link" class="hover:underline">
+					<a
+						:href="breadcrumb.link"
+						class="hover:underline"
+						:class="index === 1 ? 'text-accent-color' : ''"
+					>
 						<p>{{ breadcrumb.label }}</p>
 					</a>
 					<span aria-hidden="true" class="mx-2">
@@ -20,7 +24,7 @@
 				</template>
 
 				<template v-else>
-					<p class="flex cursor-default items-center">
+					<p :class="index === 1 ? 'text-accent-color' : ''">
 						{{ breadcrumb.label }}
 					</p>
 				</template>
@@ -39,8 +43,6 @@
 		const pathSegments = route.path.split('/').filter(Boolean);
 
 		const segments = pathSegments.map((segment, index) => {
-			const isLast = index === pathSegments.length - 1;
-
 			return {
 				label:
 					segment === 'users'
