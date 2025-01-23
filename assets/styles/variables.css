@@ -3,10 +3,6 @@
 	--color-sidebar-hover: #454545;
 	--color-active-text: #ffffff;
 	--color-inactive-text: #c3c3c3;
-}
-
-.dark {
-	--color-global-background: #353535;
-	--color-active-text: #ffffff;
-	--color-inactive-text: #c3c3c3;
+	--color-second-text: #8a8a8a;
+	--color-accent-color: #c62f31;
 }

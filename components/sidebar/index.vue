@@ -13,8 +13,8 @@
 				:is-collapsed="isCollapsed"
 			/>
 		</nav>
-		<SidebarItem :item="user" :is-collapsed="isCollapsed" class="mt-auto" />
-		<SidebarToggleButton
+		<SidebarUserItem :item="user" :is-collapsed="isCollapsed" class="mt-auto" />
+		<ButtonsToggle
 			:is-toggled="isCollapsed"
 			class="mb-4 ml-2"
 			@toggle="toggleSidebar"
@@ -27,7 +27,8 @@
 	import IconsEmployees from '~/components/icons/Employees.vue';
 	import IconsLanguages from '~/components/icons/Languages.vue';
 	import IconsSkills from '~/components/icons/Skills.vue';
-	const items = [
+
+	const items = reactive([
 		{
 			icon: IconsEmployees,
 			text: 'Employees',
@@ -52,14 +53,15 @@
 			link: '#',
 			isActive: false,
 		},
-	];
+	]);
 
-	const user = {
-		photo: '...',
+	const user = reactive({
+		photo: '',
 		text: 'username@usernameemail.com',
 		link: '/profile',
 		isActive: false,
-	};
+	});
+
 	const isCollapsed = ref(false);
 
 	const toggleSidebar = () => {
