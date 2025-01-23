@@ -6,7 +6,7 @@
 			<div class="flex flex-1 flex-col gap-3">
 				<TheHeader class="h-10" />
 				<main class="flex-1">
-					<NuxtPage />
+					<slot></slot>
 				</main>
 			</div>
 		</div>
