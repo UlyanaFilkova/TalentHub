@@ -32,24 +32,18 @@
 
 	const props = defineProps<{ item: SidebarUserItem; isCollapsed: boolean }>();
 
-	const color = computed(() =>
-		props.item.isActive
-			? 'var(--color-active-text)'
-			: 'var(--color-inactive-text)'
-	);
+	const color = 'var(--color-inactive-text)';
 
 	const linkClasses = computed(() => [
-		'flex items-center rounded-br-[31px] rounded-tr-[31px] py-3 pr-4 gap-2 pl-2 transition duration-300 ease-in-out hover:bg-sidebar-hover',
-		props.item.isActive ? 'bg-sidebar-hover text-active-color' : '',
+		'flex items-center rounded-br-[31px] rounded-tr-[31px] py-2 pr-4 gap-2 pl-2 transition duration-300 ease-in-out hover:bg-sidebar-hover',
 		props.isCollapsed ? 'text-transparent' : '',
 	]);
 
 	const spanClasses = computed(() => [
-		'text-sm transition-all duration-300 ease-in-out',
+		'text-sm transition-all duration-300 ease-in-out text-inactive-color',
 		props.isCollapsed
 			? 'visibility-hidden opacity-0'
 			: 'visibility-visible opacity-100',
-		props.item.isActive ? 'text-active-color' : 'text-inactive-color',
 		'truncate',
 		'max-w-full',
 	]);
