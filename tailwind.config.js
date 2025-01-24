@@ -17,6 +17,7 @@ export default {
 				'inactive-color': 'var(--color-inactive-text)',
 				'second-color': 'var(--color-second-text)',
 				'accent-color': 'var(--color-accent-color)',
+				'low-contrast-color': 'var(--color-low-contrast)',
 			},
 			fontFamily: {
 				sans: ['Roboto', 'ui-sans-serif', 'system-ui'],
