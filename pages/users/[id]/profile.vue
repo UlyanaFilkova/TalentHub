@@ -1,1 +1,1 @@
-<template><div>User's Profile</div></template>
+<template><div>User's Profile Page</div></template>
