@@ -2,36 +2,15 @@
 	<NuxtLayout name="default">
 		<template #default>
 			<nav class="flex gap-4">
-				<NuxtLink
-					:to="`/users/${id}/profile`"
-					:class="[
-						'p-2 text-white no-underline',
-						isActive('/profile')
-							? 'border-b-2 border-solid border-red-800 text-red-800'
-							: 'text-white',
-					]"
-				>
+				<NuxtLink :to="`/users/${id}/profile`" :class="getTabClass('/profile')">
 					Profile
 				</NuxtLink>
-				<NuxtLink
-					:to="`/users/${id}/skills`"
-					:class="[
-						'p-2 text-white no-underline',
-						isActive('/skills')
-							? 'border-b-2 border-solid border-red-800 text-red-800'
-							: 'text-white',
-					]"
-				>
+				<NuxtLink :to="`/users/${id}/skills`" :class="getTabClass('/skills')">
 					Skills
 				</NuxtLink>
 				<NuxtLink
 					:to="`/users/${id}/languages`"
-					:class="[
-						'p-2 text-white no-underline',
-						isActive('/languages')
-							? 'border-b-2 border-solid border-red-800 text-red-800'
-							: 'text-white',
-					]"
+					:class="getTabClass('/languages')"
 				>
 					Languages
 				</NuxtLink>
@@ -55,8 +34,6 @@
 	const route = useRoute();
 	const id = route.params.id;
 
-	const isActive = (tab) => route.path.endsWith(tab);
-
 	const currentTab = computed(() => {
 		if (route.path.endsWith('/profile')) {
 			return Profile;
@@ -69,4 +46,14 @@
 		}
 		return null;
 	});
+
+	const tabClass = 'p-2 no-underline w-32 text-center border-b-2 border-solid';
+	const activeTabClass = 'text-red-600 border-red-600';
+	const inactiveTabClass = 'text-white border-transparent';
+
+	const getTabClass = (tab) => {
+		return route.path.endsWith(tab)
+			? `${tabClass} ${activeTabClass} active:bg-red-500`
+			: `${tabClass} ${inactiveTabClass}`;
+	};
 </script>
