@@ -14,6 +14,7 @@
 			/>
 		</nav>
 		<SidebarUserItem :item="user" :is-collapsed="isCollapsed" class="mt-auto" />
+		<SidebarLogoutItem :is-collapsed="isCollapsed" @click="logout" />
 		<ButtonsToggle
 			:is-toggled="isCollapsed"
 			class="mb-4 ml-2"
@@ -66,5 +67,8 @@
 
 	const toggleSidebar = () => {
 		isCollapsed.value = !isCollapsed.value;
+	};
+	const logout = () => {
+		console.log('logout clicked');
 	};
 </script>
