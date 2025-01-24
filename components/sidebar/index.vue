@@ -32,25 +32,25 @@
 		{
 			icon: IconsEmployees,
 			text: 'Employees',
-			link: 'users',
+			link: '/users',
 			isActive: true,
 		},
 		{
 			icon: IconsSkills,
 			text: 'Skills',
-			link: 'skills',
+			link: '/skills',
 			isActive: false,
 		},
 		{
 			icon: IconsLanguages,
 			text: 'Languages',
-			link: 'languages',
+			link: '/languages',
 			isActive: false,
 		},
 		{
 			icon: IconsCVs,
 			text: 'CVs',
-			link: 'cvs',
+			link: '/cvs',
 			isActive: false,
 		},
 	]);
