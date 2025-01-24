@@ -60,7 +60,6 @@
 		photo: '',
 		text: 'username@usernameemail.com',
 		link: '/profile',
-		isActive: false,
 	});
 
 	const isCollapsed = ref(false);
