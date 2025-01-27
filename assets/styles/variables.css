@@ -32,7 +32,11 @@
 	--color-input-background: #353535;
 	--color-input-text: #ffffff;
 	--color-input-label: #c2c2c2;
-
 	--color-input-label-background: #353535;
 	--color-input-label-focus: #c63031;
+
+	--color-dropdown-button-background: #303030;
+	--color-dropdown-button-background-hover: #353535;
+	--color-dropdown-button-background-selected: #5c3434;
+	--color-dropdown-button-background-selected-hover: #532828;
 }

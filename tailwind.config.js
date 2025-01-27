@@ -71,6 +71,16 @@ export default {
 					labelFocus: 'var(--color-input-label-focus)',
 					text: 'var(--color-input-text)',
 				},
+				dropdown: {
+					button: {
+						background: 'var(--color-dropdown-button-background)',
+						backgroundHover: 'var(--color-dropdown-button-background-hover)',
+						backgroundSelected:
+							'var(--color-dropdown-button-background-selected)',
+						backgroundSelectedHover:
+							'var(--color-dropdown-button-background-selected-hover)',
+					},
+				},
 			},
 			fontFamily: {
 				sans: ['Roboto', 'ui-sans-serif', 'system-ui'],

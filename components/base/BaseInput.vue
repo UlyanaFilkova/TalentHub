@@ -1,10 +1,10 @@
 <template>
-	<div class="relative">
+	<div class="relative w-full flex-grow">
 		<input
 			:id="id"
 			v-model="enteredValue"
 			type="text"
-			class="hover:border-input-borderHover peer h-12 border border-input-border bg-input-background p-3 text-input-text transition-all duration-200 focus:border-input-borderFocus focus:outline-none"
+			class="hover:border-input-borderHover peer h-12 w-full min-w-[220px] border border-input-border bg-input-background p-3 text-input-text transition-all duration-200 focus:border-input-borderFocus focus:outline-none"
 			autocomplete="off"
 			@input="onInput"
 		/>
