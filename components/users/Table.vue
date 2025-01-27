@@ -6,12 +6,12 @@
 					<th
 						v-for="header in headers"
 						:key="header.key"
-						class="border-b px-4 py-2 text-left text-sm font-medium"
+						class="border-b px-4 py-2 text-left text-sm font-medium text-active-color"
 					>
 						<div class="flex items-center gap-2">
 							<span>{{ header.label }}</span>
 							<button
-								class="text-gray-500 hover:text-gray-700"
+								class="text-low-contrast-color"
 								@click="sortTable(header.key)"
 							>
 								<template v-if="sortKey === header.key">
@@ -40,8 +40,18 @@
 	]);
 
 	const tableData = ref([
-		{ id: 1, name: 'Alice', age: 25, email: 'alice@example.com' },
-		{ id: 2, name: 'Bob', age: 30, email: 'bob@example.com' },
+		{
+			id: 1,
+			name: 'Alice',
+			age: 25,
+			email: 'alice@example.com',
+		},
+		{
+			id: 2,
+			name: 'Bob',
+			age: 30,
+			email: 'bob@example.com',
+		},
 		{ id: 3, name: 'Charlie', age: 22, email: 'charlie@example.com' },
 		{ id: 4, name: 'Alice', age: 25, email: 'alice@example.com' },
 		{ id: 5, name: 'Katy', age: 28, email: 'katy@example.com' },

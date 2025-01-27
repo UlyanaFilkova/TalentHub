@@ -1,11 +1,20 @@
 <template>
-	<tr>
-		<td class="border-b px-4 py-2 text-sm">{{ row.name }}</td>
-		<td class="border-b px-4 py-2 text-sm">{{ row.age }}</td>
-		<td class="border-b px-4 py-2 text-sm">{{ row.email }}</td>
+	<tr class="border-b">
+		<td>
+			<BaseUserPic
+				:name="row.name"
+				class="bg-profilepic-color"
+				:photo="row.photo"
+			/>
+		</td>
+		<td class="px-4 py-4 text-sm">{{ row.name }}</td>
+		<td class="px-4 text-sm">{{ row.age }}</td>
+		<td class="px-4 text-sm">{{ row.email }}</td>
 	</tr>
 </template>
 
 <script setup lang="ts">
-	defineProps<{ row: { name: string; age: number; email: string } }>();
+	defineProps<{
+		row: { name: string; age: number; email: string; photo: string };
+	}>();
 </script>
