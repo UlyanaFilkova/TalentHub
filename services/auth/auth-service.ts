@@ -1,11 +1,12 @@
 import { useMutation } from '@vue/apollo-composable';
 import type { AuthResult } from 'cv-graphql';
+import { toast } from 'vue3-toastify';
 import {
 	FORGOT_PASSWORD,
 	LOGIN,
 	RESET_PASSWORD,
 	SIGNUP,
-} from '~/composables/services/auth/auth-mutations';
+} from '~/services/auth/auth-mutations';
 
 export const signUp = async (auth: { email: string; password: string }) => {
 	const { mutate } = useMutation<{ signup: AuthResult }>(SIGNUP);
@@ -26,14 +27,17 @@ export const login = async (auth: { email: string; password: string }) => {
 	const { mutate } = useMutation<{ login: AuthResult }>(LOGIN);
 	try {
 		const res = await mutate({ auth });
-		console.log('Response:', res!.data!.login);
 		if (res && res.data) {
 			localStorage.setItem('access', res.data.login.access_token);
 			localStorage.setItem('refresh', res.data.login.refresh_token);
 		}
 		return res!.data!;
 	} catch (error) {
-		console.log('Error:', error);
+		toast.error('Incorrect email or password', {
+			autoClose: 3000,
+			position: 'bottom-left',
+			theme: 'colored',
+		});
 	}
 };
 

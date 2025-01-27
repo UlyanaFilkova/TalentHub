@@ -17,9 +17,9 @@
 </template>
 
 <script lang="ts" setup>
+	import { useRoute, useRouter } from '#app';
 	import { ref } from 'vue';
-	import { resetPassword } from '~/composables/services/auth/auth-service';
-	import { useRouter, useRoute } from '#app';
+	import { resetPassword } from '~/services/auth/auth-service';
 
 	const newPassword = ref('');
 	const router = useRouter();
