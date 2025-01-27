@@ -37,3 +37,12 @@ export const RESET_PASSWORD = gql`
 		resetPassword(auth: $auth)
 	}
 `;
+
+export const REFRESH_TOKEN = gql`
+	mutation UpdateToken {
+		updateToken {
+			access_token
+			refresh_token
+		}
+	}
+`;

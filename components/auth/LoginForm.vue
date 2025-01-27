@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<form @submit.prevent="handleSignup">
+		<form @submit.prevent="handleLogin">
 			<input v-model="form.email" type="email" placeholder="Email" required />
 			<input
 				v-model="form.password"
@@ -8,34 +8,29 @@
 				placeholder="Password"
 				required
 			/>
-			<button type="submit">Sign Up</button>
+			<button type="submit">Log in</button>
 		</form>
 		<!--		<p v-if="error">{{ error.message }}</p>-->
-		<button @click="redirectLogin">I have an account</button>
+		<button @click="redirectForgotPassword">Forgot password</button>
 	</div>
 </template>
 
 <script lang="ts" setup>
 	import { useRouter } from '#app';
-	import { ref } from 'vue';
-	import { signUp } from '~/composables/services/auth/auth-service';
+	import { login } from '~/services/auth/auth-service';
 
 	const form = ref({ email: '', password: '' });
 	const router = useRouter();
 
-	const handleSignup = async () => {
-		try {
-			const data = await signUp(form.value);
-			if (data) {
-				router.push('/');
-			}
-		} catch (error) {
-			console.log(error);
+	const handleLogin = async () => {
+		const data = await login(form.value);
+		if (data) {
+			router.push('/auth/test');
 		}
 	};
 
-	const redirectLogin = () => {
-		router.push('/auth/login');
+	const redirectForgotPassword = () => {
+		router.push('/auth/forgot-password');
 	};
 </script>
 
