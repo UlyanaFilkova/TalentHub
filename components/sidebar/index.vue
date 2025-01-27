@@ -13,8 +13,9 @@
 				:is-collapsed="isCollapsed"
 			/>
 		</nav>
-		<SidebarItem :item="user" :is-collapsed="isCollapsed" class="mt-auto" />
-		<SidebarToggleButton
+		<SidebarUserItem :item="user" :is-collapsed="isCollapsed" class="mt-auto" />
+		<SidebarLogoutItem :is-collapsed="isCollapsed" @click="logout" />
+		<ButtonsToggle
 			:is-toggled="isCollapsed"
 			class="mb-4 ml-2"
 			@toggle="toggleSidebar"
@@ -27,42 +28,47 @@
 	import IconsEmployees from '~/components/icons/Employees.vue';
 	import IconsLanguages from '~/components/icons/Languages.vue';
 	import IconsSkills from '~/components/icons/Skills.vue';
-	const items = [
+
+	const items = reactive([
 		{
 			icon: IconsEmployees,
 			text: 'Employees',
-			link: '#',
+			link: '/users',
 			isActive: true,
 		},
 		{
 			icon: IconsSkills,
 			text: 'Skills',
-			link: '#',
+			link: '/skills',
 			isActive: false,
 		},
 		{
 			icon: IconsLanguages,
 			text: 'Languages',
-			link: '#',
+			link: '/languages',
 			isActive: false,
 		},
 		{
 			icon: IconsCVs,
 			text: 'CVs',
-			link: '#',
+			link: '/cvs',
 			isActive: false,
 		},
-	];
+	]);
 
-	const user = {
-		photo: '...',
+	const user = reactive({
+		photo: '',
 		text: 'username@usernameemail.com',
 		link: '/profile',
 		isActive: false,
-	};
+	});
+
 	const isCollapsed = ref(false);
 
 	const toggleSidebar = () => {
 		isCollapsed.value = !isCollapsed.value;
+	};
+	const logout = () => {
+		console.log('logout clicked');
 	};
 </script>
