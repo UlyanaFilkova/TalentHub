@@ -24,7 +24,7 @@
 		},
 	});
 
-	const emit = defineEmits(['search']);
+	const emit = defineEmits(['update:modelValue', 'search']);
 
 	const searchQuery = ref('');
 
@@ -46,6 +46,7 @@
 		}
 
 		debounceTimer = setTimeout(() => {
+			emit('update:modelValue', searchQuery.value);
 			emit('search', searchQuery.value);
 		}, 300);
 	};
