@@ -61,6 +61,16 @@ export default {
 						},
 					},
 				},
+				input: {
+					border: 'var(--color-input-border)',
+					borderFocus: 'var(--color-input-border-focus)',
+					borderHover: 'var(--color-input-border-hover)',
+					background: 'var(--color-input-background)',
+					label: 'var(--color-input-label)',
+					labelBackground: 'var(--color-input-label-background)',
+					labelFocus: 'var(--color-input-label-focus)',
+					text: 'var(--color-input-text)',
+				},
 			},
 			fontFamily: {
 				sans: ['Roboto', 'ui-sans-serif', 'system-ui'],
