@@ -3,16 +3,16 @@
 		<template #default>
 			<nav class="flex gap-4">
 				<NuxtLink :to="`/users/${id}/profile`" :class="getTabClass('/profile')">
-					Profile
+					PROFILE
 				</NuxtLink>
 				<NuxtLink :to="`/users/${id}/skills`" :class="getTabClass('/skills')">
-					Skills
+					SKILLS
 				</NuxtLink>
 				<NuxtLink
 					:to="`/users/${id}/languages`"
 					:class="getTabClass('/languages')"
 				>
-					Languages
+					LANGUAGES
 				</NuxtLink>
 			</nav>
 
@@ -47,7 +47,8 @@
 		return null;
 	});
 
-	const tabClass = 'p-2 no-underline w-32 text-center border-b-2 border-solid';
+	const tabClass =
+		'p-2 text-sm no-underline w-32 h-11 text-center border-b-2 border-solid';
 	const activeTabClass = 'text-red-600 border-red-600';
 	const inactiveTabClass = 'text-white border-transparent';
 
