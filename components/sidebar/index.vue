@@ -70,4 +70,20 @@
 	const logout = () => {
 		console.log('logout clicked');
 	};
+
+	const route = useRoute();
+
+	const updateActiveTab = () => {
+		items.forEach((item) => {
+			item.isActive = route.path.startsWith(item.link);
+		});
+	};
+
+	watch(
+		() => route.path,
+		() => {
+			updateActiveTab();
+		},
+		{ immediate: true }
+	);
 </script>

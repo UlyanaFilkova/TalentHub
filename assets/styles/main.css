@@ -14,7 +14,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-	background-color: var(--color-inactive-text);
+	background-color: var(--color-second-text);
 }
 
 ::-webkit-scrollbar-track {
