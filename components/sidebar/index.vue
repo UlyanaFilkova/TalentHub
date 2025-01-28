@@ -18,7 +18,8 @@
 		<ButtonsToggle
 			:is-toggled="isCollapsed"
 			class="mb-4 ml-2"
-			@toggle="toggleSidebar"
+			color="var(--color-active-text)"
+			@click="toggleSidebar"
 		/>
 	</aside>
 </template>
@@ -31,25 +32,25 @@
 
 	const items = reactive([
 		{
-			icon: IconsEmployees,
+			icon: markRaw(IconsEmployees),
 			text: 'Employees',
 			link: '/users',
 			isActive: true,
 		},
 		{
-			icon: IconsSkills,
+			icon: markRaw(IconsSkills),
 			text: 'Skills',
 			link: '/skills',
 			isActive: false,
 		},
 		{
-			icon: IconsLanguages,
+			icon: markRaw(IconsLanguages),
 			text: 'Languages',
 			link: '/languages',
 			isActive: false,
 		},
 		{
-			icon: IconsCVs,
+			icon: markRaw(IconsCVs),
 			text: 'CVs',
 			link: '/cvs',
 			isActive: false,
@@ -58,9 +59,9 @@
 
 	const user = reactive({
 		photo: '',
+
 		text: 'username@usernameemail.com',
-		link: '/profile',
-		isActive: false,
+		link: '#',
 	});
 
 	const isCollapsed = ref(false);
@@ -71,4 +72,20 @@
 	const logout = () => {
 		console.log('logout clicked');
 	};
+
+	const route = useRoute();
+
+	const updateActiveTab = () => {
+		items.forEach((item) => {
+			item.isActive = route.path.startsWith(item.link);
+		});
+	};
+
+	watch(
+		() => route.path,
+		() => {
+			updateActiveTab();
+		},
+		{ immediate: true }
+	);
 </script>

@@ -17,6 +17,8 @@ export default {
 				'inactive-color': 'var(--color-inactive-text)',
 				'second-color': 'var(--color-second-text)',
 				'accent-color': 'var(--color-accent-color)',
+				'low-contrast-color': 'var(--color-low-contrast)',
+				'profilepic-color': 'var(--color-profilepic-background)',
 
 				button: {
 					primary: {
