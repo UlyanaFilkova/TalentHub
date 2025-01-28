@@ -23,9 +23,44 @@
 			{{ row.position }}
 		</td>
 		<td class="px-4 py-4">
-			<NuxtLink :to="`/users/${row.id}/profile`">
-				<ButtonsToggle is-toggled color="var(--color-inactive-text)" />
-			</NuxtLink>
+			<template v-if="row.id === userId">
+				<div
+					class="relative"
+					@mouseenter="showOptions"
+					@mouseleave="hideOptions"
+				>
+					<ButtonsOptions is-toggled color="var(--color-active-text)" />
+
+					<div
+						v-if="optionsVisible"
+						class="bg-options-backgroud border-options-backgroud absolute right-0 top-4 z-10 mt-2 w-28 rounded-lg py-2 shadow-lg"
+					>
+						<button
+							class="hover:bg-options-backgroud-hover w-full cursor-pointer px-4 py-2"
+							@click="openProfile"
+						>
+							Profile
+						</button>
+						<button
+							class="hover:bg-options-backgroud-hover w-full cursor-pointer px-4 py-2"
+							@click="updateUser"
+						>
+							Update user
+						</button>
+						<button
+							class="hover:bg-options-backgroud-hover w-full cursor-pointer px-4 py-2"
+							@click="deleteUser"
+						>
+							Delete user
+						</button>
+					</div>
+				</div>
+			</template>
+			<template v-else>
+				<NuxtLink :to="`/users/${row.id}/profile`">
+					<ButtonsToggle is-toggled color="var(--color-inactive-text)" />
+				</NuxtLink>
+			</template>
 		</td>
 	</tr>
 </template>
@@ -43,4 +78,28 @@
 			link: string;
 		};
 	}>();
+
+	const userId = 1;
+
+	const optionsVisible = ref(false);
+
+	const showOptions = () => {
+		optionsVisible.value = true;
+	};
+
+	const hideOptions = () => {
+		optionsVisible.value = false;
+	};
+
+	const openProfile = () => {
+		console.log('Profile clicked');
+	};
+
+	const updateUser = () => {
+		console.log('Update user clicked');
+	};
+
+	const deleteUser = () => {
+		console.log('Delete user clicked');
+	};
 </script>
