@@ -14,7 +14,7 @@
 		<label
 			:class="[
 				'pointer-events-none absolute left-0 top-0 text-input-label transition-all duration-200 peer-focus:bg-input-labelBackground peer-focus:text-input-labelFocus',
-				value
+				enteredValue
 					? '-translate-x-0 -translate-y-4 scale-75 bg-input-labelBackground p-1'
 					: 'translate-y-0 p-3 peer-focus:-translate-x-0 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:p-1',
 			]"
@@ -27,6 +27,7 @@
 
 <script setup lang="ts">
 	const enteredValue = defineModel<string>();
+
 	const props = defineProps({
 		id: {
 			type: String,
@@ -47,7 +48,7 @@
 	const emit = defineEmits(['inputValue']);
 
 	const onInput = () => {
-		emit('update:modelValue', value.value);
+		emit('inputValue', enteredValue.value);
 	};
 	const isFocused = ref(false);
 </script>

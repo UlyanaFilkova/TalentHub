@@ -6,13 +6,13 @@
 			class="peer h-12 w-full appearance-none border border-input-border bg-input-background p-3 text-left text-input-text transition-all duration-200 hover:border-input-border focus:border-input-borderFocus focus:outline-none"
 			@click="isOpen = !isOpen"
 		>
-			{{ selectedValue.value === '' ? '' : selectedOption?.label }}
+			{{ selectedValue!.value === '' ? '' : selectedOption?.label }}
 		</button>
 
 		<label
 			:class="[
 				'pointer-events-none absolute left-0 top-0 text-input-label transition-all duration-200 peer-focus:bg-input-labelBackground peer-focus:text-input-labelFocus',
-				selectedValue.value
+				selectedValue!.value
 					? '-translate-x-0 -translate-y-4 scale-75 bg-input-labelBackground p-1'
 					: 'translate-y-0 p-3 peer-focus:-translate-x-0 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:p-1',
 			]"
@@ -38,7 +38,7 @@
 					:key="option.value"
 					:class="[
 						'cursor-pointer px-4 py-2 text-input-text',
-						option.value === selectedValue.value
+						option.value === selectedValue!.value
 							? 'bg-dropdown-button-backgroundSelected hover:bg-dropdown-button-backgroundSelectedHover'
 							: 'hover:bg-dropdown-button-backgroundHover',
 					]"
@@ -74,28 +74,20 @@
 			type: String,
 			required: true,
 		},
-		modelValue: {
-			type: Object as PropType<{ value: string; label: string }>,
-			required: true,
-		},
 	});
 
 	const emit = defineEmits(['update:modelValue']);
 
+	const selectedValue = defineModel<{ value: string; label: string }>();
+
 	const isOpen = ref(false);
-	const selectedValue = computed({
-		get: () => props.modelValue,
-		set: (newValue) => {
-			emit('update:modelValue', newValue);
-			console.log(newValue);
-		},
-	});
+
 	const selectedOption = computed(() => {
-		if (selectedValue.value.value === '') {
+		if (selectedValue.value?.value === '') {
 			return { value: '', label: props.defaultOptionLabel };
 		}
 		return props.options.find(
-			(option) => option.value === selectedValue.value.value
+			(option) => option.value === selectedValue.value?.value
 		);
 	});
 
@@ -110,7 +102,6 @@
 	};
 
 	onMounted(() => {
-		// selectedValue.value = '';
 		document.addEventListener('click', (e) => {
 			if (!(e.target as HTMLElement)?.closest(`#${props.id}`)) {
 				isOpen.value = false;

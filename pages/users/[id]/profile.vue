@@ -47,6 +47,10 @@
 </template>
 
 <script setup lang="ts">
+	import { gql } from '@apollo/client/core';
+	import { useQuery } from '@vue/apollo-composable';
+	import { apollo, currentUserIdVar } from '~/plugins/apollo-client';
+
 	import {
 		getAllDepartments,
 		getAllPositions,
@@ -79,6 +83,28 @@
 	const positions = ref<Option[]>([]);
 
 	const isSubmitting = ref(false);
+
+	console.log('Reactive Variable Value:', currentUserIdVar());
+
+	console.log(apollo.cache.extract());
+
+	const CURRENT_USER_ID = gql`
+		query GetCurrentUserId {
+			currentUserId @client
+		}
+	`;
+
+	const { result: currentUserResult } = useQuery(CURRENT_USER_ID);
+
+	console.log('Direct reactive var value:', currentUserIdVar());
+	console.log('Query result:', currentUserResult.value);
+
+	watchEffect(() => {
+		console.log(
+			'Current user ID from query:',
+			currentUserResult.value?.currentUserId
+		);
+	});
 
 	onMounted(() => {
 		const {

@@ -3,6 +3,7 @@ import { ref, watchEffect } from 'vue';
 import {
 	GET_ALL_DEPARTMENTS,
 	GET_ALL_POSITIONS,
+	GET_CURRENT_USER_ID,
 	GET_USER_BY_ID,
 	UPDATE_PROFILE,
 	UPDATE_USER,
@@ -143,4 +144,20 @@ export const updateProfile = (profile: UpdateProfileInput) => {
 	};
 
 	return { executeUpdate, loading, error };
+};
+
+export const getCurrentUserId = () => {
+	const { result, loading, error } = useQuery(GET_CURRENT_USER_ID);
+	const currentUserId = ref<string | null>(null);
+
+	watchEffect(() => {
+		if (result.value) {
+			currentUserId.value = result.value.currentUserId;
+		}
+		if (error.value) {
+			console.error('Error fetching current user ID:', error.value);
+		}
+	});
+
+	return { currentUserId, loading, error };
 };

@@ -70,3 +70,9 @@ export const GET_ALL_POSITIONS = gql`
 		}
 	}
 `;
+
+export const GET_CURRENT_USER_ID = gql`
+	query GetCurrentUserId {
+		currentUserId @client
+	}
+`;
