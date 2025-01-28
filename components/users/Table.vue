@@ -161,12 +161,16 @@
 	const filteredData = computed(() => {
 		if (!props.searchQuery) return tableData.value;
 
+		const lowerCaseSearch = props.searchQuery.toLowerCase();
+
 		return tableData.value.filter((row) => {
-			const value = row.lastName;
-			return (
-				value &&
-				value.toString().toLowerCase().includes(props.searchQuery.toLowerCase())
-			);
+			const firstNameMatches = row.firstName
+				.toLowerCase()
+				.includes(lowerCaseSearch);
+			const lastNameMatches = row.lastName
+				.toLowerCase()
+				.includes(lowerCaseSearch);
+			return firstNameMatches || lastNameMatches;
 		});
 	});
 </script>
