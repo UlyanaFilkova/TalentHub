@@ -3,8 +3,8 @@
 		<input
 			:id="id"
 			v-model="enteredValue"
-			type="text"
-			class="hover:border-input-borderHover peer h-12 w-full min-w-[220px] border border-input-border bg-input-background p-3 text-input-text transition-all duration-200 focus:border-input-borderFocus focus:outline-none"
+			:type="type"
+			class="peer h-12 w-full min-w-[220px] border border-input-border bg-input-background p-3 text-input-text transition-all duration-200 hover:border-input-borderHover focus:border-input-borderFocus focus:outline-none"
 			autocomplete="off"
 			@input="onInput"
 		/>
@@ -18,6 +18,7 @@
 		>
 			{{ label }}
 		</label>
+		<slot name="icon"></slot>
 	</div>
 </template>
 
@@ -30,6 +31,10 @@
 		label: {
 			type: String,
 			required: true,
+		},
+		type: {
+			type: String,
+			default: 'text',
 		},
 	});
 

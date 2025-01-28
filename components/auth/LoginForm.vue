@@ -1,5 +1,8 @@
 <template>
 	<div>
+		<AuthTheHeader />
+	</div>
+	<div>
 		<form @submit.prevent="handleLogin">
 			<input v-model="form.email" type="email" placeholder="Email" required />
 			<input
@@ -10,7 +13,6 @@
 			/>
 			<button type="submit">Log in</button>
 		</form>
-		<!--		<p v-if="error">{{ error.message }}</p>-->
 		<button @click="redirectForgotPassword">Forgot password</button>
 	</div>
 </template>
