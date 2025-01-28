@@ -1,12 +1,46 @@
 <template>
 	<div>
-		<form @submit.prevent="handleReset">
-			<input v-model="email" type="email" placeholder="Email" required />
-
-			<button type="submit">Reset password</button>
-		</form>
-		<!--		<p v-if="error">{{ error.message }}</p>-->
-		<button @click="redirectLogin">Cancel</button>
+		<BaseForm
+			info-text="We will sent you an email with further instructions"
+			title="Forgot password"
+			:on-submit="handleReset"
+		>
+			<template #main>
+				<BaseInput
+					id="email"
+					v-model="email"
+					type="email"
+					placeholder="example@mail.com"
+					required
+					label="Email"
+					class="w-screen max-w-[550px]"
+					autocomplete="on"
+				/>
+			</template>
+			<template #footer>
+				<div class="mb-2">
+					<BaseButton
+						variant="contained"
+						:color="email ? 'primary' : 'secondary'"
+						type="submit"
+						:disabled="!email"
+					>
+						RESET PASSWORD
+					</BaseButton>
+				</div>
+				<div>
+					<BaseButton
+						variant="text"
+						color="secondary"
+						type="button"
+						class="w-1/2"
+						@click="redirectLogin"
+					>
+						CANCEL
+					</BaseButton>
+				</div>
+			</template>
+		</BaseForm>
 	</div>
 </template>
 
@@ -33,7 +67,3 @@
 		router.push('/auth/login');
 	};
 </script>
-
-<style scoped>
-	/* Ваши стили */
-</style>

@@ -1,18 +1,45 @@
 <template>
 	<div>
-		<form @submit.prevent="handleSubmit">
-			<h1>Reset password</h1>
-			<input
-				v-model="newPassword"
-				type="password"
-				placeholder="Password"
-				required
-			/>
-
-			<button type="submit">Submit</button>
-		</form>
-		<!--		<p v-if="error">{{ error.message }}</p>-->
-		<button @click="redirectLogin">Back to Log in</button>
+		<BaseForm
+			info-text="Almost done! Now create a new password"
+			title="Set a new password"
+			:on-submit="handleSubmit"
+		>
+			<template #main>
+				<BaseInput
+					id="password"
+					v-model="newPassword"
+					type="text"
+					placeholder="Enter new password"
+					required
+					label="New password"
+					class="w-screen max-w-[550px]"
+				/>
+			</template>
+			<template #footer>
+				<div class="mb-2">
+					<BaseButton
+						variant="contained"
+						:color="newPassword ? 'primary' : 'secondary'"
+						type="submit"
+						:disabled="!newPassword"
+					>
+						SUBMIT
+					</BaseButton>
+				</div>
+				<div>
+					<BaseButton
+						variant="text"
+						color="secondary"
+						type="button"
+						class="w-1/2"
+						@click="redirectLogin"
+					>
+						BACK TO LOG IN
+					</BaseButton>
+				</div>
+			</template>
+		</BaseForm>
 	</div>
 </template>
 

@@ -13,16 +13,17 @@
 					id="email"
 					v-model="form.email"
 					type="email"
-					placeholder="Email"
+					placeholder="example@mail.com"
 					required
 					label="Email"
 					class="w-screen max-w-[550px]"
+					autocomplete="on"
 				/>
 				<BaseInput
 					id="password"
 					v-model="form.password"
 					:type="isPasswordVisible ? 'text' : 'password'"
-					placeholder="Password"
+					placeholder="Enter your password"
 					required
 					label="Password"
 					class="w-screen max-w-[550px]"
