@@ -23,6 +23,7 @@
 </template>
 
 <script setup lang="ts">
+	const enteredValue = defineModel<string>();
 	const props = defineProps({
 		id: {
 			type: String,
@@ -39,8 +40,6 @@
 	});
 
 	const emit = defineEmits(['inputValue']);
-
-	const enteredValue = ref('');
 
 	const onInput = () => {
 		emit('inputValue', enteredValue.value);
