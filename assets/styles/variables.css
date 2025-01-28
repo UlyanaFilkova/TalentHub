@@ -1,0 +1,44 @@
+:root {
+	--color-global-background: #353535;
+	--color-sidebar-hover: #454545;
+	--color-active-text: #ffffff;
+	--color-inactive-text: #c3c3c3;
+	--color-second-text: #8a8a8a;
+	--color-accent-color: #c62f31;
+	--color-low-contrast: #626262;
+	--color-profilepic-background: #757575;
+
+	--color-button-primary-contained-background: #c63031;
+	--color-button-primary-contained-text: #ffffff;
+	--color-button-primary-contained-hover: #8a2122;
+	--color-button-primary-outlined-border: 198 48 49;
+	--color-button-primary-outlined-border-hover: #c63031;
+	--color-button-primary-outlined-text: #c63031;
+	--color-button-primary-outlined-background: 198 48 49;
+	--color-button-primary-text-text: #c63031;
+	--color-button-primary-text-background: 198 48 49;
+
+	--color-button-secondary-contained-background: #5f5f5f;
+	--color-button-secondary-contained-text: #ffffff;
+	--color-button-secondary-contained-hover: #525252;
+	--color-button-secondary-outlined-border: 118 118 118;
+	--color-button-secondary-outlined-border-hover: 118 118 118;
+	--color-button-secondary-outlined-text: #8a8a8a;
+	--color-button-secondary-outlined-background: 118 118 118;
+	--color-button-secondary-text-text: #7a7a7a;
+	--color-button-secondary-text-background: 118 118 118;
+
+	--color-input-border: #6f6f6f;
+	--color-input-border-focus: #c63031;
+	--color-input-border-hover: #ffffff;
+	--color-input-background: #353535;
+	--color-input-text: #ffffff;
+	--color-input-label: #c2c2c2;
+	--color-input-label-background: #353535;
+	--color-input-label-focus: #c63031;
+
+	--color-dropdown-button-background: #303030;
+	--color-dropdown-button-background-hover: #353535;
+	--color-dropdown-button-background-selected: #5c3434;
+	--color-dropdown-button-background-selected-hover: #532828;
+}

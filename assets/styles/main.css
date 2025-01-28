@@ -1,0 +1,22 @@
+@import './variables.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+	@apply font-sans;
+}
+
+::-webkit-scrollbar {
+	width: 4px;
+	height: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: var(--color-second-text);
+}
+
+::-webkit-scrollbar-track {
+	background-color: transparent;
+}
