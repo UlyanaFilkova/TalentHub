@@ -1,7 +1,7 @@
 <template>
 	<NuxtLayout name="default">
 		<template #default>
-			<nav class="flex gap-4">
+			<nav class="flex">
 				<NuxtLink :to="`/users/${id}/profile`" :class="getTabClass('/profile')">
 					PROFILE
 				</NuxtLink>
@@ -16,7 +16,7 @@
 				</NuxtLink>
 			</nav>
 
-			<div class="mt-4">
+			<div class="mt-10">
 				<KeepAlive>
 					<component :is="currentTab"></component>
 				</KeepAlive>
@@ -48,13 +48,13 @@
 	});
 
 	const tabClass =
-		'p-2 text-sm no-underline w-32 h-11 text-center border-b-2 border-solid';
-	const activeTabClass = 'text-red-600 border-red-600';
+		'p-2 text-sm no-underline w-36 h-11 text-center border-b-2 border-solid transition-all duration-200  active:bg-red-500/10';
+	const activeTabClass = 'text-red-600 border-red-600 ';
 	const inactiveTabClass = 'text-white border-transparent';
 
 	const getTabClass = (tab) => {
 		return route.path.endsWith(tab)
-			? `${tabClass} ${activeTabClass} active:bg-red-500`
+			? `${tabClass} ${activeTabClass} `
 			: `${tabClass} ${inactiveTabClass}`;
 	};
 </script>
