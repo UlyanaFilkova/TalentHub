@@ -1,17 +1,18 @@
 <template>
 	<div class="max-h-full w-full">
-		<table class="w-full table-auto overflow-x-auto border">
-			<thead class="sticky top-0">
+		<table class="w-full table-auto overflow-x-auto">
+			<thead class="sticky top-0 z-10 bg-background">
 				<tr>
 					<th
 						v-for="header in headers"
 						:key="header.key"
-						class="border-b px-4 py-2 text-left text-sm font-medium text-active-color"
+						class="border-b border-low-contrast-color px-4 pb-4 pt-1 text-left text-sm font-medium text-active-color"
 					>
 						<div class="flex items-center gap-2">
 							<span>{{ header.label }}</span>
 							<button
-								class="text-low-contrast-color"
+								v-if="header.isSortable"
+								class="flex w-6 justify-center text-low-contrast-color"
 								@click="sortTable(header.key)"
 							>
 								<template v-if="sortKey === header.key">
@@ -34,30 +35,106 @@
 <script setup lang="ts">
 	const props = defineProps<{ searchQuery: string }>();
 	const headers = reactive([
-		{ key: 'name', label: 'Name' },
-		{ key: 'age', label: 'Age' },
-		{ key: 'email', label: 'Email' },
+		{ key: 'photo', label: '', isSortable: false },
+		{ key: 'firstName', label: 'First Name', isSortable: true },
+		{ key: 'lastName', label: 'Last Name', isSortable: true },
+		{ key: 'email', label: 'Email', isSortable: true },
+		{ key: 'department', label: 'Department', isSortable: true },
+		{ key: 'position', label: 'Position', isSortable: true },
+		{ key: 'link', label: '', isSortable: false },
 	]);
 
 	const tableData = ref([
 		{
 			id: 1,
-			name: 'Alice',
-			age: 25,
+			photo: '',
+			firstName: 'Alice',
+			lastName: 'Smith',
 			email: 'alice@example.com',
+			department: 'Engineering',
+			position: 'Software Engineer',
+			link: `users/1/profile`,
 		},
 		{
 			id: 2,
-			name: 'Bob',
-			age: 30,
+			photo: '',
+			firstName: 'Bob',
+			lastName: 'Johnson',
 			email: 'bob@example.com',
+			department: 'Marketing',
+			position: 'Marketing Specialist',
+			link: 'users/2/profile',
 		},
-		{ id: 3, name: 'Charlie', age: 22, email: 'charlie@example.com' },
-		{ id: 4, name: 'Alice', age: 25, email: 'alice@example.com' },
-		{ id: 5, name: 'Katy', age: 28, email: 'katy@example.com' },
-		{ id: 6, name: 'Bob', age: 30, email: 'bob@example.com' },
-		{ id: 7, name: 'Charlie', age: 21, email: 'charlie@example.com' },
-		{ id: 8, name: 'Alice', age: 25, email: 'alice@example.com' },
+		{
+			id: 3,
+			photo: '',
+			firstName: 'Charlie',
+			lastName: 'Brown',
+			email: 'charlie@example.com',
+			department: 'Sales',
+			position: 'Sales Manager',
+			link: 'users/3/profile',
+		},
+		{
+			id: 4,
+			photo: '',
+			firstName: 'Katy',
+			lastName: 'Smith',
+			email: 'alice@example.com',
+			department: 'Engineering',
+			position: 'Software Engineer',
+			link: `users/4/profile`,
+		},
+		{
+			id: 5,
+			photo: '',
+			firstName: 'Bob',
+			lastName: 'Johnson',
+			email: 'bob@example.com',
+			department: 'Marketing',
+			position: 'Marketing Specialist',
+			link: 'users/5/profile',
+		},
+		{
+			id: 6,
+			photo: '',
+			firstName: 'John',
+			lastName: 'Smith',
+			email: 'john@example.com',
+			department: 'Sales',
+			position: 'Sales Manager',
+			link: 'users/6/profile',
+		},
+		{
+			id: 7,
+			photo: '',
+			firstName: 'Katy',
+			lastName: 'Smith',
+			email: 'alice@example.com',
+			department: 'Engineering',
+			position: 'Software Engineer',
+			link: `users/4/profile`,
+		},
+		{
+			id: 8,
+			photo: '',
+			firstName: 'Bob',
+			lastName: 'Johnson',
+			email: 'bob@example.com',
+			department: 'Marketing',
+			position: 'Marketing Specialist',
+			link: 'users/5/profile',
+		},
+		{
+			id: 9,
+			photo: '',
+			firstName: 'John',
+			lastName: 'Smith',
+			email: 'john@example.com',
+			department: 'Sales',
+			position: 'Sales Manager',
+			link: 'users/6/profile',
+		},
 	]);
 
 	const sortKey = ref<string | null>(null);
@@ -85,7 +162,7 @@
 		if (!props.searchQuery) return tableData.value;
 
 		return tableData.value.filter((row) => {
-			const value = row.name;
+			const value = row.lastName;
 			return (
 				value &&
 				value.toString().toLowerCase().includes(props.searchQuery.toLowerCase())
