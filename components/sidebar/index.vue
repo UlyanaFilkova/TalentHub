@@ -31,25 +31,25 @@
 
 	const items = reactive([
 		{
-			icon: IconsEmployees,
+			icon: markRaw(IconsEmployees),
 			text: 'Employees',
 			link: '/users',
 			isActive: true,
 		},
 		{
-			icon: IconsSkills,
+			icon: markRaw(IconsSkills),
 			text: 'Skills',
 			link: '/skills',
 			isActive: false,
 		},
 		{
-			icon: IconsLanguages,
+			icon: markRaw(IconsLanguages),
 			text: 'Languages',
 			link: '/languages',
 			isActive: false,
 		},
 		{
-			icon: IconsCVs,
+			icon: markRaw(IconsCVs),
 			text: 'CVs',
 			link: '/cvs',
 			isActive: false,
@@ -60,7 +60,7 @@
 		photo: '',
 
 		text: 'username@usernameemail.com',
-		link: '/profile',
+		link: '#',
 	});
 
 	const isCollapsed = ref(false);
