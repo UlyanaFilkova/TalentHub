@@ -1,3 +1,3 @@
 <template>
-	<ResetPasswordForm />
+	<AuthResetPasswordForm />
 </template>

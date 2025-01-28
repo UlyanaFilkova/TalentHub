@@ -1,17 +1,59 @@
 <template>
 	<div>
-		<form @submit.prevent="handleSignup">
-			<input v-model="form.email" type="email" placeholder="Email" required />
-			<input
-				v-model="form.password"
-				type="password"
-				placeholder="Password"
-				required
-			/>
-			<button type="submit">Sign Up</button>
-		</form>
-		<!--		<p v-if="error">{{ error.message }}</p>-->
-		<button @click="redirectLogin">I have an account</button>
+		<div>
+			<AuthTheHeader />
+		</div>
+		<BaseForm
+			info-text="Welcome! Sign up to continue"
+			title="Register now"
+			:on-submit="handleSignup"
+		>
+			<template #main>
+				<BaseInput
+					id="email"
+					v-model="form.email"
+					type="email"
+					placeholder="Email"
+					required
+					label="Email"
+					class="w-screen max-w-[550px]"
+				/>
+				<BaseInput
+					id="password"
+					v-model="form.password"
+					:type="isPasswordVisible ? 'text' : 'password'"
+					placeholder="Password"
+					required
+					label="Password"
+					class="w-screen max-w-[550px]"
+				>
+					<template #icon>
+						<AuthPasswordEyeToggle
+							:color="'var(--color-active-text)'"
+							@update:password-visibility="togglePasswordVisibility"
+						/>
+					</template>
+				</BaseInput>
+			</template>
+			<template #footer>
+				<div class="mb-2">
+					<BaseButton variant="contained" color="primary" type="submit">
+						CREATE ACCOUNT
+					</BaseButton>
+				</div>
+				<div>
+					<BaseButton
+						variant="text"
+						color="secondary"
+						type="button"
+						class="w-1/2"
+						@click="redirectLogin"
+					>
+						I HAVE AN ACCOUNT
+					</BaseButton>
+				</div>
+			</template>
+		</BaseForm>
 	</div>
 </template>
 
@@ -22,6 +64,7 @@
 
 	const form = ref({ email: '', password: '' });
 	const router = useRouter();
+	const isPasswordVisible = ref(false);
 
 	const handleSignup = async () => {
 		try {
@@ -37,8 +80,7 @@
 	const redirectLogin = () => {
 		router.push('/auth/login');
 	};
+	const togglePasswordVisibility = (newValue: boolean) => {
+		isPasswordVisible.value = newValue;
+	};
 </script>
-
-<style scoped>
-	/* Ваши стили */
-</style>
