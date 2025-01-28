@@ -1,13 +1,14 @@
 import {
 	ApolloClient,
 	ApolloLink,
+	from,
 	HttpLink,
 	InMemoryCache,
-	concat,
 } from '@apollo/client/core';
 import { provideApolloClient } from '@vue/apollo-composable';
+import errorLink from '~/services/apollo/error-handler';
 
-const httpLink = new HttpLink({
+export const httpLink = new HttpLink({
 	uri: 'https://cv-project-js.inno.ws/api/graphql',
 });
 
@@ -19,14 +20,15 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 			authorization: token ? `Bearer ${token}` : '',
 		},
 	});
+
 	return forward(operation);
 });
+
 export const apollo = new ApolloClient({
-	link: concat(authMiddleware, httpLink),
+	link: from([errorLink, authMiddleware, httpLink]),
 	cache: new InMemoryCache(),
 });
 
 export default defineNuxtPlugin(() => {
-	// Регистрируем Apollo Client глобально
 	provideApolloClient(apollo);
 });

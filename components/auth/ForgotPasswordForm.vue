@@ -13,7 +13,7 @@
 <script lang="ts" setup>
 	import { useRouter } from '#app';
 	import { ref } from 'vue';
-	import { forgotPassword } from '~/composables/services/auth/auth-service';
+	import { forgotPassword } from '~/services/auth/auth-service';
 
 	const email = ref('');
 	const router = useRouter();
