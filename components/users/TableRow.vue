@@ -31,29 +31,13 @@
 				>
 					<ButtonsOptions is-toggled color="var(--color-active-text)" />
 
-					<div
+					<UsersOptions
 						v-if="optionsVisible"
 						class="bg-options-backgroud border-options-backgroud absolute right-0 top-4 z-10 mt-2 w-28 rounded-lg py-2 shadow-lg"
-					>
-						<button
-							class="hover:bg-options-backgroud-hover w-full cursor-pointer px-4 py-2"
-							@click="openProfile"
-						>
-							Profile
-						</button>
-						<button
-							class="hover:bg-options-backgroud-hover w-full cursor-pointer px-4 py-2"
-							@click="updateUser"
-						>
-							Update user
-						</button>
-						<button
-							class="hover:bg-options-backgroud-hover w-full cursor-pointer px-4 py-2"
-							@click="deleteUser"
-						>
-							Delete user
-						</button>
-					</div>
+						@profile-click="openProfile"
+						@update-click="updateUser"
+						@delete-click="deleteUser"
+					/>
 				</div>
 			</template>
 			<template v-else>
