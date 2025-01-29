@@ -1,1 +1,11 @@
-<template><div>User's Languages Page</div></template>
+<template>
+	<div>Languages</div>
+</template>
+
+<script setup lang="ts">
+	definePageMeta({
+		layout: 'user-profile',
+	});
+</script>
+
+<style scoped></style>

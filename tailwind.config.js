@@ -15,6 +15,8 @@ export default {
 				'sidebar-hover': 'var(--color-sidebar-hover)',
 				'active-color': 'var(--color-active-text)',
 				'inactive-color': 'var(--color-inactive-text)',
+				'profilepic-color': 'var(--color-profilepic-background)',
+				'upload-color': 'var(--color-uploadfile-text)',
 				'second-color': 'var(--color-second-text)',
 				'accent-color': 'var(--color-accent-color)',
 				'low-contrast-color': 'var(--color-low-contrast)',

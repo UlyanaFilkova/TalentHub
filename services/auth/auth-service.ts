@@ -1,6 +1,7 @@
 import { useMutation } from '@vue/apollo-composable';
 import type { AuthResult } from 'cv-graphql';
 import { toast } from 'vue3-toastify';
+import { apollo, currentUserIdVar } from '~/plugins/apollo-client';
 import {
 	FORGOT_PASSWORD,
 	LOGIN,
@@ -30,6 +31,11 @@ export const login = async (auth: { email: string; password: string }) => {
 		if (res && res.data) {
 			localStorage.setItem('access', res.data.login.access_token);
 			localStorage.setItem('refresh', res.data.login.refresh_token);
+			console.log('Before update, currentUserIdVar:', currentUserIdVar());
+			currentUserIdVar(res.data.login.user.id);
+			console.log('After update, currentUserIdVar:', currentUserIdVar());
+			console.log('aboba ', res.data);
+			console.log('aboba ', apollo.cache.extract());
 		}
 		return res!.data!;
 	} catch (error) {
