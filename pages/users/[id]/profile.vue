@@ -1,5 +1,7 @@
 <template>
-	<div v-if="isLoading" class="flex flex-col items-center gap-16">Loading</div>
+	<div v-if="isLoading || isError" class="flex flex-col items-center gap-16">
+		Loading
+	</div>
 	<div v-else class="flex flex-col items-center gap-16">
 		<div class="flex flex-row justify-center gap-14 bg-background">
 			<div class="relative">
@@ -116,6 +118,7 @@
 	const departments = ref<Option[]>([]);
 	const positions = ref<Option[]>([]);
 
+	const isError = ref<string | undefined>(undefined);
 	const isLoading = ref(false);
 	const isSubmitting = ref(false);
 	const isUploading = ref(false);
@@ -196,6 +199,7 @@
 
 		watchEffect(() => {
 			isLoading.value = loading.value;
+			isError.value = error.value?.name;
 		});
 
 		const { departments: fetchedDepartments } = getAllDepartments();
