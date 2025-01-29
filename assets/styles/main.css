@@ -25,3 +25,10 @@ body {
 ::-webkit-scrollbar-track {
 	background-color: transparent;
 }
+
+input:-webkit-autofill {
+	-webkit-box-shadow: 0 0 0px 1000px var(--color-input-background) inset !important;
+	-webkit-text-fill-color: var(--color-input-text) !important;
+	caret-color: var(--color-input-text) !important;
+	transition: background-color 5000s ease-in-out 0s;
+}

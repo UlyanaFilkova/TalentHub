@@ -39,7 +39,7 @@
 		},
 		secondary: {
 			contained:
-				'bg-button-secondary-contained-background text-button-secondary-contained-text hover:bg-button-secondary-contained-hover shadow-xl',
+				'bg-button-secondary-contained-background text-button-secondary-contained-text hover:bg-button-secondary-contained-hover shadow-md',
 			outlined:
 				'border border-button-secondary-outlined-border/50 hover:border-button-secondary-outlined-borderHover/100 hover:bg-button-secondary-outlined-background/5 text-button-secondary-outlined-text',
 			text: 'text-button-secondary-text-text bg-button-secondary-text-background/0 hover:bg-button-secondary-text-background/10',

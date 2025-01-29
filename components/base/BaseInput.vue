@@ -3,9 +3,12 @@
 		<input
 			:id="id"
 			v-model="enteredValue"
-			type="text"
-			class="hover:border-input-borderHover peer h-12 w-full min-w-[220px] border border-input-border bg-input-background p-3 text-input-text transition-all duration-200 focus:border-input-borderFocus focus:outline-none"
-			autocomplete="off"
+			:type="type"
+			class="peer h-12 w-full min-w-[220px] border border-input-border bg-input-background p-3 text-input-text transition-all duration-200 hover:border-input-borderHover focus:border-input-borderFocus focus:outline-none"
+			:autocomplete="autocomplete"
+			:placeholder="enteredValue || isFocused ? placeholder : ''"
+			@focus="isFocused = true"
+			@blur="isFocused = !!enteredValue"
 			@input="onInput"
 		/>
 		<label
@@ -18,10 +21,12 @@
 		>
 			{{ label }}
 		</label>
+		<slot name="icon"></slot>
 	</div>
 </template>
 
 <script setup lang="ts">
+	const enteredValue = defineModel<string>();
 	const props = defineProps({
 		id: {
 			type: String,
@@ -31,15 +36,20 @@
 			type: String,
 			required: true,
 		},
+		type: {
+			type: String,
+			default: 'text',
+		},
+		placeholder: { type: String, default: '' },
+		autocomplete: { type: String, default: 'off' },
 	});
 
 	const emit = defineEmits(['inputValue']);
 
-	const enteredValue = ref('');
-
 	const onInput = () => {
 		emit('inputValue', enteredValue.value);
 	};
+	const isFocused = ref(false);
 </script>
 
 <style scoped></style>

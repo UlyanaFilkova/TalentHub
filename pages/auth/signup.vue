@@ -1,5 +1,5 @@
 <template>
-	<SignUpForm />
+	<AuthSignUpForm />
 </template>
 
 <script setup lang="ts">
