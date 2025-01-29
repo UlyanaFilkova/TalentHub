@@ -16,7 +16,7 @@
 					</a>
 					<span aria-hidden="true" class="mx-2">
 						<IconsBackArrow
-							is-toggled="true"
+							:is-toggled="true"
 							color="var(--color-second-text)"
 							width="14px"
 						/>
@@ -34,28 +34,46 @@
 </template>
 
 <script setup>
+	import { getCvFullname } from '~/services/cv/cv-service';
 	import { getUserFullname } from '~/services/user/user-service';
 	const route = useRoute();
-	const userId = ref('');
+	const id = ref('');
 
 	const fullname = ref('');
 
 	onMounted(() => {
 		const pathSegments = route.path.split('/').filter(Boolean);
 
-		if (pathSegments[0] === 'users' && pathSegments[1]) {
-			userId.value = pathSegments[1];
+		if (
+			(pathSegments[0] === 'users' || pathSegments[0] === 'cvs') &&
+			pathSegments[1]
+		) {
+			id.value = pathSegments[1];
 		}
 
-		const { fullname: userFullname } = getUserFullname(userId.value);
+		const elemFullname = ref('');
+
+		switch (pathSegments[0]) {
+			case 'users': {
+				elemFullname.value = getUserFullname(id.value).fullname;
+				break;
+			}
+			case 'cvs': {
+				elemFullname.value = getCvFullname(id.value).fullname;
+				break;
+			}
+			default: {
+				return;
+			}
+		}
 
 		watch(
-			userFullname,
+			elemFullname,
 			(newFullname) => {
 				if (newFullname) {
 					fullname.value = newFullname;
 				} else {
-					fullname.value = userId.value;
+					fullname.value = id.value;
 				}
 			},
 			{ immediate: true }
@@ -75,7 +93,11 @@
 			};
 		});
 
-		if (fullname.value && pathSegments[0] === 'users' && pathSegments[1]) {
+		if (
+			fullname.value &&
+			(pathSegments[0] === 'users' || pathSegments[0] === 'cvs') &&
+			pathSegments[1]
+		) {
 			segments[1].label = fullname.value;
 		}
 
