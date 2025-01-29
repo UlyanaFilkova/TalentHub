@@ -63,7 +63,7 @@
 				type="submit"
 				variant="contained"
 				color="primary"
-				:disabled="isSubmitting || isUploading"
+				:disabled="isSubmitting || isUploading || !hasChanges"
 			>
 				UPDATE
 			</BaseButton>
@@ -97,6 +97,13 @@
 	const route = useRoute();
 	const userId = ref(route.params.id as string);
 
+	const initialValues = ref({
+		firstName: '',
+		lastName: '',
+		selectedDepartment: { value: '', label: '' },
+		selectedPosition: { value: '', label: '' },
+	});
+
 	const firstName = ref('');
 	const lastName = ref('');
 	const fullName = ref('');
@@ -116,6 +123,17 @@
 
 	const refetchUser = ref();
 
+	const hasChanges = computed(() => {
+		return (
+			firstName.value !== initialValues.value.firstName ||
+			lastName.value !== initialValues.value.lastName ||
+			selectedDepartment.value.value !==
+				initialValues.value.selectedDepartment.value ||
+			selectedPosition.value.value !==
+				initialValues.value.selectedPosition.value
+		);
+	});
+
 	// // console.log('Reactive Variable Value:', currentUserIdVar());
 
 	// // console.log(apollo.cache.extract());
@@ -132,12 +150,10 @@
 	// console.log('Query result:', currentUserResult.value);
 
 	const handleUploadSuccess = async () => {
-		// Refetch user data to get updated avatar
 		const result = await refetchUser.value();
 
 		if (result?.data?.user) {
 			showSuccessToast('Avatar uploaded successfully');
-			// Update avatar in local state
 			avatar.value = result.data.user.profile.avatar;
 		}
 	};
@@ -155,7 +171,6 @@
 				}
 			}
 		} catch (error) {
-			console.error('Error deleting avatar:', error);
 			showErrorToast('Failed to delete avatar');
 		} finally {
 			isDeletingAvatar.value = false;
@@ -176,10 +191,13 @@
 			error,
 			refetch,
 		} = getUserById(userId.value as string);
+
 		refetchUser.value = refetch;
+
 		watchEffect(() => {
 			isLoading.value = loading.value;
 		});
+
 		const { departments: fetchedDepartments } = getAllDepartments();
 		const { positions: fetchedPositions } = getAllPositions();
 
@@ -226,6 +244,13 @@
 
 					selectedPosition.value.value = newUser.position?.id || '';
 					selectedPosition.value.label = newUser.position?.name || '';
+
+					initialValues.value = {
+						firstName: firstName.value,
+						lastName: lastName.value,
+						selectedDepartment: { ...selectedDepartment.value },
+						selectedPosition: { ...selectedPosition.value },
+					};
 				}
 			},
 			{ immediate: true }
