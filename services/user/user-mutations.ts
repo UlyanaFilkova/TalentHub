@@ -76,3 +76,9 @@ export const GET_CURRENT_USER_ID = gql`
 		currentUserId @client
 	}
 `;
+
+export const UPLOAD_AVATAR = gql`
+	mutation UploadAvatar($avatar: UploadAvatarInput!) {
+		uploadAvatar(avatar: $avatar)
+	}
+`;

@@ -1,8 +1,19 @@
 <template>
-	<div class="flex flex-col items-center gap-16">
+	<div v-if="isLoading" class="flex flex-col items-center gap-16">Loading</div>
+	<div v-else class="flex flex-col items-center gap-16">
 		<div class="flex flex-row justify-center gap-14 bg-background">
-			<ProfilePic name="aboba" />
-			<FileUpload />
+			<BaseUserPic
+				:key="fullName"
+				:class="'h-[120px] w-[120px] bg-profilepic-color text-4xl'"
+				:name="fullName"
+				:photo="avatar"
+			/>
+			<FileUpload
+				:user-id="userId"
+				@upload-success="handleUploadSuccess"
+				@upload-start="isUploading = true"
+				@upload-end="isUploading = false"
+			/>
 		</div>
 		<div class="flex flex-col items-center justify-center">
 			<h5 class="font-me mb-2 text-2xl font-light text-white">
@@ -38,7 +49,7 @@
 				type="submit"
 				variant="contained"
 				color="primary"
-				:disabled="isSubmitting"
+				:disabled="isSubmitting || isUploading"
 			>
 				UPDATE
 			</BaseButton>
@@ -47,10 +58,7 @@
 </template>
 
 <script setup lang="ts">
-	import { gql } from '@apollo/client/core';
-	import { useQuery } from '@vue/apollo-composable';
-	import { apollo, currentUserIdVar } from '~/plugins/apollo-client';
-
+	import { showSuccessToast } from '~/services/common/toastService';
 	import {
 		getAllDepartments,
 		getAllPositions,
@@ -69,50 +77,70 @@
 	});
 
 	const route = useRoute();
-	const userId = ref(route.params.id);
+	const userId = ref(route.params.id as string);
 
 	const firstName = ref('');
 	const lastName = ref('');
 	const fullName = ref('');
 	const email = ref('');
 	const dateJoined = ref('');
+	const avatar = ref('');
 	const selectedDepartment = ref<Option>({ value: '', label: '' });
 	const selectedPosition = ref<Option>({ value: '', label: '' });
 
 	const departments = ref<Option[]>([]);
 	const positions = ref<Option[]>([]);
 
+	const isLoading = ref(false);
 	const isSubmitting = ref(false);
+	const isUploading = ref(false);
 
-	console.log('Reactive Variable Value:', currentUserIdVar());
+	const refetchUser = ref();
 
-	console.log(apollo.cache.extract());
+	// // console.log('Reactive Variable Value:', currentUserIdVar());
 
-	const CURRENT_USER_ID = gql`
-		query GetCurrentUserId {
-			currentUserId @client
+	// // console.log(apollo.cache.extract());
+
+	// // const CURRENT_USER_ID = gql`
+	// // 	query GetCurrentUserId {
+	// // 		currentUserId @client
+	// // 	}
+	// // `;
+
+	// // const { result: currentUserResult } = useQuery(CURRENT_USER_ID);
+
+	// console.log('Direct reactive var value:', currentUserIdVar());
+	// console.log('Query result:', currentUserResult.value);
+
+	const handleUploadSuccess = async () => {
+		// Refetch user data to get updated avatar
+		const result = await refetchUser.value();
+
+		if (result?.data?.user) {
+			showSuccessToast('Avatar uploaded successfully');
+			// Update avatar in local state
+			avatar.value = result.data.user.profile.avatar;
 		}
-	`;
+	};
 
-	const { result: currentUserResult } = useQuery(CURRENT_USER_ID);
-
-	console.log('Direct reactive var value:', currentUserIdVar());
-	console.log('Query result:', currentUserResult.value);
-
-	watchEffect(() => {
-		console.log(
-			'Current user ID from query:',
-			currentUserResult.value?.currentUserId
-		);
-	});
+	// watchEffect(() => {
+	// 	console.log(
+	// 		'Current user ID from query:',
+	// 		currentUserResult.value?.currentUserId
+	// 	);
+	// });
 
 	onMounted(() => {
 		const {
 			user: fetchedUser,
 			loading,
 			error,
+			refetch,
 		} = getUserById(userId.value as string);
-
+		refetchUser.value = refetch;
+		watchEffect(() => {
+			isLoading.value = loading.value;
+		});
 		const { departments: fetchedDepartments } = getAllDepartments();
 		const { positions: fetchedPositions } = getAllPositions();
 
@@ -153,6 +181,7 @@
 					dateJoined.value = newUser.created_at
 						? new Date(parseInt(newUser.created_at)).toDateString()
 						: '';
+					avatar.value = newUser.profile.avatar || '';
 					selectedDepartment.value.value = newUser.department?.id || '';
 					selectedDepartment.value.label = newUser.department?.name || '';
 
@@ -167,7 +196,7 @@
 			() => route.params.id,
 			(newUserId) => {
 				if (newUserId !== userId.value) {
-					userId.value = newUserId;
+					userId.value = newUserId as string;
 					const { user: newUser } = getUserById(userId.value as string);
 					fetchedUser.value = newUser.value;
 				}
@@ -197,6 +226,7 @@
 				firstName.value = result.data.user.profile.first_name || '';
 				lastName.value = result.data.user.profile.last_name || '';
 				fullName.value = result.data.user.profile.full_name || '';
+				avatar.value = result.data.user.profile.avatar || '';
 				selectedDepartment.value.value = result.data.user.department?.id || '';
 				selectedDepartment.value.label =
 					result.data.user.department?.name || '';

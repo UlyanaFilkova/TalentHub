@@ -7,6 +7,7 @@ import {
 	GET_USER_BY_ID,
 	UPDATE_PROFILE,
 	UPDATE_USER,
+	UPLOAD_AVATAR,
 } from '~/services/user/user-mutations';
 
 interface User {
@@ -47,6 +48,12 @@ interface UpdateProfileInput {
 	userId: string;
 	first_name: string;
 	last_name: string;
+}
+interface UploadAvatarInput {
+	userId: string;
+	base64: string;
+	size: number;
+	type: string;
 }
 
 export const getUserById = (userId: string) => {
@@ -160,4 +167,14 @@ export const getCurrentUserId = () => {
 	});
 
 	return { currentUserId, loading, error };
+};
+
+export const uploadAvatar = (avatar: UploadAvatarInput) => {
+	const { mutate: executeUpload, loading, error } = useMutation(UPLOAD_AVATAR);
+
+	return {
+		executeUpload: () => executeUpload({ avatar }),
+		loading,
+		error,
+	};
 };

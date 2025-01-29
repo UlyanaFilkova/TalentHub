@@ -18,10 +18,11 @@
 </template>
 
 <script setup lang="ts">
+	const firstLetter = ref('');
 	const props = defineProps<{
 		name: string;
 		photo?: string;
 	}>();
 
-	const firstLetter = props.name ? props.name.charAt(0).toUpperCase() : '?';
+	firstLetter.value = props.name ? props.name.charAt(0).toUpperCase() : '?';
 </script>
