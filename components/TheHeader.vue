@@ -30,31 +30,24 @@
 				</template>
 			</li>
 		</ol>
-		<p v-if="loading || error">{{ userId }}</p>
-		<p v-else>{{ fullname }}</p>
 	</header>
 </template>
 
 <script setup>
 	import { getUserFullname } from '~/services/user/user-service';
 	const route = useRoute();
-	const userId = ref('1');
+	const userId = ref('');
 
 	const fullname = ref('');
-	const isLoading = ref(true);
-	const isError = ref(null);
 
 	onMounted(() => {
-		const {
-			fullname: userFullname,
-			loading,
-			error,
-		} = getUserFullname(userId.value);
+		const pathSegments = route.path.split('/').filter(Boolean);
 
-		watchEffect(() => {
-			isLoading.value = loading.value;
-			isError.value = error.value?.name;
-		});
+		if (pathSegments[0] === 'users' && pathSegments[1]) {
+			userId.value = pathSegments[1];
+		}
+
+		const { fullname: userFullname } = getUserFullname(userId.value);
 
 		watch(
 			userFullname,
@@ -81,6 +74,10 @@
 				link: '/' + pathSegments.slice(0, index + 1).join('/'),
 			};
 		});
+
+		if (fullname.value && pathSegments[0] === 'users' && pathSegments[1]) {
+			segments[1].label = fullname.value;
+		}
 
 		return segments;
 	});
