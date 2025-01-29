@@ -30,14 +30,44 @@
 				</template>
 			</li>
 		</ol>
+		<p v-if="loading || error">{{ userId }}</p>
+		<p v-else>{{ fullname }}</p>
 	</header>
 </template>
 
 <script setup>
-	import { computed } from 'vue';
-	import { useRoute } from 'vue-router';
-
+	import { getUserFullname } from '~/services/user/user-service';
 	const route = useRoute();
+	const userId = ref('1');
+
+	const fullname = ref('');
+	const isLoading = ref(true);
+	const isError = ref(null);
+
+	onMounted(() => {
+		const {
+			fullname: userFullname,
+			loading,
+			error,
+		} = getUserFullname(userId.value);
+
+		watchEffect(() => {
+			isLoading.value = loading.value;
+			isError.value = error.value?.name;
+		});
+
+		watch(
+			userFullname,
+			(newFullname) => {
+				if (newFullname) {
+					fullname.value = newFullname;
+				} else {
+					fullname.value = userId.value;
+				}
+			},
+			{ immediate: true }
+		);
+	});
 
 	const breadcrumbs = computed(() => {
 		const pathSegments = route.path.split('/').filter(Boolean);
