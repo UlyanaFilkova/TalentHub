@@ -2,12 +2,26 @@
 	<div v-if="isLoading" class="flex flex-col items-center gap-16">Loading</div>
 	<div v-else class="flex flex-col items-center gap-16">
 		<div class="flex flex-row justify-center gap-14 bg-background">
-			<BaseUserPic
-				:key="fullName"
-				:class="'h-[120px] w-[120px] bg-profilepic-color text-4xl'"
-				:name="fullName"
-				:photo="avatar"
-			/>
+			<div class="relative">
+				<BaseUserPic
+					:key="fullName"
+					:class="'h-[120px] w-[120px] bg-profilepic-color text-4xl'"
+					:name="fullName"
+					:photo="avatar"
+				/>
+				<button
+					v-if="avatar"
+					:disabled="isDeletingAvatar"
+					class="absolute -right-5 -top-5 flex h-10 w-10 items-center justify-center rounded-full text-3xl text-white transition duration-300 hover:bg-sidebar-hover"
+					@click="handleDeleteAvatar"
+				>
+					<span
+						class="relative -top-[2px] flex h-full w-full items-center justify-center leading-none"
+					>
+						×
+					</span>
+				</button>
+			</div>
 			<FileUpload
 				:user-id="userId"
 				@upload-success="handleUploadSuccess"
@@ -58,8 +72,12 @@
 </template>
 
 <script setup lang="ts">
-	import { showSuccessToast } from '~/services/common/toastService';
 	import {
+		showErrorToast,
+		showSuccessToast,
+	} from '~/services/common/toastService';
+	import {
+		deleteAvatar,
 		getAllDepartments,
 		getAllPositions,
 		getUserById,
@@ -94,6 +112,7 @@
 	const isLoading = ref(false);
 	const isSubmitting = ref(false);
 	const isUploading = ref(false);
+	const isDeletingAvatar = ref(false);
 
 	const refetchUser = ref();
 
@@ -120,6 +139,26 @@
 			showSuccessToast('Avatar uploaded successfully');
 			// Update avatar in local state
 			avatar.value = result.data.user.profile.avatar;
+		}
+	};
+
+	const handleDeleteAvatar = async () => {
+		try {
+			isDeletingAvatar.value = true;
+			const { executeDelete } = deleteAvatar(userId.value);
+			await executeDelete();
+
+			if (refetchUser.value) {
+				const result = await refetchUser.value();
+				if (result?.data?.user) {
+					avatar.value = result.data.user.profile.avatar || '';
+				}
+			}
+		} catch (error) {
+			console.error('Error deleting avatar:', error);
+			showErrorToast('Failed to delete avatar');
+		} finally {
+			isDeletingAvatar.value = false;
 		}
 	};
 
@@ -233,6 +272,7 @@
 				selectedPosition.value.value = result.data.user.position?.id || '';
 				selectedPosition.value.label = result.data.user.position?.name || '';
 			}
+			showSuccessToast('Profile updated successfully');
 		} catch (error) {
 			console.error('Error submitting form:', error);
 		} finally {

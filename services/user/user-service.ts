@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@vue/apollo-composable';
 import { ref, watchEffect } from 'vue';
 import {
+	DELETE_AVATAR,
 	GET_ALL_DEPARTMENTS,
 	GET_ALL_POSITIONS,
 	GET_CURRENT_USER_ID,
@@ -174,6 +175,19 @@ export const uploadAvatar = (avatar: UploadAvatarInput) => {
 
 	return {
 		executeUpload: () => executeUpload({ avatar }),
+		loading,
+		error,
+	};
+};
+
+export const deleteAvatar = (userId: string) => {
+	const { mutate: executeDelete, loading, error } = useMutation(DELETE_AVATAR);
+
+	return {
+		executeDelete: () =>
+			executeDelete({
+				avatar: { userId },
+			}),
 		loading,
 		error,
 	};
