@@ -1,1 +1,1 @@
-<template>cv page</template>
+<template><div>cv page</div></template>

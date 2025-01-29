@@ -196,20 +196,22 @@ export const deleteAvatar = (userId: string) => {
 
 export const getUserFullname = (userId: string) => {
 	const { result, loading, error } = useQuery<{
-		user: { profile: { full_name: string } };
+		user: { profile: { full_name: string }; email: string };
 	}>(GET_USER_FULLNAME, { userId });
 
 	const fullname = ref('');
+	const email = ref('');
 
 	watchEffect(() => {
 		if (result.value) {
 			fullname.value = result.value.user.profile.full_name || '';
+			email.value = result.value.user.email || '';
 		}
 
 		if (error.value) {
-			console.error('Error fetching full name:', error.value);
+			console.error('Error fetching user details:', error.value);
 		}
 	});
 
-	return { fullname, loading, error };
+	return { fullname, email, loading, error };
 };

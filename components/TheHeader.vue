@@ -37,8 +37,8 @@
 	import { getCvFullname } from '~/services/cv/cv-service';
 	import { getUserFullname } from '~/services/user/user-service';
 	const route = useRoute();
-	const id = ref('');
 
+	const id = ref('');
 	const fullname = ref('');
 
 	onMounted(() => {
@@ -52,10 +52,16 @@
 		}
 
 		const elemFullname = ref('');
+		const elemEmail = ref('');
 
 		switch (pathSegments[0]) {
 			case 'users': {
-				elemFullname.value = getUserFullname(id.value).fullname;
+				const { fullname: userFullname, email: userEmail } = getUserFullname(
+					id.value
+				);
+
+				elemFullname.value = userFullname;
+				elemEmail.value = userEmail;
 				break;
 			}
 			case 'cvs': {
@@ -68,15 +74,21 @@
 		}
 
 		watch(
-			elemFullname,
-			(newFullname) => {
-				if (newFullname) {
+			[elemFullname, elemEmail],
+			([newFullname, newEmail]) => {
+				console.log(newEmail);
+				if (newFullname.value && newFullname !== '') {
+					console.log('namw');
 					fullname.value = newFullname;
+				} else if (pathSegments[0] === 'users' && newEmail.value) {
+					console.log('email');
+					fullname.value = newEmail;
 				} else {
 					fullname.value = id.value;
 				}
+				console.log(newFullname);
 			},
-			{ immediate: true }
+			{ immediate: true, deep: true }
 		);
 	});
 

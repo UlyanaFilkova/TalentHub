@@ -95,6 +95,7 @@ export const GET_USER_FULLNAME = gql`
 			profile {
 				full_name
 			}
+			email
 		}
 	}
 `;
