@@ -19,6 +19,8 @@ export default {
 				'accent-color': 'var(--color-accent-color)',
 				'low-contrast-color': 'var(--color-low-contrast)',
 				'profilepic-color': 'var(--color-profilepic-background)',
+				'options-backgroud': 'var(--color-options-background)',
+				'options-backgroud-hover': 'var(--color-options-background-hover)',
 
 				button: {
 					primary: {

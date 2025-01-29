@@ -1,7 +1,7 @@
 <template>
 	<div class="max-h-full w-full">
 		<table class="w-full table-auto overflow-x-auto">
-			<thead class="sticky top-0 z-10 bg-background">
+			<thead class="sticky top-0 z-20 bg-background">
 				<tr>
 					<th
 						v-for="header in headers"
@@ -170,7 +170,8 @@
 			const lastNameMatches = row.lastName
 				.toLowerCase()
 				.includes(lowerCaseSearch);
-			return firstNameMatches || lastNameMatches;
+			const emailMatches = row.email.toLowerCase().includes(lowerCaseSearch);
+			return firstNameMatches || lastNameMatches || emailMatches;
 		});
 	});
 </script>

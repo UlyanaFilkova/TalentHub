@@ -1,5 +1,7 @@
 :root {
 	--color-global-background: #353535;
+	--color-options-background: #292929;
+	--color-options-background-hover: #4b4b4b;
 	--color-sidebar-hover: #454545;
 	--color-active-text: #ffffff;
 	--color-inactive-text: #c3c3c3;
