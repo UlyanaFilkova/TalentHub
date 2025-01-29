@@ -170,7 +170,8 @@
 			const lastNameMatches = row.lastName
 				.toLowerCase()
 				.includes(lowerCaseSearch);
-			return firstNameMatches || lastNameMatches;
+			const emailMatches = row.email.toLowerCase().includes(lowerCaseSearch);
+			return firstNameMatches || lastNameMatches || emailMatches;
 		});
 	});
 </script>
