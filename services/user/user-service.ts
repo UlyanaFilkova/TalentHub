@@ -6,6 +6,7 @@ import {
 	GET_ALL_POSITIONS,
 	GET_CURRENT_USER_ID,
 	GET_USER_BY_ID,
+	GET_USER_FULLNAME,
 	UPDATE_PROFILE,
 	UPDATE_USER,
 	UPLOAD_AVATAR,
@@ -191,4 +192,26 @@ export const deleteAvatar = (userId: string) => {
 		loading,
 		error,
 	};
+};
+
+export const getUserFullname = (userId: string) => {
+	const { result, loading, error } = useQuery<{
+		user: { profile: { full_name: string }; email: string };
+	}>(GET_USER_FULLNAME, { userId });
+
+	const fullname = ref('');
+	const email = ref('');
+
+	watchEffect(() => {
+		if (result.value) {
+			fullname.value = result.value.user.profile.full_name || '';
+			email.value = result.value.user.email || '';
+		}
+
+		if (error.value) {
+			console.error('Error fetching user details:', error.value);
+		}
+	});
+
+	return { fullname, email, loading, error };
 };

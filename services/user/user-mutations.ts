@@ -88,3 +88,14 @@ export const DELETE_AVATAR = gql`
 		deleteAvatar(avatar: $avatar)
 	}
 `;
+
+export const GET_USER_FULLNAME = gql`
+	query GetUserFullname($userId: ID!) {
+		user(userId: $userId) {
+			profile {
+				full_name
+			}
+			email
+		}
+	}
+`;
