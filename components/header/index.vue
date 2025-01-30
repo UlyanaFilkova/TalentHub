@@ -1,34 +1,13 @@
 <template>
 	<header class="flex items-center text-inactive-color">
 		<ol class="flex items-center">
-			<li
+			<HeaderItem
 				v-for="(breadcrumb, index) in breadcrumbs"
 				:key="index"
-				class="flex items-center"
-			>
-				<template v-if="index !== breadcrumbs.length - 1">
-					<a
-						:href="breadcrumb.link"
-						class="hover:underline"
-						:class="index === 1 ? 'text-accent-color' : ''"
-					>
-						<p>{{ breadcrumb.label }}</p>
-					</a>
-					<span aria-hidden="true" class="mx-2">
-						<IconsBackArrow
-							:is-toggled="true"
-							color="var(--color-second-text)"
-							width="14px"
-						/>
-					</span>
-				</template>
-
-				<template v-else>
-					<p :class="index === 1 ? 'text-accent-color' : ''">
-						{{ breadcrumb.label }}
-					</p>
-				</template>
-			</li>
+				:breadcrumb="breadcrumb"
+				:index="index"
+				:isLast="index === breadcrumbs.length - 1"
+			/>
 		</ol>
 	</header>
 </template>
