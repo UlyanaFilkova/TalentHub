@@ -59,7 +59,6 @@
 
 	const user = reactive({
 		photo: '',
-
 		text: 'username@usernameemail.com',
 		link: '#',
 	});

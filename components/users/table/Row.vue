@@ -33,7 +33,7 @@
 
 					<UsersOptions
 						v-if="optionsVisible"
-						class="bg-options-backgroud border-options-backgroud absolute right-0 top-4 z-10 mt-2 w-28 rounded-lg py-2 shadow-lg"
+						class="absolute right-0 top-4 z-10 mt-2 w-28 rounded-lg border-options-backgroud bg-options-backgroud py-2 shadow-lg"
 						@profile-click="openProfile"
 						@update-click="updateUser"
 						@delete-click="deleteUser"
