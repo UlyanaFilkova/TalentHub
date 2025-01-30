@@ -408,7 +408,6 @@
 	const getSkillButtonProps = (skill: Skill) => {
 		if (isRemovalMode.value) {
 			const isSelected = selectedSkillsToRemove.value.has(skill.name);
-			console.log(isSelected);
 			return {
 				progress: isSelected ? 0 : getSkillProgress(skill.mastery),
 				class: isSelected ? 'text-white' : '',
