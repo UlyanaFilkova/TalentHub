@@ -73,6 +73,8 @@
 			pathSegments[1]
 		) {
 			id.value = pathSegments[1];
+		} else {
+			return;
 		}
 
 		const elemFullname = ref<string>('');
@@ -106,7 +108,6 @@
 	};
 
 	watchEffect(() => {
-		console.log(route);
 		if (import.meta.client) {
 			updateValues();
 		}

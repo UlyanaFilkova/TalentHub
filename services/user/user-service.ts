@@ -4,6 +4,7 @@ import {
 	DELETE_AVATAR,
 	GET_ALL_DEPARTMENTS,
 	GET_ALL_POSITIONS,
+	GET_ALL_USERS,
 	GET_CURRENT_USER_ID,
 	GET_USER_BY_ID,
 	GET_USER_FULLNAME,
@@ -214,4 +215,22 @@ export const getUserFullname = (userId: string) => {
 	});
 
 	return { fullname, email, loading, error };
+};
+
+export const getAllUsers = () => {
+	const { result, loading, error, refetch } = useQuery<{ users: User[] }>(
+		GET_ALL_USERS
+	);
+	const users = ref<User[]>([]);
+
+	watchEffect(() => {
+		if (result.value) {
+			users.value = result.value.users;
+		}
+		if (error.value) {
+			console.error('Error fetching users:', error.value);
+		}
+	});
+
+	return { users, loading, error, refetch };
 };

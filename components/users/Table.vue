@@ -33,109 +33,47 @@
 </template>
 
 <script setup lang="ts">
+	import { getAllUsers } from '~/services/user/user-service';
+	interface User {
+		id: number;
+		profile: {
+			avatar: string | null;
+			first_name: string;
+			last_name: string;
+		};
+		email: string;
+		department?: { name: string };
+		position?: { name: string };
+	}
+
 	const props = defineProps<{ searchQuery: string }>();
+
 	const headers = reactive([
-		{ key: 'photo', label: '', isSortable: false },
-		{ key: 'firstName', label: 'First Name', isSortable: true },
-		{ key: 'lastName', label: 'Last Name', isSortable: true },
+		{ key: 'avatar', label: '', isSortable: false },
+		{ key: 'first_name', label: 'First Name', isSortable: true },
+		{ key: 'last_name', label: 'Last Name', isSortable: true },
 		{ key: 'email', label: 'Email', isSortable: true },
 		{ key: 'department', label: 'Department', isSortable: true },
 		{ key: 'position', label: 'Position', isSortable: true },
 		{ key: 'link', label: '', isSortable: false },
 	]);
 
-	const tableData = ref([
-		{
-			id: 1,
-			photo: '',
-			firstName: 'Alice',
-			lastName: 'Smith',
-			email: 'alice@example.com',
-			department: 'Engineering',
-			position: 'Software Engineer',
-			link: `users/1/profile`,
-		},
-		{
-			id: 2,
-			photo: '',
-			firstName: 'Bob',
-			lastName: 'Johnson',
-			email: 'bob@example.com',
-			department: 'Marketing',
-			position: 'Marketing Specialist',
-			link: 'users/2/profile',
-		},
-		{
-			id: 3,
-			photo: '',
-			firstName: 'Charlie',
-			lastName: 'Brown',
-			email: 'charlie@example.com',
-			department: 'Sales',
-			position: 'Sales Manager',
-			link: 'users/3/profile',
-		},
-		{
-			id: 4,
-			photo: '',
-			firstName: 'Katy',
-			lastName: 'Smith',
-			email: 'alice@example.com',
-			department: 'Engineering',
-			position: 'Software Engineer',
-			link: `users/4/profile`,
-		},
-		{
-			id: 5,
-			photo: '',
-			firstName: 'Bob',
-			lastName: 'Johnson',
-			email: 'bob@example.com',
-			department: 'Marketing',
-			position: 'Marketing Specialist',
-			link: 'users/5/profile',
-		},
-		{
-			id: 6,
-			photo: '',
-			firstName: 'John',
-			lastName: 'Smith',
-			email: 'john@example.com',
-			department: 'Sales',
-			position: 'Sales Manager',
-			link: 'users/6/profile',
-		},
-		{
-			id: 7,
-			photo: '',
-			firstName: 'Katy',
-			lastName: 'Smith',
-			email: 'alice@example.com',
-			department: 'Engineering',
-			position: 'Software Engineer',
-			link: `users/4/profile`,
-		},
-		{
-			id: 8,
-			photo: '',
-			firstName: 'Bob',
-			lastName: 'Johnson',
-			email: 'bob@example.com',
-			department: 'Marketing',
-			position: 'Marketing Specialist',
-			link: 'users/5/profile',
-		},
-		{
-			id: 9,
-			photo: '',
-			firstName: 'John',
-			lastName: 'Smith',
-			email: 'john@example.com',
-			department: 'Sales',
-			position: 'Sales Manager',
-			link: 'users/6/profile',
-		},
-	]);
+	const users = ref<User[]>([]);
+	const isDataLoaded = ref(false);
+
+	const tableData = computed(() => {
+		if (!isDataLoaded.value) return [];
+		return users.value.map((user) => ({
+			id: user.id,
+			photo: user.profile.avatar || '',
+			firstName: user.profile.first_name,
+			lastName: user.profile.last_name,
+			email: user.email,
+			department: user.department?.name || 'N/A',
+			position: user.position?.name || 'N/A',
+			link: `/users/${user.id}/profile`,
+		}));
+	});
 
 	const sortKey = ref<string | null>(null);
 	const sortOrder = ref<'asc' | 'desc'>('asc');
@@ -159,19 +97,46 @@
 	};
 
 	const filteredData = computed(() => {
-		if (!props.searchQuery) return tableData.value;
+		if (!props.searchQuery || !tableData.value) return tableData.value;
 
 		const lowerCaseSearch = props.searchQuery.toLowerCase();
 
 		return tableData.value.filter((row) => {
 			const firstNameMatches = row.firstName
-				.toLowerCase()
+				?.toLowerCase()
 				.includes(lowerCaseSearch);
 			const lastNameMatches = row.lastName
-				.toLowerCase()
+				?.toLowerCase()
 				.includes(lowerCaseSearch);
-			const emailMatches = row.email.toLowerCase().includes(lowerCaseSearch);
+			const emailMatches = row.email?.toLowerCase().includes(lowerCaseSearch);
 			return firstNameMatches || lastNameMatches || emailMatches;
 		});
+	});
+
+	const getUsers = () => {
+		try {
+			// const response = getAllUsers();
+			// console.log(response);
+			// users.value = response.users.value;
+
+			const { users: usersData } = getAllUsers();
+
+			users.value = usersData.value;
+			console.log(users.value);
+			isDataLoaded.value = true;
+		} catch (error) {
+			console.error('Error loading users:', error);
+			isDataLoaded.value = true;
+		}
+	};
+
+	onMounted(() => {
+		getUsers();
+	});
+
+	watchEffect(() => {
+		if (import.meta.client) {
+			getUsers();
+		}
 	});
 </script>
