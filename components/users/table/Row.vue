@@ -31,7 +31,7 @@
 				>
 					<ButtonsOptions is-toggled color="var(--color-active-text)" />
 
-					<UsersOptions
+					<TableUsersOptions
 						v-if="optionsVisible"
 						class="absolute right-0 top-4 z-10 mt-2 w-28 rounded-lg border-options-backgroud bg-options-backgroud py-2 shadow-lg"
 						@profile-click="openProfile"

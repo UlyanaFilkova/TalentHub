@@ -4,7 +4,7 @@
 			<th
 				v-for="header in headers"
 				:key="header.key"
-				class="border-b border-low-contrast-color px-4 pb-4 pt-1 text-left text-sm font-medium text-active-color"
+				class="border-b border-low-contrast-color px-3 pb-4 pt-1 text-left text-sm font-medium text-active-color"
 			>
 				<div class="flex items-center gap-2">
 					<span>{{ header.label }}</span>
