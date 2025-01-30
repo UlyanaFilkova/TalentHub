@@ -48,7 +48,7 @@
 
 	const computedClasses = computed(() => {
 		const baseClass =
-			'py-1 px-4 h-12 min-w-[220px] rounded-3xl container select-none transition-all ease-in duration-150 ';
+			'py-1 text-sm px-4 h-12 min-w-[220px] rounded-3xl container select-none transition-all ease-in duration-150 ';
 		const variantClass = colorClasses[props.color][props.variant];
 		let finalAppliedClass = `${baseClass} ${variantClass}`;
 		if (props.disabled) {

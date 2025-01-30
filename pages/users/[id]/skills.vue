@@ -1,1 +1,11 @@
-<template><div>User's skills Page</div></template>
+<template>
+	<div>Skills</div>
+</template>
+
+<script setup lang="ts">
+	definePageMeta({
+		layout: 'user-profile',
+	});
+</script>
+
+<style scoped></style>

@@ -1,6 +1,17 @@
+import {
+	ApolloClient,
+	ApolloLink,
+	from,
+	HttpLink,
+	InMemoryCache,
+	makeVar,
+} from '@apollo/client/core';
+
 import { ApolloClient, ApolloLink, from, HttpLink } from '@apollo/client/core';
 import { provideApolloClient } from '@vue/apollo-composable';
 import errorLink, { apolloCache } from '~/services/apollo/errorHandler';
+
+export const currentUserIdVar = makeVar<string | null>(null);
 
 export const httpLink = new HttpLink({
 	uri: 'https://cv-project-js.inno.ws/api/graphql',
@@ -19,7 +30,21 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 
 export const apollo = new ApolloClient({
 	link: from([errorLink, authMiddleware, httpLink]),
-	cache: apolloCache,
+	cache: new InMemoryCache({
+		typePolicies: {
+			Query: {
+				fields: {
+					currentUserId: {
+						read() {
+							const value = currentUserIdVar();
+							console.log('currentUserId from cache:', value);
+							return value;
+						},
+					},
+				},
+			},
+		},
+	}),
 });
 
 export default defineNuxtPlugin(() => {

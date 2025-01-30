@@ -27,6 +27,7 @@
 
 <script setup lang="ts">
 	const enteredValue = defineModel<string>();
+
 	const props = defineProps({
 		id: {
 			type: String,
