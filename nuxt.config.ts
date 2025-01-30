@@ -5,7 +5,7 @@ export default defineNuxtConfig({
 	devtools: { enabled: false },
 	modules: ['@nuxt/eslint'],
 	css: ['~/assets/styles/main.css'],
-	plugins: ['~/plugins/apollo-client.ts'],
+	plugins: ['~/plugins/apolloClient'],
 	postcss: {
 		plugins: {
 			tailwindcss: {},

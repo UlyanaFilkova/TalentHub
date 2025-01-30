@@ -1,19 +1,12 @@
-import {
-	ApolloClient,
-	ApolloLink,
-	from,
-	HttpLink,
-	InMemoryCache,
-} from '@apollo/client/core';
+import { ApolloClient, ApolloLink, from, HttpLink } from '@apollo/client/core';
 import { provideApolloClient } from '@vue/apollo-composable';
-import errorLink from '~/services/apollo/error-handler';
+import errorLink, { apolloCache } from '~/services/apollo/errorHandler';
 
 export const httpLink = new HttpLink({
 	uri: 'https://cv-project-js.inno.ws/api/graphql',
 });
 
 const authMiddleware = new ApolloLink((operation, forward) => {
-	// add the authorization to the headers
 	const token = localStorage.getItem('access');
 	operation.setContext({
 		headers: {
@@ -26,7 +19,7 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 
 export const apollo = new ApolloClient({
 	link: from([errorLink, authMiddleware, httpLink]),
-	cache: new InMemoryCache(),
+	cache: apolloCache,
 });
 
 export default defineNuxtPlugin(() => {

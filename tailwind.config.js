@@ -19,6 +19,7 @@ export default {
 				'accent-color': 'var(--color-accent-color)',
 				'low-contrast-color': 'var(--color-low-contrast)',
 				'profilepic-color': 'var(--color-profilepic-background)',
+				'error-text-color': 'var(--color-error-text)',
 
 				button: {
 					primary: {

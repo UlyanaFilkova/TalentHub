@@ -33,6 +33,8 @@
 </template>
 
 <script setup lang="ts">
+	import { departaments } from '~/services/auth/authService';
+
 	const props = defineProps<{ searchQuery: string }>();
 	const headers = reactive([
 		{ key: 'photo', label: '', isSortable: false },
@@ -43,6 +45,10 @@
 		{ key: 'position', label: 'Position', isSortable: true },
 		{ key: 'link', label: '', isSortable: false },
 	]);
+
+	onMounted(() => {
+		departaments();
+	});
 
 	const tableData = ref([
 		{
