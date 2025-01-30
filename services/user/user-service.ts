@@ -1,14 +1,20 @@
 import { useMutation, useQuery } from '@vue/apollo-composable';
 import { ref, watchEffect } from 'vue';
 import {
+	ADD_PROFILE_SKILL,
 	DELETE_AVATAR,
+	DELETE_PROFILE_SKILL,
 	GET_ALL_DEPARTMENTS,
 	GET_ALL_POSITIONS,
 	GET_ALL_SKILLS,
 	GET_ALL_USERS,
 	GET_CURRENT_USER_ID,
+	GET_PROFILE_SKILLS,
+	GET_SKILL_CATEGORIES,
 	GET_USER_BY_ID,
+	GET_USER_FULLNAME,
 	UPDATE_PROFILE,
+	UPDATE_PROFILE_SKILL,
 	UPDATE_USER,
 	UPLOAD_AVATAR,
 } from '~/services/user/user-mutations';
