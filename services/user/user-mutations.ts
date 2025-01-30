@@ -99,3 +99,24 @@ export const GET_USER_FULLNAME = gql`
 		}
 	}
 `;
+
+export const GET_ALL_USERS = gql`
+	query GetAllUsers {
+		users {
+			id
+			profile {
+				first_name
+				last_name
+				full_name
+				avatar
+			}
+			email
+			department {
+				name
+			}
+			position {
+				name
+			}
+		}
+	}
+`;

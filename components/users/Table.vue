@@ -33,9 +33,23 @@
 </template>
 
 <script setup lang="ts">
+	import { getAllUsers } from '~/services/user/user-service';
+	interface User {
+		id: string | number;
+		profile: {
+			avatar: string | null;
+			first_name: string;
+			last_name: string;
+		};
+		email: string;
+		department: { name: string } | null;
+		position: { name: string } | null;
+	}
+
 	const props = defineProps<{ searchQuery: string }>();
+
 	const headers = reactive([
-		{ key: 'photo', label: '', isSortable: false },
+		{ key: 'avatar', label: '', isSortable: false },
 		{ key: 'firstName', label: 'First Name', isSortable: true },
 		{ key: 'lastName', label: 'Last Name', isSortable: true },
 		{ key: 'email', label: 'Email', isSortable: true },
@@ -44,98 +58,22 @@
 		{ key: 'link', label: '', isSortable: false },
 	]);
 
-	const tableData = ref([
-		{
-			id: 1,
-			photo: '',
-			firstName: 'Alice',
-			lastName: 'Smith',
-			email: 'alice@example.com',
-			department: 'Engineering',
-			position: 'Software Engineer',
-			link: `users/1/profile`,
-		},
-		{
-			id: 2,
-			photo: '',
-			firstName: 'Bob',
-			lastName: 'Johnson',
-			email: 'bob@example.com',
-			department: 'Marketing',
-			position: 'Marketing Specialist',
-			link: 'users/2/profile',
-		},
-		{
-			id: 3,
-			photo: '',
-			firstName: 'Charlie',
-			lastName: 'Brown',
-			email: 'charlie@example.com',
-			department: 'Sales',
-			position: 'Sales Manager',
-			link: 'users/3/profile',
-		},
-		{
-			id: 4,
-			photo: '',
-			firstName: 'Katy',
-			lastName: 'Smith',
-			email: 'alice@example.com',
-			department: 'Engineering',
-			position: 'Software Engineer',
-			link: `users/4/profile`,
-		},
-		{
-			id: 5,
-			photo: '',
-			firstName: 'Bob',
-			lastName: 'Johnson',
-			email: 'bob@example.com',
-			department: 'Marketing',
-			position: 'Marketing Specialist',
-			link: 'users/5/profile',
-		},
-		{
-			id: 6,
-			photo: '',
-			firstName: 'John',
-			lastName: 'Smith',
-			email: 'john@example.com',
-			department: 'Sales',
-			position: 'Sales Manager',
-			link: 'users/6/profile',
-		},
-		{
-			id: 7,
-			photo: '',
-			firstName: 'Katy',
-			lastName: 'Smith',
-			email: 'alice@example.com',
-			department: 'Engineering',
-			position: 'Software Engineer',
-			link: `users/4/profile`,
-		},
-		{
-			id: 8,
-			photo: '',
-			firstName: 'Bob',
-			lastName: 'Johnson',
-			email: 'bob@example.com',
-			department: 'Marketing',
-			position: 'Marketing Specialist',
-			link: 'users/5/profile',
-		},
-		{
-			id: 9,
-			photo: '',
-			firstName: 'John',
-			lastName: 'Smith',
-			email: 'john@example.com',
-			department: 'Sales',
-			position: 'Sales Manager',
-			link: 'users/6/profile',
-		},
-	]);
+	const users = ref<User[]>([]);
+	const isDataLoaded = ref(false);
+
+	const tableData = computed(() => {
+		if (!isDataLoaded.value) return [];
+		return users.value.map((user) => ({
+			id: Number(user.id),
+			photo: user.profile.avatar || '',
+			firstName: user.profile.first_name,
+			lastName: user.profile.last_name,
+			email: user.email,
+			department: user.department?.name || 'N/A',
+			position: user.position?.name || 'N/A',
+			link: `/users/${user.id}/profile`,
+		}));
+	});
 
 	const sortKey = ref<string | null>(null);
 	const sortOrder = ref<'asc' | 'desc'>('asc');
@@ -148,30 +86,71 @@
 			sortOrder.value = 'asc';
 		}
 
-		tableData.value.sort((a, b) => {
+		const collator = new Intl.Collator('en', { sensitivity: 'base' });
+
+		filteredData.value.sort((a, b) => {
 			const aValue = a[key as keyof typeof a];
 			const bValue = b[key as keyof typeof b];
 
-			if (aValue < bValue) return sortOrder.value === 'asc' ? -1 : 1;
-			if (aValue > bValue) return sortOrder.value === 'asc' ? 1 : -1;
-			return 0;
+			const aStr = (aValue || '').toString().toLowerCase();
+			const bStr = (bValue || '').toString().toLowerCase();
+
+			if (aStr === '' && bStr !== '') {
+				return 1;
+			}
+			if (bStr === '' && aStr !== '') {
+				return -1;
+			}
+
+			if (aStr === 'n/a' && bStr !== 'n/a') {
+				return 1;
+			}
+			if (bStr === 'n/a' && aStr !== 'n/a') {
+				return -1;
+			}
+
+			return sortOrder.value === 'asc'
+				? collator.compare(aStr, bStr)
+				: collator.compare(bStr, aStr);
 		});
 	};
 
 	const filteredData = computed(() => {
-		if (!props.searchQuery) return tableData.value;
+		if (!props.searchQuery || !tableData.value) return tableData.value;
 
 		const lowerCaseSearch = props.searchQuery.toLowerCase();
 
 		return tableData.value.filter((row) => {
 			const firstNameMatches = row.firstName
-				.toLowerCase()
+				?.toLowerCase()
 				.includes(lowerCaseSearch);
 			const lastNameMatches = row.lastName
-				.toLowerCase()
+				?.toLowerCase()
 				.includes(lowerCaseSearch);
-			const emailMatches = row.email.toLowerCase().includes(lowerCaseSearch);
+			const emailMatches = row.email?.toLowerCase().includes(lowerCaseSearch);
 			return firstNameMatches || lastNameMatches || emailMatches;
 		});
+	});
+
+	const getUsers = () => {
+		try {
+			const { users: usersData } = getAllUsers();
+
+			users.value = usersData.value;
+			isDataLoaded.value = true;
+		} catch (error) {
+			console.error('Error loading users:', error);
+			isDataLoaded.value = true;
+		}
+	};
+
+	onMounted(() => {
+		getUsers();
+	});
+
+	watchEffect(() => {
+		if (import.meta.client) {
+			getUsers();
+		}
 	});
 </script>
