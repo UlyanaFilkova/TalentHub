@@ -137,21 +137,6 @@
 		);
 	});
 
-	// // console.log('Reactive Variable Value:', currentUserIdVar());
-
-	// // console.log(apollo.cache.extract());
-
-	// // const CURRENT_USER_ID = gql`
-	// // 	query GetCurrentUserId {
-	// // 		currentUserId @client
-	// // 	}
-	// // `;
-
-	// // const { result: currentUserResult } = useQuery(CURRENT_USER_ID);
-
-	// console.log('Direct reactive var value:', currentUserIdVar());
-	// console.log('Query result:', currentUserResult.value);
-
 	const handleUploadSuccess = async () => {
 		const result = await refetchUser.value();
 
@@ -179,13 +164,6 @@
 			isDeletingAvatar.value = false;
 		}
 	};
-
-	// watchEffect(() => {
-	// 	console.log(
-	// 		'Current user ID from query:',
-	// 		currentUserResult.value?.currentUserId
-	// 	);
-	// });
 
 	onMounted(() => {
 		const {
@@ -259,17 +237,6 @@
 			},
 			{ immediate: true }
 		);
-
-		watch(
-			() => route.params.id,
-			(newUserId) => {
-				if (newUserId !== userId.value) {
-					userId.value = newUserId as string;
-					const { user: newUser } = getUserById(userId.value as string);
-					fetchedUser.value = newUser.value;
-				}
-			}
-		);
 	});
 	const handleSubmit = async () => {
 		isSubmitting.value = true;
@@ -309,5 +276,3 @@
 		}
 	};
 </script>
-
-<style scoped></style>

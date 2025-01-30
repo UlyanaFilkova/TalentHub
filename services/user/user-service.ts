@@ -4,10 +4,10 @@ import {
 	DELETE_AVATAR,
 	GET_ALL_DEPARTMENTS,
 	GET_ALL_POSITIONS,
+	GET_ALL_SKILLS,
 	GET_ALL_USERS,
 	GET_CURRENT_USER_ID,
 	GET_USER_BY_ID,
-	GET_USER_FULLNAME,
 	UPDATE_PROFILE,
 	UPDATE_USER,
 	UPLOAD_AVATAR,
@@ -40,6 +40,32 @@ interface Position {
 	name: string;
 }
 
+interface Skill {
+	name: string;
+	categoryId: string;
+	mastery: 'Novice' | 'Advanced' | 'Competent' | 'Proficient' | 'Expert';
+}
+
+interface SkillDefault {
+	id: string;
+	name: string;
+	category: {
+		id: string;
+		order: number;
+	};
+	category_name: string;
+	category_parent_name: string;
+}
+
+interface SkillCategory {
+	id: string;
+	name: string;
+	parent: {
+		id: string;
+		name: string;
+	} | null;
+}
+
 interface UpdateUserInput {
 	userId: string;
 	departmentId?: string;
@@ -52,6 +78,14 @@ interface UpdateProfileInput {
 	first_name: string;
 	last_name: string;
 }
+
+interface UpdateProfileSkillInput {
+	userId: string;
+	name: string;
+	categoryId: string;
+	mastery: Skill['mastery'];
+}
+
 interface UploadAvatarInput {
 	userId: string;
 	base64: string;
@@ -193,6 +227,123 @@ export const deleteAvatar = (userId: string) => {
 		loading,
 		error,
 	};
+};
+
+export const getProfileSkills = (userId: string) => {
+	const { result, loading, error, refetch } = useQuery<{
+		profile: { id: string; skills: Skill[] };
+	}>(GET_PROFILE_SKILLS, {
+		userId,
+	});
+
+	const skills = ref<Skill[]>([]);
+
+	watchEffect(() => {
+		if (result.value?.profile) {
+			skills.value = result.value.profile.skills;
+		}
+	});
+
+	return { skills, loading, error, refetch };
+};
+
+export const getSkillCategories = () => {
+	const { result, loading, error } = useQuery<{
+		skillCategories: SkillCategory[];
+	}>(GET_SKILL_CATEGORIES);
+
+	const categories = ref<SkillCategory[]>([]);
+
+	watchEffect(() => {
+		if (result.value) {
+			categories.value = result.value.skillCategories;
+		}
+	});
+
+	return { categories, loading, error };
+};
+
+export const updateProfileSkill = (skill: UpdateProfileSkillInput) => {
+	const {
+		mutate: updateSkillMutation,
+		loading,
+		error,
+	} = useMutation(UPDATE_PROFILE_SKILL);
+
+	const executeUpdate = async () => {
+		try {
+			const response = await updateSkillMutation({ skill });
+			return response!.data?.updateProfileSkill;
+		} catch (err) {
+			console.error('Error updating skill:', err);
+			throw err;
+		}
+	};
+
+	return { executeUpdate, loading, error };
+};
+
+export const getAllSkills = () => {
+	const { result, loading, error } = useQuery<{ skills: SkillDefault[] }>(
+		GET_ALL_SKILLS
+	);
+	const skills = ref<SkillDefault[]>([]);
+
+	watchEffect(() => {
+		if (result.value) {
+			skills.value = result.value.skills;
+		}
+		if (error.value) {
+			console.error('Error fetching skills:', error.value);
+		}
+	});
+
+	return { skills, loading, error };
+};
+
+export const addProfileSkill = (skill: UpdateProfileSkillInput) => {
+	const {
+		mutate: addSkillMutation,
+		loading,
+		error,
+	} = useMutation(ADD_PROFILE_SKILL);
+
+	const executeAdd = async () => {
+		try {
+			const response = await addSkillMutation({ skill });
+			return response!.data?.addProfileSkill;
+		} catch (err) {
+			console.error('Error adding skill:', err);
+			throw err;
+		}
+	};
+
+	return { executeAdd, loading, error };
+};
+
+export const deleteProfileSkill = (userId: string, skillNames: string[]) => {
+	const {
+		mutate: deleteSkillMutation,
+		loading,
+		error,
+	} = useMutation(DELETE_PROFILE_SKILL);
+
+	const executeDelete = async () => {
+		try {
+			const response = await deleteSkillMutation({
+				skill: {
+					userId,
+					name: skillNames,
+				},
+			});
+			return response!.data?.deleteProfileSkill;
+		} catch (err) {
+			console.error('Error deleting skills:', err);
+			throw err;
+		}
+	};
+
+	return { executeDelete, loading, error };
 };
 
 export const getUserFullname = (userId: string) => {
