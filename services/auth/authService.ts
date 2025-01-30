@@ -1,7 +1,7 @@
-import { useMutation, useQuery } from '@vue/apollo-composable';
+import { useMutation } from '@vue/apollo-composable';
 import type { AuthResult } from 'cv-graphql';
+import { currentUserIdVar } from '~/plugins/apolloClient';
 import {
-	DEPARTMENT,
 	FORGOT_PASSWORD,
 	LOGIN,
 	RESET_PASSWORD,
@@ -24,25 +24,17 @@ export const login = async (auth: { email: string; password: string }) => {
 	if (res && res.data) {
 		localStorage.setItem('access', res.data.login.access_token);
 		localStorage.setItem('refresh', res.data.login.refresh_token);
+		currentUserIdVar(res.data.login.user.id);
 	}
 	return res!.data!;
 };
 
 export const forgotPassword = async (email: string) => {
 	const { mutate } = useMutation(FORGOT_PASSWORD);
-	const res = await mutate({ auth: { email } });
-	return res;
+	return await mutate({ auth: { email } });
 };
 
 export const resetPassword = async (newPassword: string) => {
 	const { mutate } = useMutation(RESET_PASSWORD);
-	const res = await mutate({ auth: { newPassword } });
-	return res;
-};
-
-export const departaments = () => {
-	const { onResult } = useQuery(DEPARTMENT);
-	onResult((res) => {
-		console.log(res.data);
-	});
+	return await mutate({ auth: { newPassword } });
 };

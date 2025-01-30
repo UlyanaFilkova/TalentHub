@@ -6,10 +6,8 @@ import {
 	InMemoryCache,
 	makeVar,
 } from '@apollo/client/core';
-
-import { ApolloClient, ApolloLink, from, HttpLink } from '@apollo/client/core';
 import { provideApolloClient } from '@vue/apollo-composable';
-import errorLink, { apolloCache } from '~/services/apollo/errorHandler';
+import errorLink from '~/services/apollo/errorHandler';
 
 export const currentUserIdVar = makeVar<string | null>(null);
 
@@ -36,9 +34,7 @@ export const apollo = new ApolloClient({
 				fields: {
 					currentUserId: {
 						read() {
-							const value = currentUserIdVar();
-							console.log('currentUserId from cache:', value);
-							return value;
+							return currentUserIdVar();
 						},
 					},
 				},
