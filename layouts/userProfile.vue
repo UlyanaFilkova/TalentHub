@@ -16,7 +16,7 @@
 				</NuxtLink>
 			</nav>
 
-			<div class="mt-10">
+			<div class="mt-8">
 				<KeepAlive>
 					<component :is="currentTab"></component>
 				</KeepAlive>

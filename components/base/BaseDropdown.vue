@@ -3,7 +3,8 @@
 		<button
 			:id="id"
 			type="button"
-			class="peer h-12 w-full appearance-none border border-input-border bg-input-background p-3 text-left text-input-text transition-all duration-200 hover:border-input-border focus:border-input-borderFocus focus:outline-none"
+			class="peer h-12 w-full appearance-none border border-input-border bg-input-background p-3 text-left text-input-text transition-all duration-200 hover:border-input-border focus:border-input-borderFocus focus:outline-none disabled:opacity-50"
+			:disabled="disabled"
 			@click="isOpen = !isOpen"
 		>
 			{{ selectedValue!.value === '' ? '' : selectedOption?.label }}
@@ -36,12 +37,7 @@
 				<div
 					v-for="option in allOptions"
 					:key="option.value"
-					:class="[
-						'cursor-pointer px-4 py-2 text-input-text',
-						option.value === selectedValue!.value
-							? 'bg-dropdown-button-backgroundSelected hover:bg-dropdown-button-backgroundSelectedHover'
-							: 'hover:bg-dropdown-button-backgroundHover',
-					]"
+					:class="getOptionClasses(option)"
 					@click="selectOption(option)"
 				>
 					{{ option.label }}
@@ -55,6 +51,8 @@
 	interface Option {
 		value: string;
 		label: string;
+		isSeparator?: boolean;
+		disabled?: boolean;
 	}
 
 	const props = defineProps({
@@ -72,11 +70,14 @@
 		},
 		defaultOptionLabel: {
 			type: String,
-			required: true,
+			required: false,
+			default: '',
+		},
+		disabled: {
+			type: Boolean,
+			default: false,
 		},
 	});
-
-	const emit = defineEmits(['update:modelValue']);
 
 	const selectedValue = defineModel<{ value: string; label: string }>();
 
@@ -91,15 +92,26 @@
 		);
 	});
 
-	const allOptions = computed(() => [
-		{ value: '', label: props.defaultOptionLabel },
-		...props.options,
-	]);
+	const allOptions = computed(() =>
+		props.defaultOptionLabel
+			? [{ value: '', label: props.defaultOptionLabel }, ...props.options]
+			: props.options
+	);
 
 	const selectOption = (option: Option) => {
 		selectedValue.value = option;
 		isOpen.value = false;
 	};
+
+	const getOptionClasses = (option: Option) => [
+		'cursor-pointer px-4 py-2 text-input-text',
+		option.isSeparator
+			? 'cursor-default bg-sidebar-hover text-sm font-thin text-input-borderFocus'
+			: option.value === selectedValue!.value?.value
+				? 'bg-dropdown-button-backgroundSelected hover:bg-dropdown-button-backgroundSelectedHover'
+				: 'hover:bg-dropdown-button-backgroundHover',
+		option.disabled ? 'cursor-default' : '',
+	];
 
 	onMounted(() => {
 		document.addEventListener('click', (e) => {
