@@ -9,7 +9,7 @@
 				<BaseInput
 					id="email"
 					v-model="email"
-					type="email"
+					type="text"
 					placeholder="example@mail.com"
 					required
 					label="Email"
@@ -29,15 +29,16 @@
 					</BaseButton>
 				</div>
 				<div>
-					<BaseButton
-						variant="text"
-						color="secondary"
-						type="button"
-						class="w-1/2"
-						@click="redirectLogin"
-					>
-						CANCEL
-					</BaseButton>
+					<NuxtLink to="/auth/login">
+						<BaseButton
+							variant="text"
+							color="secondary"
+							type="button"
+							class="w-1/2"
+						>
+							CANCEL
+						</BaseButton>
+					</NuxtLink>
 				</div>
 			</template>
 		</BaseForm>
@@ -47,23 +48,15 @@
 <script lang="ts" setup>
 	import { useRouter } from '#app';
 	import { ref } from 'vue';
-	import { forgotPassword } from '~/services/auth/auth-service';
+	import { forgotPassword } from '~/services/auth/authService';
 
 	const email = ref('');
 	const router = useRouter();
 
 	const handleReset = async () => {
-		try {
-			const data = await forgotPassword(email.value);
-			if (data) {
-				router.push('/auth/login');
-			}
-		} catch (error) {
-			console.log(error);
+		const data = await forgotPassword(email.value);
+		if (data) {
+			router.push('/auth/login');
 		}
-	};
-
-	const redirectLogin = () => {
-		router.push('/auth/login');
 	};
 </script>

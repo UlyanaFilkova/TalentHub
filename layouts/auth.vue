@@ -1,7 +1,8 @@
 <template>
 	<div
+		style="justify-content: center"
 		class="flex min-h-screen flex-col items-center justify-center bg-background"
 	>
-		<NuxtPage />
+		<slot></slot>
 	</div>
 </template>

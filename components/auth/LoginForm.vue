@@ -1,82 +1,92 @@
 <template>
-	<div>
-		<div>
-			<AuthTheHeader />
-		</div>
-		<BaseForm
-			info-text="Hello again! Log in to continue"
-			title="Welcome back"
-			:on-submit="handleLogin"
-		>
-			<template #main>
-				<BaseInput
-					id="email"
-					v-model="form.email"
-					type="email"
-					placeholder="example@mail.com"
-					required
-					label="Email"
-					class="w-screen max-w-[550px]"
-					autocomplete="on"
-				/>
-				<BaseInput
-					id="password"
-					v-model="form.password"
-					:type="isPasswordVisible ? 'text' : 'password'"
-					placeholder="Enter your password"
-					required
-					label="Password"
-					class="w-screen max-w-[550px]"
-				>
-					<template #icon>
-						<AuthPasswordEyeToggle
-							:color="'var(--color-active-text)'"
-							@update:password-visibility="togglePasswordVisibility"
-						/>
-					</template>
-				</BaseInput>
-			</template>
-			<template #footer>
-				<div class="mb-2">
-					<BaseButton variant="contained" color="primary" type="submit">
-						LOG IN
-					</BaseButton>
-				</div>
-				<div>
-					<BaseButton
-						variant="text"
-						color="secondary"
-						type="button"
-						class="w-1/2"
-						@click="redirectForgotPassword"
+	<div class="flex min-h-screen flex-col">
+		<AuthTheHeader />
+		<div class="flex flex-1 items-center justify-center">
+			<BaseForm
+				info-text="Hello again! Log in to continue"
+				title="Welcome back"
+				:on-submit="handleLogin"
+			>
+				<template #main>
+					<BaseInput
+						id="email"
+						v-model="form.email"
+						type="text"
+						placeholder="example@mail.com"
+						required
+						label="Email"
+						class="w-screen max-w-[550px]"
+						autocomplete="on"
+					/>
+					<span v-if="$v.email.$error" class="text-error-text-color">
+						Required field
+					</span>
+
+					<BaseInput
+						id="password"
+						v-model="form.password"
+						:type="isPasswordVisible ? 'text' : 'password'"
+						placeholder="Enter your password"
+						required
+						label="Password"
+						class="w-screen max-w-[550px]"
 					>
-						FORGOT PASSWORD
-					</BaseButton>
-				</div>
-			</template>
-		</BaseForm>
+						<template #icon>
+							<AuthPasswordEyeToggle
+								:color="'var(--color-active-text)'"
+								@update:password-visibility="togglePasswordVisibility"
+							/>
+						</template>
+					</BaseInput>
+					<span v-if="$v.password.$error" class="text-error-text-color">
+						Required field
+					</span>
+				</template>
+				<template #footer>
+					<div class="mb-2">
+						<BaseButton variant="contained" color="primary" type="submit">
+							LOG IN
+						</BaseButton>
+					</div>
+					<div>
+						<NuxtLink to="/auth/forgot-password">
+							<BaseButton
+								variant="text"
+								color="secondary"
+								type="button"
+								class="w-1/2"
+							>
+								FORGOT PASSWORD
+							</BaseButton>
+						</NuxtLink>
+					</div>
+				</template>
+			</BaseForm>
+		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
 	import { useRouter } from '#app';
 	import { ref } from 'vue';
-	import { login } from '~/services/auth/auth-service';
+	import { useValidation } from '~/composables/useValidation';
+	import { login } from '~/services/auth/authService';
 
-	const form = ref({ email: '', password: '' });
 	const router = useRouter();
 	const isPasswordVisible = ref(false);
+	const { form, $v } = useValidation({});
 
 	const handleLogin = async () => {
-		const data = await login(form.value);
-		console.log('handleLogin вызван', form.value);
-		if (data) {
-			router.push('/');
-		}
-	};
+		await $v.value.$validate();
 
-	const redirectForgotPassword = () => {
-		router.push('/auth/forgot-password');
+		if ($v.value.$error) {
+			return;
+		}
+
+		const data = await login(form.value);
+		if (data) {
+			router.push('/users');
+		}
 	};
 	const togglePasswordVisibility = (newValue: boolean) => {
 		isPasswordVisible.value = newValue;

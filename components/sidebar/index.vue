@@ -25,10 +25,13 @@
 </template>
 
 <script setup lang="ts">
+	import { useRouter } from '#app';
 	import IconsCVs from '~/components/icons/CVs.vue';
 	import IconsEmployees from '~/components/icons/Employees.vue';
 	import IconsLanguages from '~/components/icons/Languages.vue';
 	import IconsSkills from '~/components/icons/Skills.vue';
+
+	const router = useRouter();
 
 	const items = reactive([
 		{
@@ -70,6 +73,9 @@
 	};
 	const logout = () => {
 		console.log('logout clicked');
+		router.push('/auth/login');
+		localStorage.removeItem('refresh');
+		localStorage.removeItem('access');
 	};
 
 	const route = useRoute();

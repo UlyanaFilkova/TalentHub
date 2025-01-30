@@ -7,9 +7,9 @@
 </script>
 
 <template>
-	<div class="flex min-h-screen items-center justify-center">
+	<div class="flex flex-1 items-center justify-center">
 		<form
-			class="flex w-screen max-w-5xl flex-col items-center"
+			class="flex w-full max-w-5xl flex-col items-center justify-center"
 			@submit.prevent="onSubmit"
 		>
 			<div class="mb-10 text-center">

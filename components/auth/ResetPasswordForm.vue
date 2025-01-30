@@ -28,15 +28,16 @@
 					</BaseButton>
 				</div>
 				<div>
-					<BaseButton
-						variant="text"
-						color="secondary"
-						type="button"
-						class="w-1/2"
-						@click="redirectLogin"
-					>
-						BACK TO LOG IN
-					</BaseButton>
+					<NuxtLink to="/auth/login">
+						<BaseButton
+							variant="text"
+							color="secondary"
+							type="button"
+							class="w-1/2"
+						>
+							BACK TO LOG IN
+						</BaseButton>
+					</NuxtLink>
 				</div>
 			</template>
 		</BaseForm>
@@ -46,36 +47,23 @@
 <script lang="ts" setup>
 	import { useRoute, useRouter } from '#app';
 	import { ref } from 'vue';
-	import { resetPassword } from '~/services/auth/auth-service';
+	import { resetPassword } from '~/services/auth/authService';
 
 	const newPassword = ref('');
 	const router = useRouter();
 	const route = useRoute();
 
 	const handleSubmit = async () => {
-		try {
-			const data = await resetPassword(newPassword.value);
-			if (data) {
-				router.push('/auth/login');
-			}
-		} catch (error) {
-			console.log(error);
+		const data = await resetPassword(newPassword.value);
+		if (data) {
+			router.push('/auth/login');
 		}
-	};
-
-	const redirectLogin = () => {
-		router.push('/auth/login');
 	};
 
 	onMounted(() => {
 		const token = route.query.token;
-		console.log(token);
 		if (token) {
 			localStorage.setItem('access', token as string);
 		}
 	});
 </script>
-
-<style scoped>
-	/* Ваши стили */
-</style>
