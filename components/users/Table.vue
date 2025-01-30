@@ -35,23 +35,23 @@
 <script setup lang="ts">
 	import { getAllUsers } from '~/services/user/user-service';
 	interface User {
-		id: number;
+		id: string | number;
 		profile: {
 			avatar: string | null;
 			first_name: string;
 			last_name: string;
 		};
 		email: string;
-		department?: { name: string };
-		position?: { name: string };
+		department: { name: string } | null;
+		position: { name: string } | null;
 	}
 
 	const props = defineProps<{ searchQuery: string }>();
 
 	const headers = reactive([
 		{ key: 'avatar', label: '', isSortable: false },
-		{ key: 'first_name', label: 'First Name', isSortable: true },
-		{ key: 'last_name', label: 'Last Name', isSortable: true },
+		{ key: 'firstName', label: 'First Name', isSortable: true },
+		{ key: 'lastName', label: 'Last Name', isSortable: true },
 		{ key: 'email', label: 'Email', isSortable: true },
 		{ key: 'department', label: 'Department', isSortable: true },
 		{ key: 'position', label: 'Position', isSortable: true },
@@ -64,7 +64,7 @@
 	const tableData = computed(() => {
 		if (!isDataLoaded.value) return [];
 		return users.value.map((user) => ({
-			id: user.id,
+			id: Number(user.id),
 			photo: user.profile.avatar || '',
 			firstName: user.profile.first_name,
 			lastName: user.profile.last_name,
@@ -86,13 +86,32 @@
 			sortOrder.value = 'asc';
 		}
 
-		tableData.value.sort((a, b) => {
+		const collator = new Intl.Collator('en', { sensitivity: 'base' });
+
+		filteredData.value.sort((a, b) => {
 			const aValue = a[key as keyof typeof a];
 			const bValue = b[key as keyof typeof b];
 
-			if (aValue < bValue) return sortOrder.value === 'asc' ? -1 : 1;
-			if (aValue > bValue) return sortOrder.value === 'asc' ? 1 : -1;
-			return 0;
+			const aStr = (aValue || '').toString().toLowerCase();
+			const bStr = (bValue || '').toString().toLowerCase();
+
+			if (aStr === '' && bStr !== '') {
+				return 1;
+			}
+			if (bStr === '' && aStr !== '') {
+				return -1;
+			}
+
+			if (aStr === 'n/a' && bStr !== 'n/a') {
+				return 1;
+			}
+			if (bStr === 'n/a' && aStr !== 'n/a') {
+				return -1;
+			}
+
+			return sortOrder.value === 'asc'
+				? collator.compare(aStr, bStr)
+				: collator.compare(bStr, aStr);
 		});
 	};
 
@@ -115,14 +134,9 @@
 
 	const getUsers = () => {
 		try {
-			// const response = getAllUsers();
-			// console.log(response);
-			// users.value = response.users.value;
-
 			const { users: usersData } = getAllUsers();
 
 			users.value = usersData.value;
-			console.log(users.value);
 			isDataLoaded.value = true;
 		} catch (error) {
 			console.error('Error loading users:', error);
