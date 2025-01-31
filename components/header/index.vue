@@ -6,7 +6,7 @@
 				:key="index"
 				:breadcrumb="breadcrumb"
 				:index="index"
-				:isLast="index === breadcrumbs.length - 1"
+				:is-last="index === breadcrumbs.length - 1"
 			/>
 		</ol>
 	</header>
@@ -16,12 +16,15 @@
 	import { getCvFullname } from '~/services/cv/cv-service';
 	import { getUserFullname } from '~/services/user/user-service';
 	const route = useRoute();
+	const router = useRouter();
 
 	const id = ref('');
 	const fullname = ref('');
 
-	const breadcrumbs = computed(() => {
-		const pathSegments = route.path.split('/').filter(Boolean);
+	const breadcrumbs = reactive<{ label: string; link: string }[]>([]);
+
+	const getBreadcrumbs = (path: string) => {
+		const pathSegments = path.split('/').filter(Boolean);
 
 		const segments = pathSegments.map((segment, index) => {
 			return {
@@ -42,10 +45,10 @@
 		}
 
 		return segments;
-	});
+	};
 
-	const updateValues = () => {
-		const pathSegments: string[] = route.path.split('/').filter(Boolean);
+	const updateValues = (path: string) => {
+		const pathSegments: string[] = path.split('/').filter(Boolean);
 
 		if (
 			(pathSegments[0] === 'users' || pathSegments[0] === 'cvs') &&
@@ -56,20 +59,20 @@
 			return;
 		}
 
-		const elemFullname = ref<string>('');
-		const elemEmail = ref<string>('');
+		let elemFullname = '';
+		let elemEmail = '';
 
 		switch (pathSegments[0]) {
 			case 'users': {
 				const { fullname: userFullname, email: userEmail } = getUserFullname(
 					id.value
 				);
-				elemFullname.value = userFullname.value;
-				elemEmail.value = userEmail.value;
+				elemFullname = userFullname.value;
+				elemEmail = userEmail.value;
 				break;
 			}
 			case 'cvs': {
-				elemFullname.value = getCvFullname(id.value).fullname.value;
+				elemFullname = getCvFullname(id.value).fullname.value;
 				break;
 			}
 			default: {
@@ -77,10 +80,10 @@
 			}
 		}
 
-		if (elemFullname.value && elemFullname.value !== '') {
-			fullname.value = elemFullname.value;
-		} else if (pathSegments[0] === 'users' && elemEmail.value) {
-			fullname.value = elemEmail.value;
+		if (elemFullname && elemFullname !== '') {
+			fullname.value = elemFullname;
+		} else if (pathSegments[0] === 'users' && elemEmail) {
+			fullname.value = elemEmail;
 		} else {
 			fullname.value = id.value;
 		}
@@ -88,11 +91,14 @@
 
 	watchEffect(() => {
 		if (import.meta.client) {
-			updateValues();
+			updateValues(route.path);
+			Object.assign(breadcrumbs, getBreadcrumbs(route.path));
 		}
 	});
 
-	onMounted(() => {
-		updateValues();
+	router.afterEach((to) => {
+		updateValues(to.path);
+		Object.assign(breadcrumbs, getBreadcrumbs(to.path));
+		updateValues(to.path);
 	});
 </script>
