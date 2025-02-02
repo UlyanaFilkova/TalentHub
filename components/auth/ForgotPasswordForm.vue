@@ -3,7 +3,7 @@
 		<BaseForm
 			info-text="We will sent you an email with further instructions"
 			title="Forgot password"
-			:on-submit="handleReset"
+			@submit="handleReset"
 		>
 			<template #main>
 				<BaseInput
@@ -23,7 +23,7 @@
 						variant="contained"
 						:color="email ? 'primary' : 'secondary'"
 						type="submit"
-						:disabled="!email"
+						:disabled="isSubmitting"
 					>
 						RESET PASSWORD
 					</BaseButton>
@@ -51,12 +51,19 @@
 	import { forgotPassword } from '~/services/auth/authService';
 
 	const email = ref('');
+	const isSubmitting = ref(false);
 	const router = useRouter();
 
 	const handleReset = async () => {
-		const data = await forgotPassword(email.value);
-		if (data) {
-			router.push('/auth/login');
+		if (!email.value || isSubmitting.value) return;
+		isSubmitting.value = true;
+		try {
+			const data = await forgotPassword(email.value);
+			if (data) {
+				router.push('/auth/login');
+			}
+		} finally {
+			isSubmitting.value = false;
 		}
 	};
 </script>

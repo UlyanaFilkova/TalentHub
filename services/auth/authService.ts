@@ -34,7 +34,14 @@ export const forgotPassword = async (email: string) => {
 	return await mutate({ auth: { email } });
 };
 
-export const resetPassword = async (newPassword: string) => {
-	const { mutate } = useMutation(RESET_PASSWORD);
+export const resetPassword = async (newPassword: string, token: string) => {
+	console.log(token);
+	const { mutate } = useMutation(RESET_PASSWORD, {
+		context: {
+			headers: {
+				authorization: `Bearer ${token}`,
+			},
+		},
+	});
 	return await mutate({ auth: { newPassword } });
 };
