@@ -17,11 +17,13 @@ export const httpLink = new HttpLink({
 
 const authMiddleware = new ApolloLink((operation, forward) => {
 	const token = localStorage.getItem('access');
-	operation.setContext({
-		headers: {
-			authorization: token ? `Bearer ${token}` : '',
-		},
-	});
+	if (operation.operationName !== 'ResetPassword') {
+		operation.setContext({
+			headers: {
+				authorization: token ? `Bearer ${token}` : '',
+			},
+		});
+	}
 
 	return forward(operation);
 });

@@ -5,7 +5,7 @@
 			<BaseForm
 				info-text="Hello again! Log in to continue"
 				title="Welcome back"
-				:on-submit="handleLogin"
+				@submit="handleLogin"
 			>
 				<template #main>
 					<BaseInput
@@ -44,7 +44,12 @@
 				</template>
 				<template #footer>
 					<div class="mb-2">
-						<BaseButton variant="contained" color="primary" type="submit">
+						<BaseButton
+							variant="contained"
+							color="primary"
+							type="submit"
+							:disabled="isSubmitting"
+						>
 							LOG IN
 						</BaseButton>
 					</div>
@@ -69,25 +74,31 @@
 <script lang="ts" setup>
 	import { useRouter } from '#app';
 	import { ref } from 'vue';
-	import { useValidation } from '~/composables/useValidation';
+	import { useAuthValidation } from '~/composables/useAuthValidation';
 	import { login } from '~/services/auth/authService';
 
 	const router = useRouter();
 	const isPasswordVisible = ref(false);
-	const { form, $v } = useValidation({});
+	const isSubmitting = ref(false);
+	const { form, $v } = useAuthValidation({});
 
 	const handleLogin = async () => {
+		isSubmitting.value = true;
 		await $v.value.$validate();
-
 		if ($v.value.$error) {
+			isSubmitting.value = false;
 			return;
 		}
-
-		const data = await login(form.value);
-		if (data) {
-			router.push('/users');
+		try {
+			const data = await login(form.value);
+			if (data) {
+				router.push({ path: '/users', replace: true });
+			}
+		} finally {
+			isSubmitting.value = false;
 		}
 	};
+
 	const togglePasswordVisibility = (newValue: boolean) => {
 		isPasswordVisible.value = newValue;
 	};
