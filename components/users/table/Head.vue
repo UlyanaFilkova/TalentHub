@@ -11,7 +11,7 @@
 					<button
 						v-if="header.isSortable"
 						class="flex w-6 justify-center text-low-contrast-color"
-						@click="sortTable(header.key)"
+						@click="emitSort(header.key)"
 					>
 						<template v-if="sortKey === header.key">
 							<span v-if="sortOrder === 'asc'">▲</span>
@@ -26,10 +26,19 @@
 </template>
 
 <script setup lang="ts">
-	defineProps<{
+	const props = defineProps<{
 		headers: { key: string; label: string; isSortable: boolean }[];
 		sortKey: string | null;
 		sortOrder: 'asc' | 'desc';
-		sortTable: (key: string) => void;
 	}>();
+
+	const emit = defineEmits<{
+		(event: 'sort', key: string, order: 'asc' | 'desc'): void;
+	}>();
+
+	const emitSort = (key: string) => {
+		const newOrder =
+			props.sortKey === key && props.sortOrder === 'asc' ? 'desc' : 'asc';
+		emit('sort', key, newOrder);
+	};
 </script>

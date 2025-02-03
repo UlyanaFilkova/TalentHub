@@ -5,7 +5,7 @@
 				:headers="headers"
 				:sort-key="sortKey"
 				:sort-order="sortOrder"
-				:sort-table="sortTable"
+				@sort="handleSort"
 			/>
 			<tbody>
 				<UsersTableRow
@@ -66,19 +66,20 @@
 	const sortKey = ref<string | null>(null);
 	const sortOrder = ref<'asc' | 'desc'>('asc');
 
-	const sortTable = (key: string) => {
-		if (sortKey.value === key) {
-			sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc';
-		} else {
-			sortKey.value = key;
-			sortOrder.value = 'asc';
-		}
+	const handleSort = (key: string, order: 'asc' | 'desc') => {
+		sortKey.value = key;
+		sortOrder.value = order;
+		sortTable();
+	};
+
+	const sortTable = () => {
+		if (!sortKey.value) return;
 
 		const collator = new Intl.Collator('en', { sensitivity: 'base' });
 
 		filteredData.value.sort((a, b) => {
-			const aValue = a[key as keyof typeof a];
-			const bValue = b[key as keyof typeof b];
+			const aValue = a[sortKey.value as keyof typeof a];
+			const bValue = b[sortKey.value as keyof typeof b];
 
 			const aStr = (aValue || '').toString().toLowerCase();
 			const bStr = (bValue || '').toString().toLowerCase();

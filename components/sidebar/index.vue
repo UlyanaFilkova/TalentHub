@@ -73,7 +73,6 @@
 		isCollapsed.value = !isCollapsed.value;
 	};
 	const logout = () => {
-		console.log('logout clicked');
 		router.push('/auth/login');
 		localStorage.removeItem('refresh');
 		localStorage.removeItem('access');
