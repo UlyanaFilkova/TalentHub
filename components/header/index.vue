@@ -92,13 +92,14 @@
 	watchEffect(() => {
 		if (import.meta.client) {
 			updateValues(route.path);
-			Object.assign(breadcrumbs, getBreadcrumbs(route.path));
+			breadcrumbs.length = 0;
+			breadcrumbs.push(...getBreadcrumbs(route.path));
 		}
 	});
 
 	router.afterEach((to) => {
 		updateValues(to.path);
-		Object.assign(breadcrumbs, getBreadcrumbs(to.path));
-		updateValues(to.path);
+		breadcrumbs.length = 0;
+		breadcrumbs.push(...getBreadcrumbs(to.path));
 	});
 </script>
