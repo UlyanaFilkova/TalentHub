@@ -12,7 +12,10 @@
 		<td
 			v-for="(item, key) in displayedFields"
 			:key="key"
-			:class="['custom-column py-4 font-medium', displayedFields[key].class]"
+			:class="[
+				'custom-column py-4 pr-3 font-medium',
+				displayedFields[key].class,
+			]"
 		>
 			{{ item.value }}
 		</td>
