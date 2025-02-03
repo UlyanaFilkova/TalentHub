@@ -1,8 +1,6 @@
 import { defineNuxtRouteMiddleware, navigateTo } from '#app';
 
 export default defineNuxtRouteMiddleware((to) => {
-	if (import.meta.server) return;
-
 	const userToken = import.meta.client ? localStorage.getItem('access') : null;
 
 	const publicRoutes = [
