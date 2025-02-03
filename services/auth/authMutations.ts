@@ -46,3 +46,11 @@ export const REFRESH_TOKEN = gql`
 		}
 	}
 `;
+
+export const DEPARTMENT = gql`
+	query Departments {
+		departments {
+			name
+		}
+	}
+`;

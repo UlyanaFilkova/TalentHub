@@ -1,16 +1,8 @@
-<script setup lang="ts">
-	defineProps<{
-		title: string;
-		onSubmit: () => void;
-		infoText: string;
-	}>();
-</script>
-
 <template>
-	<div class="flex min-h-screen items-center justify-center">
+	<div class="flex flex-1 items-center justify-center">
 		<form
-			class="flex w-screen max-w-5xl flex-col items-center"
-			@submit.prevent="onSubmit"
+			class="flex w-full max-w-5xl flex-col items-center justify-center"
+			@submit.prevent="emit('submit')"
 		>
 			<div class="mb-10 text-center">
 				<h1 class="mb-6 text-4xl text-white">{{ title }}</h1>
@@ -25,3 +17,12 @@
 		</form>
 	</div>
 </template>
+
+<script setup lang="ts">
+	defineProps<{
+		title: string;
+		infoText: string;
+	}>();
+
+	const emit = defineEmits(['submit']);
+</script>

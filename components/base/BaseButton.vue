@@ -39,7 +39,7 @@
 		},
 		secondary: {
 			contained:
-				'bg-button-secondary-contained-background text-button-secondary-contained-text hover:bg-button-secondary-contained-hover shadow-xl',
+				'bg-button-secondary-contained-background text-button-secondary-contained-text hover:bg-button-secondary-contained-hover shadow-md',
 			outlined:
 				'border border-button-secondary-outlined-border/50 hover:border-button-secondary-outlined-borderHover/100 hover:bg-button-secondary-outlined-background/5 text-button-secondary-outlined-text',
 			text: 'text-button-secondary-text-text bg-button-secondary-text-background/0 hover:bg-button-secondary-text-background/10',
@@ -48,7 +48,7 @@
 
 	const computedClasses = computed(() => {
 		const baseClass =
-			'py-1 px-4 h-12 min-w-[220px] rounded-3xl container select-none transition-all ease-in duration-150 ';
+			'py-1 text-sm px-4 h-12 min-w-[220px] rounded-3xl container select-none transition-all ease-in duration-150 ';
 		const variantClass = colorClasses[props.color][props.variant];
 		let finalAppliedClass = `${baseClass} ${variantClass}`;
 		if (props.disabled) {

@@ -1,12 +1,17 @@
 :root {
 	--color-global-background: #353535;
+	--color-options-background: #292929;
+	--color-options-background-hover: #4b4b4b;
 	--color-sidebar-hover: #454545;
 	--color-active-text: #ffffff;
 	--color-inactive-text: #c3c3c3;
+	--color-profilepic-background: #757575;
+	--color-uploadfile-text: #aeaeae;
 	--color-second-text: #8a8a8a;
 	--color-accent-color: #c62f31;
 	--color-low-contrast: #626262;
 	--color-profilepic-background: #757575;
+	--color-error-text: #c62f31;
 
 	--color-button-primary-contained-background: #c63031;
 	--color-button-primary-contained-text: #ffffff;

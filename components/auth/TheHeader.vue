@@ -1,5 +1,5 @@
 <template>
-	<div class="mt-2 flex items-center justify-center gap-4">
+	<div class="mt-2 flex w-full justify-center">
 		<button
 			class="min-w-[150px] border-b-2 px-6 py-3 font-medium transition-all duration-200 ease-in-out focus:bg-button-secondary-contained-hover"
 			:class="{

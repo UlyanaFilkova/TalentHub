@@ -1,18 +1,19 @@
 <template>
-	<div class="relative w-full flex-grow">
+	<div class="relative w-full min-w-[220px] flex-grow">
 		<button
 			:id="id"
 			type="button"
-			class="hover:border-input-borderHover peer h-12 w-full appearance-none border border-input-border bg-input-background p-3 text-left text-input-text transition-all duration-200 focus:border-input-borderFocus focus:outline-none"
+			class="peer h-12 w-full appearance-none border border-input-border bg-input-background p-3 text-left text-input-text transition-all duration-200 hover:border-input-border focus:border-input-borderFocus focus:outline-none disabled:opacity-50"
+			:disabled="disabled"
 			@click="isOpen = !isOpen"
 		>
-			{{ selectedValue === '' ? '' : selectedOption?.label }}
+			{{ selectedValue!.value === '' ? '' : selectedOption?.label }}
 		</button>
 
 		<label
 			:class="[
 				'pointer-events-none absolute left-0 top-0 text-input-label transition-all duration-200 peer-focus:bg-input-labelBackground peer-focus:text-input-labelFocus',
-				selectedValue
+				selectedValue!.value
 					? '-translate-x-0 -translate-y-4 scale-75 bg-input-labelBackground p-1'
 					: 'translate-y-0 p-3 peer-focus:-translate-x-0 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:p-1',
 			]"
@@ -30,20 +31,17 @@
 
 		<div
 			v-if="isOpen"
-			class="bg-dropdown-button-background absolute z-50 mt-1 w-full -translate-y-[60px] rounded-md py-1 shadow-lg"
+			class="absolute z-50 mt-1 w-full -translate-y-[60px] rounded-md bg-dropdown-button-background py-1 shadow-lg"
 		>
-			<div
-				v-for="option in allOptions"
-				:key="option.value"
-				:class="[
-					'cursor-pointer px-4 py-2 text-input-text',
-					option.value === selectedValue
-						? 'bg-dropdown-button-backgroundSelected hover:bg-dropdown-button-backgroundSelectedHover'
-						: 'hover:bg-dropdown-button-backgroundHover',
-				]"
-				@click="selectOption(option)"
-			>
-				{{ option.label }}
+			<div class="flex max-h-[200px] flex-col overflow-auto">
+				<div
+					v-for="option in allOptions"
+					:key="option.value"
+					:class="getOptionClasses(option)"
+					@click="selectOption(option)"
+				>
+					{{ option.label }}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -51,8 +49,10 @@
 
 <script setup lang="ts">
 	interface Option {
-		value: string | number;
+		value: string;
 		label: string;
+		isSeparator?: boolean;
+		disabled?: boolean;
 	}
 
 	const props = defineProps({
@@ -70,35 +70,50 @@
 		},
 		defaultOptionLabel: {
 			type: String,
-			required: true,
+			required: false,
+			default: '',
+		},
+		disabled: {
+			type: Boolean,
+			default: false,
 		},
 	});
 
-	const emit = defineEmits(['selectValue']);
+	const selectedValue = defineModel<{ value: string; label: string }>();
 
 	const isOpen = ref(false);
-	const selectedValue = ref<string | number>('');
+
 	const selectedOption = computed(() => {
-		if (selectedValue.value === '') {
+		if (selectedValue.value?.value === '') {
 			return { value: '', label: props.defaultOptionLabel };
 		}
-		return props.options.find((option) => option.value === selectedValue.value);
+		return props.options.find(
+			(option) => option.value === selectedValue.value?.value
+		);
 	});
 
-	const allOptions = computed(() => [
-		{ value: '', label: props.defaultOptionLabel },
-		...props.options,
-	]);
+	const allOptions = computed(() =>
+		props.defaultOptionLabel
+			? [{ value: '', label: props.defaultOptionLabel }, ...props.options]
+			: props.options
+	);
 
 	const selectOption = (option: Option) => {
-		selectedValue.value = option.value;
+		selectedValue.value = option;
 		isOpen.value = false;
-		emit('selectValue', selectedValue.value);
 	};
 
+	const getOptionClasses = (option: Option) => [
+		'cursor-pointer px-4 py-2 text-input-text',
+		option.isSeparator
+			? 'cursor-default bg-sidebar-hover text-sm font-thin text-input-borderFocus'
+			: option.value === selectedValue!.value?.value
+				? 'bg-dropdown-button-backgroundSelected hover:bg-dropdown-button-backgroundSelectedHover'
+				: 'hover:bg-dropdown-button-backgroundHover',
+		option.disabled ? 'cursor-default' : '',
+	];
+
 	onMounted(() => {
-		selectedValue.value = '';
-		emit('selectValue', selectedValue.value);
 		document.addEventListener('click', (e) => {
 			if (!(e.target as HTMLElement)?.closest(`#${props.id}`)) {
 				isOpen.value = false;
@@ -106,3 +121,16 @@
 		});
 	});
 </script>
+
+<style scroped>
+	.overflow-auto::-webkit-scrollbar {
+		width: 6px;
+		height: 6px;
+		background: transparent;
+	}
+
+	.overflow-auto::-webkit-scrollbar-thumb {
+		background: #000000;
+		border-radius: 3px;
+	}
+</style>
