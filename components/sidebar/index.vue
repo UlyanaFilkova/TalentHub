@@ -32,6 +32,7 @@
 	import IconsSkills from '~/components/icons/Skills.vue';
 
 	const router = useRouter();
+	const route = useRoute();
 
 	const items = reactive([
 		{
@@ -77,8 +78,6 @@
 		localStorage.removeItem('refresh');
 		localStorage.removeItem('access');
 	};
-
-	const route = useRoute();
 
 	const updateActiveTab = () => {
 		items.forEach((item) => {
