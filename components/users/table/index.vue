@@ -48,6 +48,8 @@
 	const users = ref<User[]>([]);
 	const isDataLoaded = ref(false);
 	const tableContainer = ref<HTMLElement | null>(null);
+	const sortKey = ref<string | null>(null);
+	const sortOrder = ref<'asc' | 'desc'>('asc');
 
 	const tableData = computed(() => {
 		if (!isDataLoaded.value) return [];
@@ -63,8 +65,22 @@
 		}));
 	});
 
-	const sortKey = ref<string | null>(null);
-	const sortOrder = ref<'asc' | 'desc'>('asc');
+	const filteredData = computed(() => {
+		if (!props.searchQuery || !tableData.value) return tableData.value;
+
+		const lowerCaseSearch = props.searchQuery.toLowerCase();
+
+		return tableData.value.filter((row) => {
+			const firstNameMatches = row.firstName
+				?.toLowerCase()
+				.includes(lowerCaseSearch);
+			const lastNameMatches = row.lastName
+				?.toLowerCase()
+				.includes(lowerCaseSearch);
+			const emailMatches = row.email?.toLowerCase().includes(lowerCaseSearch);
+			return firstNameMatches || lastNameMatches || emailMatches;
+		});
+	});
 
 	const handleSort = (key: string, order: 'asc' | 'desc') => {
 		sortKey.value = key;
@@ -103,23 +119,6 @@
 				: collator.compare(bStr, aStr);
 		});
 	};
-
-	const filteredData = computed(() => {
-		if (!props.searchQuery || !tableData.value) return tableData.value;
-
-		const lowerCaseSearch = props.searchQuery.toLowerCase();
-
-		return tableData.value.filter((row) => {
-			const firstNameMatches = row.firstName
-				?.toLowerCase()
-				.includes(lowerCaseSearch);
-			const lastNameMatches = row.lastName
-				?.toLowerCase()
-				.includes(lowerCaseSearch);
-			const emailMatches = row.email?.toLowerCase().includes(lowerCaseSearch);
-			return firstNameMatches || lastNameMatches || emailMatches;
-		});
-	});
 
 	const getUsers = () => {
 		try {

@@ -89,17 +89,17 @@
 		}
 	};
 
+	router.afterEach((to) => {
+		updateValues(to.path);
+		breadcrumbs.length = 0;
+		breadcrumbs.push(...getBreadcrumbs(to.path));
+	});
+
 	watchEffect(() => {
 		if (import.meta.client) {
 			updateValues(route.path);
 			breadcrumbs.length = 0;
 			breadcrumbs.push(...getBreadcrumbs(route.path));
 		}
-	});
-
-	router.afterEach((to) => {
-		updateValues(to.path);
-		breadcrumbs.length = 0;
-		breadcrumbs.push(...getBreadcrumbs(to.path));
 	});
 </script>

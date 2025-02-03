@@ -30,14 +30,6 @@
 
 	const isFocused = ref(false);
 
-	const onFocus = () => {
-		isFocused.value = true;
-	};
-
-	const onBlur = () => {
-		isFocused.value = false;
-	};
-
 	let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
 	const onInput = () => {
@@ -49,5 +41,13 @@
 			emit('update:modelValue', searchQuery.value);
 			emit('search', searchQuery.value);
 		}, 300);
+	};
+
+	const onFocus = () => {
+		isFocused.value = true;
+	};
+
+	const onBlur = () => {
+		isFocused.value = false;
 	};
 </script>

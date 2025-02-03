@@ -44,6 +44,7 @@
 </template>
 
 <script setup lang="ts">
+	const router = useRouter();
 	const props = defineProps<{
 		row: {
 			id: number;
@@ -58,6 +59,12 @@
 		tableContainer: HTMLElement | null;
 	}>();
 
+	const currentUserId = 1;
+
+	const optionsVisible = ref(false);
+	const optionsContainer = ref<HTMLElement | null>(null);
+	const optionsPosition = ref('top-0');
+
 	const displayedFields = computed(() => {
 		return {
 			firstName: props.row.firstName,
@@ -67,12 +74,6 @@
 			position: props.row.position,
 		};
 	});
-
-	const currentUserId = 1;
-
-	const optionsVisible = ref(false);
-	const optionsContainer = ref<HTMLElement | null>(null);
-	const optionsPosition = ref('top-0');
 
 	const showOptions = async () => {
 		optionsVisible.value = true;
@@ -91,14 +92,10 @@
 	};
 
 	const openProfile = () => {
-		console.log('Profile clicked');
+		router.push(`/users/${props.row.id}/profile`);
 	};
 
-	const updateUser = () => {
-		console.log('Update user clicked');
-	};
+	const updateUser = () => {};
 
-	const deleteUser = () => {
-		console.log('Delete user clicked');
-	};
+	const deleteUser = () => {};
 </script>
