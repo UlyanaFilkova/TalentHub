@@ -1,6 +1,10 @@
 <template>
-	<div ref="tableContainer" class="max-h-full w-full">
-		<table class="w-full table-auto overflow-x-auto">
+	<div
+		ref="tableContainer"
+		class="max-h-[calc(100vh-0.75rem-90px)] w-full overflow-y-auto"
+		@scroll="handleScroll"
+	>
+		<table v-if="isDataLoaded" class="w-full table-auto overflow-x-auto">
 			<UsersTableHead
 				:headers="headers"
 				:sort-key="sortKey"
@@ -9,7 +13,7 @@
 			/>
 			<tbody>
 				<UsersTableRow
-					v-for="row in filteredData"
+					v-for="row in displayedData"
 					:key="row.id"
 					:row="row"
 					:table-container="tableContainer"
@@ -50,6 +54,9 @@
 	const tableContainer = ref<HTMLElement | null>(null);
 	const sortKey = ref<string | null>(null);
 	const sortOrder = ref<'asc' | 'desc'>('asc');
+	const itemsPerPage = 10;
+	const loadedCount = ref(itemsPerPage);
+	const isLoading = ref(false);
 
 	const tableData = computed(() => {
 		if (!isDataLoaded.value) return [];
@@ -81,6 +88,23 @@
 			return firstNameMatches || lastNameMatches || emailMatches;
 		});
 	});
+
+	const displayedData = ref<
+		{
+			id: number;
+			photo: string;
+			firstName: string;
+			lastName: string;
+			email: string;
+			department: string;
+			position: string;
+			link: string;
+		}[]
+	>([]);
+
+	const updateDisplayedData = () => {
+		displayedData.value = filteredData.value.slice(0, loadedCount.value);
+	};
 
 	const handleSort = (key: string, order: 'asc' | 'desc') => {
 		sortKey.value = key;
@@ -118,6 +142,7 @@
 				? collator.compare(aStr, bStr)
 				: collator.compare(bStr, aStr);
 		});
+		updateDisplayedData();
 	};
 
 	const getUsers = () => {
@@ -132,6 +157,21 @@
 		}
 	};
 
+	const handleScroll = () => {
+		if (!tableContainer.value || isLoading.value) return;
+
+		const { scrollTop, scrollHeight, clientHeight } = tableContainer.value;
+		const isBottom = scrollTop + clientHeight >= scrollHeight - 50;
+
+		if (isBottom && loadedCount.value < filteredData.value.length) {
+			isLoading.value = true;
+			setTimeout(() => {
+				loadedCount.value += itemsPerPage;
+				isLoading.value = false;
+			}, 500);
+		}
+	};
+
 	onMounted(() => {
 		getUsers();
 	});
@@ -141,4 +181,6 @@
 			getUsers();
 		}
 	});
+
+	watch([filteredData, loadedCount], updateDisplayedData, { immediate: true });
 </script>

@@ -1,6 +1,8 @@
 <template>
-	<tr class="border-b border-low-contrast-color text-sm text-active-color">
-		<td class="px-2 py-4">
+	<tr
+		class="w-full border-b border-low-contrast-color text-sm text-active-color"
+	>
+		<td class="py-4 pr-4">
 			<BaseUserPic
 				:name="`${row.firstName} ${row.lastName}`"
 				class="bg-profilepic-color"
@@ -8,13 +10,13 @@
 			/>
 		</td>
 		<td
-			v-for="(value, key) in displayedFields"
+			v-for="(item, key) in displayedFields"
 			:key="key"
-			class="px-4 py-4 font-medium"
+			:class="['custom-column py-4 font-medium', displayedFields[key].class]"
 		>
-			{{ value }}
+			{{ item.value }}
 		</td>
-		<td class="px-4 py-4">
+		<td class="py-4 pr-2">
 			<template v-if="row.id === currentUserId">
 				<div
 					ref="optionsContainer"
@@ -67,11 +69,11 @@
 
 	const displayedFields = computed(() => {
 		return {
-			firstName: props.row.firstName,
-			lastName: props.row.lastName,
-			email: props.row.email,
-			department: props.row.department,
-			position: props.row.position,
+			firstName: { value: props.row.firstName, class: 'small-column' },
+			lastName: { value: props.row.lastName, class: 'medium-column' },
+			email: { value: props.row.email, class: 'big-column' },
+			department: { value: props.row.department, class: 'small-column' },
+			position: { value: props.row.position, class: 'medium-column' },
 		};
 	});
 
@@ -99,3 +101,24 @@
 
 	const deleteUser = () => {};
 </script>
+
+<style scoped>
+	.small-column {
+		min-width: 160px;
+		max-width: 200px;
+	}
+	.medium-column {
+		min-width: 170px;
+		max-width: 200px;
+	}
+	.big-column {
+		min-width: 255px;
+		max-width: 260px;
+	}
+
+	.custom-column {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+</style>
