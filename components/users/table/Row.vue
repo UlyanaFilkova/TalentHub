@@ -7,33 +7,27 @@
 				:photo="row.photo"
 			/>
 		</td>
-		<td class="px-3 py-4 font-medium">
-			{{ row.firstName }}
-		</td>
-		<td class="px-4 py-4 font-medium">
-			{{ row.lastName }}
-		</td>
-		<td class="px-4 py-4">
-			{{ row.email }}
+		<td
+			v-for="(value, key) in displayedFields"
+			:key="key"
+			class="px-4 py-4 font-medium"
+		>
+			{{ value }}
 		</td>
 		<td class="px-4 py-4">
-			{{ row.department }}
-		</td>
-		<td class="px-4 py-4">
-			{{ row.position }}
-		</td>
-		<td class="px-4 py-4">
-			<template v-if="row.id === userId">
+			<template v-if="row.id === currentUserId">
 				<div
+					ref="optionsContainer"
 					class="relative"
 					@mouseenter="showOptions"
 					@mouseleave="hideOptions"
 				>
 					<ButtonsOptions is-toggled color="var(--color-active-text)" />
 
-					<TableUsersOptions
+					<UsersTableOptions
 						v-if="optionsVisible"
-						class="absolute right-0 top-4 z-10 mt-2 w-28 rounded-lg border-options-backgroud bg-options-backgroud py-2 shadow-lg"
+						class="absolute right-0 z-10 mt-2 w-28 rounded-lg border-options-backgroud bg-options-backgroud py-2 shadow-lg"
+						:class="optionsPosition"
 						@profile-click="openProfile"
 						@update-click="updateUser"
 						@delete-click="deleteUser"
@@ -50,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-	defineProps<{
+	const props = defineProps<{
 		row: {
 			id: number;
 			photo: string;
@@ -61,14 +55,35 @@
 			position: string;
 			link: string;
 		};
+		tableContainer: HTMLElement | null;
 	}>();
 
-	const userId = 1;
+	const displayedFields = computed(() => {
+		return {
+			firstName: props.row.firstName,
+			lastName: props.row.lastName,
+			email: props.row.email,
+			department: props.row.department,
+			position: props.row.position,
+		};
+	});
+
+	const currentUserId = 1;
 
 	const optionsVisible = ref(false);
+	const optionsContainer = ref<HTMLElement | null>(null);
+	const optionsPosition = ref('top-0');
 
-	const showOptions = () => {
+	const showOptions = async () => {
 		optionsVisible.value = true;
+		await nextTick();
+		if (optionsContainer.value && props.tableContainer) {
+			const rect = optionsContainer.value.getBoundingClientRect();
+			const tableRect = props.tableContainer.getBoundingClientRect();
+			const spaceBelow = tableRect.bottom - rect.bottom;
+
+			optionsPosition.value = spaceBelow < 150 ? 'bottom-0' : 'top-0';
+		}
 	};
 
 	const hideOptions = () => {

@@ -1,5 +1,5 @@
 <template>
-	<div class="max-h-full w-full">
+	<div ref="tableContainer" class="max-h-full w-full">
 		<table class="w-full table-auto overflow-x-auto">
 			<UsersTableHead
 				:headers="headers"
@@ -8,7 +8,12 @@
 				:sort-table="sortTable"
 			/>
 			<tbody>
-				<UsersTableRow v-for="row in filteredData" :key="row.id" :row="row" />
+				<UsersTableRow
+					v-for="row in filteredData"
+					:key="row.id"
+					:row="row"
+					:table-container="tableContainer"
+				/>
 			</tbody>
 		</table>
 	</div>
@@ -42,6 +47,7 @@
 
 	const users = ref<User[]>([]);
 	const isDataLoaded = ref(false);
+	const tableContainer = ref<HTMLElement | null>(null);
 
 	const tableData = computed(() => {
 		if (!isDataLoaded.value) return [];
