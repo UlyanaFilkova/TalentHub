@@ -1,49 +1,29 @@
 :root {
-	--color-global-background: #353535;
-	--color-options-background: #292929;
-	--color-options-background-hover: #4b4b4b;
-	--color-sidebar-hover: #454545;
-	--color-active-text: #ffffff;
-	--color-inactive-text: #c3c3c3;
-	--color-profilepic-background: #757575;
-	--color-uploadfile-text: #aeaeae;
-	--color-second-text: #8a8a8a;
-	--color-accent-color: #c62f31;
-	--color-low-contrast: #626262;
-	--color-profilepic-background: #757575;
-	--color-error-text: #c62f31;
+	--color-dark-1: #353535; /* global bg, dropdown hover, input bg */
+	--color-dark-2: #292929; /* options bg */
+	--color-dark-3: #4b4b4b; /* options hover */
+	--color-dark-4: #454545; /* sidebar hover */
+	--color-dark-5: #303030; /* dropdown button bg  */
 
-	--color-button-primary-contained-background: #c63031;
-	--color-button-primary-contained-text: #ffffff;
-	--color-button-primary-contained-hover: #8a2122;
-	--color-button-primary-outlined-border: 198 48 49;
-	--color-button-primary-outlined-border-hover: #c63031;
-	--color-button-primary-outlined-text: #c63031;
-	--color-button-primary-outlined-background: 198 48 49;
-	--color-button-primary-text-text: #c63031;
-	--color-button-primary-text-background: 198 48 49;
+	--color-gray-1: #c3c3c3; /* inactive text */
+	--color-gray-2: #c2c2c2; /* input label */
+	--color-gray-3: #8a8a8a; /* secondary text, outlined text */
+	--color-gray-4: #757575; /* profile pic bg */
+	--color-gray-5: #626262; /* low contrast */
+	--color-gray-6: #6f6f6f; /* input border */
+	--color-gray-7: #7a7a7a; /* button secondary text */
+	--color-gray-8: #5f5f5f; /* button secondary background */
+	--color-gray-9: #525252; /* button secondary hover */
+	--color-gray-10: #aeaeae; /* upload file text */
 
-	--color-button-secondary-contained-background: #5f5f5f;
-	--color-button-secondary-contained-text: #ffffff;
-	--color-button-secondary-contained-hover: #525252;
-	--color-button-secondary-outlined-border: 118 118 118;
-	--color-button-secondary-outlined-border-hover: 118 118 118;
-	--color-button-secondary-outlined-text: #8a8a8a;
-	--color-button-secondary-outlined-background: 118 118 118;
-	--color-button-secondary-text-text: #7a7a7a;
-	--color-button-secondary-text-background: 118 118 118;
+	--color-red-1: #c62f31; /* accent, error, primary button */
+	--color-red-2: #8a2122; /* primary button hover */
+	--color-red-3: #5c3434; /* dropdown selected */
+	--color-red-4: #532828; /* dropdown selected hover */
+	--color-red-5: #c63031; /* primary button text */
 
-	--color-input-border: #6f6f6f;
-	--color-input-border-focus: #c63031;
-	--color-input-border-hover: #ffffff;
-	--color-input-background: #353535;
-	--color-input-text: #ffffff;
-	--color-input-label: #c2c2c2;
-	--color-input-label-background: #353535;
-	--color-input-label-focus: #c63031;
+	--color-white: #ffffff; /* active text, button text */
 
-	--color-dropdown-button-background: #303030;
-	--color-dropdown-button-background-hover: #353535;
-	--color-dropdown-button-background-selected: #5c3434;
-	--color-dropdown-button-background-selected-hover: #532828;
+	--color-red-rgb: 198 48 49; /* for primary button outlines */
+	--color-gray-rgb: 118 118 118; /* for secondary button outlines */
 }

@@ -18,7 +18,7 @@
 		<ButtonsToggle
 			:is-toggled="isCollapsed"
 			class="mb-4 ml-2"
-			color="var(--color-active-text)"
+			color="var(--color-white)"
 			@click="toggleSidebar"
 		/>
 	</aside>

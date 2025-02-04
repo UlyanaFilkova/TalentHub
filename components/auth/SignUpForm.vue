@@ -18,9 +18,7 @@
 						class="w-screen max-w-[550px]"
 						autocomplete="on"
 					/>
-					<span v-if="$v.email.$error" class="text-error-text-color">
-						Required field
-					</span>
+					<span v-if="$v.email.$error" class="text-red-1">Required field</span>
 					<BaseInput
 						id="password"
 						v-model="form.password"
@@ -32,7 +30,7 @@
 					>
 						<template #icon>
 							<AuthPasswordEyeToggle
-								:color="'var(--color-active-text)'"
+								:color="'var(--color-white)'"
 								@update:password-visibility="togglePasswordVisibility"
 							/>
 						</template>
@@ -40,7 +38,7 @@
 					<span>
 						<span
 							v-if="$v.password.$error && !$v.password.$model"
-							class="text-error-text-color"
+							class="text-red-1"
 						>
 							Required field
 						</span>
@@ -50,7 +48,7 @@
 								$v.password.$model &&
 								$v.password.minLength.$invalid
 							"
-							class="text-error-text-color"
+							class="text-red-1"
 						>
 							Password must be at least 6 characters long
 						</span>

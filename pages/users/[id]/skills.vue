@@ -82,10 +82,7 @@
 					@click="handleAddSkill"
 				>
 					<div class="flex items-center justify-center gap-3">
-						<PlusIcon
-							color="var(--color-button-secondary-text-text)"
-							width="24"
-						/>
+						<PlusIcon color="var(--color-gray-7)" width="24" />
 						ADD SKILL
 					</div>
 				</BaseButton>
@@ -96,7 +93,7 @@
 					@click="handleRemoveSkill"
 				>
 					<div class="flex items-center justify-center gap-3">
-						<TrashBin color="var(--color-accent-color)" width="24" />
+						<TrashBin color="var(--color-red-1)" width="24" />
 						REMOVE SKILLS
 					</div>
 				</BaseButton>
@@ -114,7 +111,7 @@
 					class="max-w-[220px]"
 					variant="contained"
 					color="primary"
-					:disabled="selectedSkillsToRemove.size === 0"
+					:disabled="selectedSkillsToRemove.size === 0 || isDeletingSkills"
 					@click="handleDeleteSkills"
 				>
 					<div class="flex items-center justify-center gap-3">
@@ -393,6 +390,7 @@
 	};
 
 	const isRemovalMode = ref(false);
+	const isDeletingSkills = ref(false);
 	const selectedSkillsToRemove = ref<Set<string>>(new Set());
 
 	const handleRemoveSkill = () => {
@@ -419,6 +417,7 @@
 	};
 
 	const handleDeleteSkills = async () => {
+		isDeletingSkills.value = true;
 		try {
 			const { executeDelete } = deleteProfileSkill(
 				userId.value,
@@ -429,6 +428,8 @@
 			handleCancelRemoval();
 		} catch (error) {
 			console.error('Error deleting skills:', error);
+		} finally {
+			isDeletingSkills.value = false;
 		}
 	};
 </script>

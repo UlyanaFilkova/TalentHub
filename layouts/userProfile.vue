@@ -2,17 +2,13 @@
 	<NuxtLayout name="default">
 		<template #default>
 			<nav class="flex">
-				<NuxtLink :to="`/users/${id}/profile`" :class="getTabClass('/profile')">
-					PROFILE
-				</NuxtLink>
-				<NuxtLink :to="`/users/${id}/skills`" :class="getTabClass('/skills')">
-					SKILLS
-				</NuxtLink>
 				<NuxtLink
-					:to="`/users/${id}/languages`"
-					:class="getTabClass('/languages')"
+					v-for="tab in tabs"
+					:key="tab.path"
+					:to="`/users/${id}${tab.path}`"
+					:class="getTabClass(tab.path)"
 				>
-					LANGUAGES
+					{{ tab.label }}
 				</NuxtLink>
 			</nav>
 
@@ -34,17 +30,24 @@
 	const route = useRoute();
 	const id = route.params.id;
 
+	const tabs = [
+		{ path: '/profile', label: 'PROFILE' },
+		{ path: '/skills', label: 'SKILLS' },
+		{ path: '/languages', label: 'LANGUAGES' },
+	];
+
 	const currentTab = computed(() => {
-		if (route.path.endsWith('/profile')) {
-			return Profile;
+		const path = route.path;
+		switch (true) {
+			case path.endsWith('/profile'):
+				return Profile;
+			case path.endsWith('/languages'):
+				return Languages;
+			case path.endsWith('/skills'):
+				return Skills;
+			default:
+				return null;
 		}
-		if (route.path.endsWith('/languages')) {
-			return Languages;
-		}
-		if (route.path.endsWith('/skills')) {
-			return Skills;
-		}
-		return null;
 	});
 
 	const tabClass =

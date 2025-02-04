@@ -14,11 +14,11 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-	background-color: var(--color-low-contrast);
+	background-color: var(--color-gray-5);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background-color: var(--color-second-text);
+	background-color: var(--color-gray-3);
 	cursor: pointer;
 }
 
@@ -27,8 +27,8 @@ body {
 }
 
 input:-webkit-autofill {
-	-webkit-box-shadow: 0 0 0px 1000px var(--color-input-background) inset !important;
-	-webkit-text-fill-color: var(--color-input-text) !important;
-	caret-color: var(--color-input-text) !important;
+	-webkit-box-shadow: 0 0 0px 1000px var(--color-dark-1) inset !important;
+	-webkit-text-fill-color: var(--color-white) !important;
+	caret-color: var(--color-white) !important;
 	transition: background-color 5000s ease-in-out 0s;
 }

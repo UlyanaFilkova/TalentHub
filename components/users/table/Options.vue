@@ -1,19 +1,19 @@
 <template>
 	<div>
 		<button
-			class="w-full cursor-pointer px-4 py-2 hover:bg-options-backgroud-hover"
+			class="hover:bg-dark-3 w-full cursor-pointer px-4 py-2"
 			@click="profileClick"
 		>
 			Profile
 		</button>
 		<button
-			class="w-full cursor-pointer px-4 py-2 hover:bg-options-backgroud-hover"
+			class="hover:bg-dark-3 w-full cursor-pointer px-4 py-2"
 			@click="updateClick"
 		>
 			Update user
 		</button>
 		<button
-			class="w-full cursor-pointer px-4 py-2 hover:bg-options-backgroud-hover"
+			class="hover:bg-dark-3 w-full cursor-pointer px-4 py-2"
 			@click="deleteClick"
 		>
 			Delete user
