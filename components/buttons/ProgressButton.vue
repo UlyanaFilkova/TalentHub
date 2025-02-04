@@ -7,7 +7,7 @@
 		class="relative flex max-w-[284px] items-center justify-start gap-4 overflow-hidden"
 	>
 		<div
-			class="relative left-0 top-0 h-1 w-32 rounded-2xl bg-input-border"
+			class="bg-gray-6 relative left-0 top-0 h-1 w-32 rounded-2xl"
 			:class="progressBackgroundClass"
 		>
 			<div
@@ -17,7 +17,7 @@
 			/>
 		</div>
 
-		<div class="relative z-10 flex w-full items-center justify-start text-base">
+		<div class="relative flex w-full items-center justify-start text-base">
 			<slot />
 		</div>
 	</BaseButton>

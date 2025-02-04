@@ -1,11 +1,9 @@
 <template>
-	<tr
-		class="w-full border-b border-low-contrast-color text-sm text-active-color"
-	>
-		<td class="py-4 pr-4">
+	<tr class="w-full border-b border-gray-5 text-sm text-white">
+		<td class="px-2 py-4">
 			<BaseUserPic
 				:name="`${row.firstName} ${row.lastName}`"
-				class="bg-profilepic-color"
+				class="bg-gray-4"
 				:photo="row.photo"
 			/>
 		</td>
@@ -27,11 +25,11 @@
 					@mouseenter="showOptions"
 					@mouseleave="hideOptions"
 				>
-					<ButtonsOptions is-toggled color="var(--color-active-text)" />
+					<ButtonsOptions is-toggled color="var(--color-white)" />
 
 					<TableOptions
 						v-if="optionsVisible"
-						class="absolute right-0 z-10 mt-2 w-28 rounded-lg border-options-backgroud bg-options-backgroud py-2 shadow-lg"
+						class="absolute right-0 z-10 mt-2 w-28 rounded-lg border-dark-2 bg-dark-2 py-2 shadow-lg"
 						:class="optionsPosition"
 						:buttons="[
 							{ label: 'Profile', event: 'profileClick' },
@@ -46,7 +44,7 @@
 			</template>
 			<template v-else>
 				<NuxtLink :to="`/users/${row.id}/profile`">
-					<ButtonsToggle is-toggled color="var(--color-inactive-text)" />
+					<ButtonsToggle is-toggled color="var(--color-gray-1)" />
 				</NuxtLink>
 			</template>
 		</td>

@@ -11,7 +11,7 @@
 					<component :is="Upload" :color="'white'" width="30px" />
 					Upload avatar image
 				</div>
-				<div class="text-upload-color">png or jpg no more than 0.5MB</div>
+				<div class="text-gray-10">png or jpg no more than 0.5MB</div>
 			</div>
 		</label>
 		<input
@@ -67,7 +67,6 @@
 				});
 
 				await executeUpload();
-				emit('upload-success');
 				emit('upload-success');
 			} catch (error) {
 				showErrorToast('Error uploading avatar');

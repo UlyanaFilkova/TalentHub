@@ -31,18 +31,16 @@
 		Record<'contained' | 'outlined' | 'text', string>
 	> = {
 		primary: {
-			contained:
-				'bg-button-primary-contained-background text-button-primary-contained-text hover:bg-button-primary-contained-hover shadow-md',
+			contained: 'bg-red-5 text-white hover:bg-red-2 shadow-md',
 			outlined:
-				'border border-button-primary-outlined-border/50 hover:border-button-primary-outlined-borderHover text-button-primary-outlined-text bg-button-primary-outlined-background/0 hover:bg-button-primary-outlined-background/10',
-			text: 'text-button-primary-text-text bg-button-primary-text-background/0 hover:bg-button-primary-text-background/10',
+				'border border-red-rgb/50 hover:border-red-5 text-red-5 bg-red-rgb/0 hover:bg-red-rgb/10',
+			text: 'text-red-5 bg-red-rgb/0 hover:bg-red-rgb/10',
 		},
 		secondary: {
-			contained:
-				'bg-button-secondary-contained-background text-button-secondary-contained-text hover:bg-button-secondary-contained-hover shadow-md',
+			contained: 'bg-gray-8 text-white hover:bg-gray-9 shadow-md',
 			outlined:
-				'border border-button-secondary-outlined-border/50 hover:border-button-secondary-outlined-borderHover/100 hover:bg-button-secondary-outlined-background/5 text-button-secondary-outlined-text',
-			text: 'text-button-secondary-text-text bg-button-secondary-text-background/0 hover:bg-button-secondary-text-background/10',
+				'border border-gray-rgb/50 hover:border-gray-rgb/100 hover:bg-gray-rgb/5 text-gray-3',
+			text: 'text-gray-7 bg-gray-rgb/0 hover:bg-gray-rgb/10',
 		},
 	};
 

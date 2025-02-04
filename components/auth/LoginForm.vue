@@ -18,9 +18,7 @@
 						class="w-screen max-w-[550px]"
 						autocomplete="on"
 					/>
-					<span v-if="$v.email.$error" class="text-error-text-color">
-						Required field
-					</span>
+					<span v-if="$v.email.$error" class="text-red-1">Required field</span>
 
 					<BaseInput
 						id="password"
@@ -33,12 +31,12 @@
 					>
 						<template #icon>
 							<AuthPasswordEyeToggle
-								:color="'var(--color-active-text)'"
+								:color="'var(--color-white)'"
 								@update:password-visibility="togglePasswordVisibility"
 							/>
 						</template>
 					</BaseInput>
-					<span v-if="$v.password.$error" class="text-error-text-color">
+					<span v-if="$v.password.$error" class="text-red-1">
 						Required field
 					</span>
 				</template>

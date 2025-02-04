@@ -3,18 +3,18 @@
 		Loading
 	</div>
 	<div v-else class="flex flex-col items-center gap-16">
-		<div class="flex flex-row justify-center gap-14 bg-background">
+		<div class="bg-dark-1 flex flex-row justify-center gap-14">
 			<div class="relative">
 				<BaseUserPic
 					:key="fullName"
-					:class="'h-[120px] w-[120px] bg-profilepic-color text-4xl'"
+					:class="'bg-gray-4 h-[120px] w-[120px] text-4xl'"
 					:name="fullName"
 					:photo="avatar"
 				/>
 				<button
 					v-if="avatar"
 					:disabled="isDeletingAvatar"
-					class="absolute -right-5 -top-5 flex h-10 w-10 items-center justify-center rounded-full text-3xl text-white transition duration-300 hover:bg-sidebar-hover"
+					class="hover:bg-dark-4 absolute -right-5 -top-5 flex h-10 w-10 items-center justify-center rounded-full text-3xl text-white transition duration-300"
 					@click="handleDeleteAvatar"
 				>
 					<span
@@ -35,7 +35,7 @@
 			<h5 class="font-me mb-2 text-2xl font-light text-white">
 				{{ fullName }}
 			</h5>
-			<p class="text-upload-color">{{ email }}</p>
+			<p class="text-gray-10">{{ email }}</p>
 			<p class="text-white">A member since {{ dateJoined }}</p>
 		</div>
 		<form
