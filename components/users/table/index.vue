@@ -165,10 +165,9 @@
 
 		if (isBottom && loadedCount.value < filteredData.value.length) {
 			isLoading.value = true;
-			setTimeout(() => {
-				loadedCount.value += itemsPerPage;
-				isLoading.value = false;
-			}, 500);
+
+			loadedCount.value += itemsPerPage;
+			isLoading.value = false;
 		}
 	};
 
