@@ -5,8 +5,8 @@ import {
 } from '@apollo/client/core';
 import { onError } from '@apollo/client/link/error';
 import type { UpdateTokenResult } from 'cv-graphql';
-import { REFRESH_TOKEN } from '~/services/auth/authMutations';
-import { showErrorToast } from '~/services/common/toastService';
+import UpdateToken from '~/graphql/mutations/auth-mutations.graphql';
+import { showErrorToast } from '~/utils/toast/toast';
 
 export const apolloCache = new InMemoryCache();
 const newInstance = new ApolloClient({
@@ -20,7 +20,7 @@ const fetchNewToken = async () => {
 	const { data } = await newInstance.mutate<{
 		updateToken: UpdateTokenResult;
 	}>({
-		mutation: REFRESH_TOKEN,
+		mutation: UpdateToken,
 		context: {
 			headers: {
 				authorization: `Bearer ${refreshToken}`,

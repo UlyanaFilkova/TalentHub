@@ -1,23 +1,24 @@
 import { useMutation, useQuery } from '@vue/apollo-composable';
 import { ref, watchEffect } from 'vue';
 import {
-	ADD_PROFILE_SKILL,
-	DELETE_AVATAR,
-	DELETE_PROFILE_SKILL,
-	GET_ALL_DEPARTMENTS,
-	GET_ALL_POSITIONS,
-	GET_ALL_SKILLS,
-	GET_ALL_USERS,
-	GET_CURRENT_USER_ID,
-	GET_PROFILE_SKILLS,
-	GET_SKILL_CATEGORIES,
-	GET_USER_BY_ID,
-	GET_USER_FULLNAME,
-	UPDATE_PROFILE,
-	UPDATE_PROFILE_SKILL,
-	UPDATE_USER,
-	UPLOAD_AVATAR,
-} from '~/services/user/user-mutations';
+	AddProfileSkill,
+	DeleteAvatar,
+	DeleteProfileSkill,
+	UpdateProfile,
+	UpdateProfileSkill,
+	UpdateUser,
+	UploadAvatar,
+} from '~/graphql/mutations/user-mutations.graphql';
+import {
+	GetAllDepartments,
+	GetAllPositions,
+	GetAllSkills,
+	GetAllUsers,
+	GetProfileSkills,
+	GetSkillCategories,
+	GetUserById,
+	GetUserFullName,
+} from '~/graphql/queries/user-queries.graphql';
 
 interface User {
 	id: string;
@@ -101,7 +102,7 @@ interface UploadAvatarInput {
 
 export const getUserById = (userId: string) => {
 	const { result, loading, error, refetch } = useQuery<{ user: User }>(
-		GET_USER_BY_ID,
+		GetUserById,
 		{
 			userId,
 		}
@@ -122,7 +123,7 @@ export const getUserById = (userId: string) => {
 
 export const getAllDepartments = () => {
 	const { result, loading, error } = useQuery<{ departments: Department[] }>(
-		GET_ALL_DEPARTMENTS
+		GetAllDepartments
 	);
 	const departments = ref<Department[]>([]);
 
@@ -140,7 +141,7 @@ export const getAllDepartments = () => {
 
 export const getAllPositions = () => {
 	const { result, loading, error } = useQuery<{ positions: Position[] }>(
-		GET_ALL_POSITIONS
+		GetAllPositions
 	);
 	const positions = ref<Position[]>([]);
 
@@ -161,7 +162,7 @@ export const updateUser = (user: UpdateUserInput) => {
 		mutate: updateUserMutation,
 		loading,
 		error,
-	} = useMutation(UPDATE_USER);
+	} = useMutation(UpdateUser);
 
 	const executeUpdate = async () => {
 		try {
@@ -181,7 +182,7 @@ export const updateProfile = (profile: UpdateProfileInput) => {
 		mutate: updateProfileMutation,
 		loading,
 		error,
-	} = useMutation(UPDATE_PROFILE);
+	} = useMutation(UpdateProfile);
 
 	const executeUpdate = async () => {
 		try {
@@ -196,24 +197,8 @@ export const updateProfile = (profile: UpdateProfileInput) => {
 	return { executeUpdate, loading, error };
 };
 
-export const getCurrentUserId = () => {
-	const { result, loading, error } = useQuery(GET_CURRENT_USER_ID);
-	const currentUserId = ref<string | null>(null);
-
-	watchEffect(() => {
-		if (result.value) {
-			currentUserId.value = result.value.currentUserId;
-		}
-		if (error.value) {
-			console.error('Error fetching current user ID:', error.value);
-		}
-	});
-
-	return { currentUserId, loading, error };
-};
-
 export const uploadAvatar = (avatar: UploadAvatarInput) => {
-	const { mutate: executeUpload, loading, error } = useMutation(UPLOAD_AVATAR);
+	const { mutate: executeUpload, loading, error } = useMutation(UploadAvatar);
 
 	return {
 		executeUpload: () => executeUpload({ avatar }),
@@ -223,7 +208,7 @@ export const uploadAvatar = (avatar: UploadAvatarInput) => {
 };
 
 export const deleteAvatar = (userId: string) => {
-	const { mutate: executeDelete, loading, error } = useMutation(DELETE_AVATAR);
+	const { mutate: executeDelete, loading, error } = useMutation(DeleteAvatar);
 
 	return {
 		executeDelete: () =>
@@ -238,7 +223,7 @@ export const deleteAvatar = (userId: string) => {
 export const getProfileSkills = (userId: string) => {
 	const { result, loading, error, refetch } = useQuery<{
 		profile: { id: string; skills: Skill[] };
-	}>(GET_PROFILE_SKILLS, {
+	}>(GetProfileSkills, {
 		userId,
 	});
 
@@ -256,7 +241,7 @@ export const getProfileSkills = (userId: string) => {
 export const getSkillCategories = () => {
 	const { result, loading, error } = useQuery<{
 		skillCategories: SkillCategory[];
-	}>(GET_SKILL_CATEGORIES);
+	}>(GetSkillCategories);
 
 	const categories = ref<SkillCategory[]>([]);
 
@@ -274,7 +259,7 @@ export const updateProfileSkill = (skill: UpdateProfileSkillInput) => {
 		mutate: updateSkillMutation,
 		loading,
 		error,
-	} = useMutation(UPDATE_PROFILE_SKILL);
+	} = useMutation(UpdateProfileSkill);
 
 	const executeUpdate = async () => {
 		try {
@@ -291,7 +276,7 @@ export const updateProfileSkill = (skill: UpdateProfileSkillInput) => {
 
 export const getAllSkills = () => {
 	const { result, loading, error } = useQuery<{ skills: SkillDefault[] }>(
-		GET_ALL_SKILLS
+		GetAllSkills
 	);
 	const skills = ref<SkillDefault[]>([]);
 
@@ -312,7 +297,7 @@ export const addProfileSkill = (skill: UpdateProfileSkillInput) => {
 		mutate: addSkillMutation,
 		loading,
 		error,
-	} = useMutation(ADD_PROFILE_SKILL);
+	} = useMutation(AddProfileSkill);
 
 	const executeAdd = async () => {
 		try {
@@ -332,7 +317,7 @@ export const deleteProfileSkill = (userId: string, skillNames: string[]) => {
 		mutate: deleteSkillMutation,
 		loading,
 		error,
-	} = useMutation(DELETE_PROFILE_SKILL);
+	} = useMutation(DeleteProfileSkill);
 
 	const executeDelete = async () => {
 		try {
@@ -355,7 +340,7 @@ export const deleteProfileSkill = (userId: string, skillNames: string[]) => {
 export const getUserFullname = (userId: string) => {
 	const { result, loading, error } = useQuery<{
 		user: { profile: { full_name: string }; email: string };
-	}>(GET_USER_FULLNAME, { userId });
+	}>(GetUserFullName, { userId });
 
 	const fullname = ref('');
 	const email = ref('');
@@ -376,7 +361,7 @@ export const getUserFullname = (userId: string) => {
 
 export const getAllUsers = () => {
 	const { result, loading, error, refetch } = useQuery<{ users: User[] }>(
-		GET_ALL_USERS
+		GetAllUsers
 	);
 	const users = ref<User[]>([]);
 

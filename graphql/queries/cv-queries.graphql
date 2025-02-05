@@ -1,0 +1,6 @@
+query GetCvFullName($cvId: ID!) {
+    cv(cvId: $cvId) {
+        name
+    }
+}
+

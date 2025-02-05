@@ -75,17 +75,14 @@
 
 <script setup lang="ts">
 	import {
-		showErrorToast,
-		showSuccessToast,
-	} from '~/services/common/toastService';
-	import {
 		deleteAvatar,
 		getAllDepartments,
 		getAllPositions,
 		getUserById,
 		updateProfile,
 		updateUser,
-	} from '~/services/user/user-service';
+	} from '~/utils/services/user-service';
+	import { showErrorToast, showSuccessToast } from '~/utils/toast/toast';
 
 	interface Option {
 		value: string;

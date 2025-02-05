@@ -1,4 +1,3 @@
-// @ts-check
 import prettierPlugin from 'eslint-plugin-prettier';
 import withNuxt from './.nuxt/eslint.config.mjs';
 
@@ -25,6 +24,7 @@ export default withNuxt(
 
 			'vue/multi-word-component-names': 'off',
 			'vue/html-self-closing': 'off',
+			'import/no-named-default': 'off',
 		},
 	}
 );

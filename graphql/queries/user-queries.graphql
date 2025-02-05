@@ -1,0 +1,102 @@
+query GetUserById($userId: ID!) {
+    user(userId: $userId) {
+        id
+        created_at
+        email
+        is_verified
+        profile {
+            id
+            first_name
+            last_name
+            full_name
+            avatar
+        }
+        department {
+            id
+            name
+        }
+        position {
+            id
+            name
+        }
+        role
+    }
+}
+
+query GetAllDepartments {
+    departments {
+        id
+        name
+    }
+}
+
+query GetAllPositions {
+    positions {
+        id
+        name
+    }
+}
+
+query GetProfileSkills($userId: ID!) {
+    profile(userId: $userId) {
+        id
+        skills {
+            name
+            categoryId
+            mastery
+        }
+    }
+}
+
+query GetSkillCategories {
+    skillCategories {
+        id
+        name
+        parent {
+            id
+            name
+        }
+    }
+}
+
+query GetAllSkills {
+    skills {
+        id
+        name
+        category {
+            id
+            order
+        }
+        category_name
+        category_parent_name
+    }
+}
+
+query GetUserFullName($userId: ID!) {
+    user(userId: $userId) {
+        profile {
+            full_name
+        }
+        email
+    }
+}
+
+query GetAllUsers {
+    users {
+        id
+        profile {
+            first_name
+            last_name
+            full_name
+            avatar
+        }
+        email
+        department {
+            name
+        }
+        position {
+            name
+        }
+    }
+}
+

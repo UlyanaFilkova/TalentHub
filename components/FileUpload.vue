@@ -26,8 +26,8 @@
 </template>
 
 <script setup lang="ts">
-	import { showErrorToast } from '~/services/common/toastService';
-	import { uploadAvatar } from '~/services/user/user-service';
+	import { uploadAvatar } from '~/utils/services/user-service';
+	import { showErrorToast } from '~/utils/toast/toast';
 	import Upload from './icons/UploadIcon.vue';
 	const props = defineProps<{
 		userId: string;

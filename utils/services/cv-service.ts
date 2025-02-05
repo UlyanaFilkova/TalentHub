@@ -1,11 +1,11 @@
 import { useQuery } from '@vue/apollo-composable';
 import { ref, watchEffect } from 'vue';
-import { GET_CV_FULLNAME } from '~/services/cv/cv-mutations';
+import GetCvFullName from '~/graphql/queries/cv-queries.graphql';
 
 export const getCvFullname = (cvId: string) => {
 	const { result, loading, error } = useQuery<{
 		cv: { name: string };
-	}>(GET_CV_FULLNAME, { cvId });
+	}>(GetCvFullName, { cvId });
 
 	const fullname = ref('');
 
