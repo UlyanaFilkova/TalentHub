@@ -74,8 +74,11 @@
 	};
 	const logout = () => {
 		router.push('/auth/login');
-		localStorage.removeItem('refresh');
-		localStorage.removeItem('access');
+		const accessToken = useCookie('access_token');
+		const refreshToken = useCookie('refresh_token');
+
+		accessToken.value = null;
+		refreshToken.value = null;
 	};
 
 	const updateActiveTab = () => {

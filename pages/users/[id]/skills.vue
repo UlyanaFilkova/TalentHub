@@ -135,7 +135,7 @@
 		getProfileSkills,
 		getSkillCategories,
 		updateProfileSkill,
-	} from '~/utils/services/user-service';
+	} from '~/utils/graphql-services/user-service';
 
 	import PlusIcon from '~/components/icons/PlusIcon.vue';
 	import TrashBin from '~/components/icons/TrashBin.vue';

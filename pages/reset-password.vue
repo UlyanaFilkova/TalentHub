@@ -47,7 +47,7 @@
 <script lang="ts" setup>
 	import { useRouter } from '#app';
 	import { ref } from 'vue';
-	import { resetPassword } from '~/utils/services/auth-service';
+	import { resetPassword } from '~/utils/graphql-services/auth-service';
 
 	definePageMeta({
 		layout: 'auth',
