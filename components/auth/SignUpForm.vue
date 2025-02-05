@@ -5,7 +5,7 @@
 			<BaseForm
 				info-text="Welcome! Sign up to continue"
 				title="Register now"
-				:on-submit="handleSignup"
+				@submit="handleSignup"
 			>
 				<template #main>
 					<BaseInput
@@ -58,7 +58,12 @@
 				</template>
 				<template #footer>
 					<div class="mb-2">
-						<BaseButton variant="contained" color="primary" type="submit">
+						<BaseButton
+							variant="contained"
+							color="primary"
+							type="submit"
+							:disabled="isSubmitting"
+						>
 							CREATE ACCOUNT
 						</BaseButton>
 					</div>
@@ -83,24 +88,29 @@
 <script lang="ts" setup>
 	import { useRouter } from '#app';
 	import { ref } from 'vue';
-	import { useValidation } from '~/composables/useValidation';
+	import { useAuthValidation } from '~/composables/useAuthValidation';
 	import { signUp } from '~/services/auth/authService';
 
 	const router = useRouter();
 	const isPasswordVisible = ref(false);
+	const isSubmitting = ref(false);
 
-	const { form, $v } = useValidation({ passwordMinLength: 6 });
+	const { form, $v } = useAuthValidation({ passwordMinLength: 6 });
 
 	const handleSignup = async () => {
+		isSubmitting.value = true;
 		await $v.value.$validate();
-
 		if ($v.value.$error) {
+			isSubmitting.value = false;
 			return;
 		}
-
-		const data = await signUp(form.value);
-		if (data) {
-			router.push('/users');
+		try {
+			const data = await signUp(form.value);
+			if (data) {
+				router.push('/users');
+			}
+		} finally {
+			isSubmitting.value = false;
 		}
 	};
 	const togglePasswordVisibility = (newValue: boolean) => {

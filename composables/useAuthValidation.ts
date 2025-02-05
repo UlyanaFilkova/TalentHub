@@ -6,7 +6,7 @@ interface ValidationOptions {
 	passwordMinLength?: number;
 }
 
-export function useValidation(options: ValidationOptions) {
+export function useAuthValidation(options: ValidationOptions) {
 	const form = ref({
 		email: '',
 		password: '',
