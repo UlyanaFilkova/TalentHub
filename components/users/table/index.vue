@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-	import { getAllUsers } from '~/services/user/user-service';
+	import { getAllUsers } from '~/utils/services/user-service';
 	interface User {
 		id: string | number;
 		profile: {

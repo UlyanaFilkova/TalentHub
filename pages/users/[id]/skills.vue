@@ -135,11 +135,10 @@
 		getProfileSkills,
 		getSkillCategories,
 		updateProfileSkill,
-	} from '~/services/user/user-service';
+	} from '~/utils/services/user-service';
 
 	import PlusIcon from '~/components/icons/PlusIcon.vue';
 	import TrashBin from '~/components/icons/TrashBin.vue';
-	import { showSuccessToast } from '~/services/common/toastService';
 
 	definePageMeta({
 		layout: 'user-profile',

@@ -20,6 +20,7 @@
     "@vuelidate/validators": "^2.0.4",
     "cv-graphql": "^2.13.2",
     "graphql": "^16.10.0",
+    "graphql-tag": "^2.12.6",
     "nuxt": "^3.15.2",
     "vue": "latest",
     "vue-router": "latest",
@@ -39,6 +40,7 @@
     "prettier-plugin-organize-imports": "^4.1.0",
     "prettier-plugin-tailwindcss": "^0.6.10",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "vite-plugin-graphql-loader": "^4.0.4"
   }
 }

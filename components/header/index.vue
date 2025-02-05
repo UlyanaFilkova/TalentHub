@@ -13,8 +13,8 @@
 </template>
 
 <script setup lang="ts">
-	import { getCvFullname } from '~/services/cv/cv-service';
-	import { getUserFullname } from '~/services/user/user-service';
+	import { getCvFullname } from '~/utils/services/cv-service';
+	import { getUserFullname } from '~/utils/services/user-service';
 	const route = useRoute();
 	const router = useRouter();
 
