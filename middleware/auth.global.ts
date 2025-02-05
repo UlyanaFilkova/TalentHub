@@ -1,9 +1,7 @@
 import { defineNuxtRouteMiddleware, navigateTo } from '#app';
 
 export default defineNuxtRouteMiddleware((to) => {
-	if (import.meta.server) return;
-
-	const userToken = import.meta.client ? localStorage.getItem('access') : null;
+	const accessToken = useCookie('refresh_token');
 
 	const publicRoutes = [
 		'/auth/login',
@@ -12,11 +10,11 @@ export default defineNuxtRouteMiddleware((to) => {
 		'/reset-password',
 	];
 
-	if (!userToken && !publicRoutes.includes(to.path)) {
+	if (!accessToken.value && !publicRoutes.includes(to.path)) {
 		return navigateTo('/auth/login');
 	}
 
-	if (userToken && publicRoutes.includes(to.path)) {
+	if (accessToken.value && publicRoutes.includes(to.path)) {
 		return navigateTo('/users');
 	}
 });

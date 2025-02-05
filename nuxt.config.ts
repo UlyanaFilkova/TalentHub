@@ -6,7 +6,7 @@ export default defineNuxtConfig({
 	modules: ['@nuxt/eslint'],
 	css: ['~/assets/styles/main.css'],
 	plugins: [
-		'~/plugins/apolloClient',
+		'~/plugins/apollo-client',
 		{ src: '~/plugins/toast', mode: 'client' },
 	],
 	postcss: {
