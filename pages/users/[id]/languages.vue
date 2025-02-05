@@ -7,5 +7,3 @@
 		layout: 'user-profile',
 	});
 </script>
-
-<style scoped></style>

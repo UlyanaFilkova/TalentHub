@@ -1,9 +1,9 @@
 <template>
 	<div class="h-[calc(100vh-0.75rem-90px)]">
-		<div class="">
+		<div>
 			<BaseSearchBar v-model="searchQuery" placeholder="Search" class="mb-5" />
 		</div>
-		<div class="max-h-full overflow-y-auto">
+		<div>
 			<UsersTable :search-query="searchQuery" />
 		</div>
 	</div>

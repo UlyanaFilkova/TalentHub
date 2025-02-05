@@ -1,14 +1,23 @@
 <template>
-	<div class="max-h-full w-full">
-		<table class="w-full table-auto overflow-x-auto">
+	<div
+		ref="tableContainer"
+		class="max-h-[calc(100vh-0.75rem-90px)] w-full overflow-y-auto"
+		@scroll="handleScroll"
+	>
+		<table v-if="isDataLoaded" class="w-full table-auto overflow-x-auto">
 			<UsersTableHead
 				:headers="headers"
 				:sort-key="sortKey"
 				:sort-order="sortOrder"
-				:sort-table="sortTable"
+				@sort="handleSort"
 			/>
 			<tbody>
-				<UsersTableRow v-for="row in filteredData" :key="row.id" :row="row" />
+				<UsersTableRow
+					v-for="row in displayedData"
+					:key="row.id"
+					:row="row"
+					:table-container="tableContainer"
+				/>
 			</tbody>
 		</table>
 	</div>
@@ -42,6 +51,12 @@
 
 	const users = ref<User[]>([]);
 	const isDataLoaded = ref(false);
+	const tableContainer = ref<HTMLElement | null>(null);
+	const sortKey = ref<string | null>(null);
+	const sortOrder = ref<'asc' | 'desc'>('asc');
+	const itemsPerPage = 10;
+	const loadedCount = ref(itemsPerPage);
+	const isLoading = ref(false);
 
 	const tableData = computed(() => {
 		if (!isDataLoaded.value) return [];
@@ -57,22 +72,54 @@
 		}));
 	});
 
-	const sortKey = ref<string | null>(null);
-	const sortOrder = ref<'asc' | 'desc'>('asc');
+	const filteredData = computed(() => {
+		if (!props.searchQuery || !tableData.value) return tableData.value;
 
-	const sortTable = (key: string) => {
-		if (sortKey.value === key) {
-			sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc';
-		} else {
-			sortKey.value = key;
-			sortOrder.value = 'asc';
-		}
+		const lowerCaseSearch = props.searchQuery.toLowerCase();
+
+		return tableData.value.filter((row) => {
+			const firstNameMatches = row.firstName
+				?.toLowerCase()
+				.includes(lowerCaseSearch);
+			const lastNameMatches = row.lastName
+				?.toLowerCase()
+				.includes(lowerCaseSearch);
+			const emailMatches = row.email?.toLowerCase().includes(lowerCaseSearch);
+			return firstNameMatches || lastNameMatches || emailMatches;
+		});
+	});
+
+	const displayedData = ref<
+		{
+			id: number;
+			photo: string;
+			firstName: string;
+			lastName: string;
+			email: string;
+			department: string;
+			position: string;
+			link: string;
+		}[]
+	>([]);
+
+	const updateDisplayedData = () => {
+		displayedData.value = filteredData.value.slice(0, loadedCount.value);
+	};
+
+	const handleSort = (key: string, order: 'asc' | 'desc') => {
+		sortKey.value = key;
+		sortOrder.value = order;
+		sortTable();
+	};
+
+	const sortTable = () => {
+		if (!sortKey.value) return;
 
 		const collator = new Intl.Collator('en', { sensitivity: 'base' });
 
 		filteredData.value.sort((a, b) => {
-			const aValue = a[key as keyof typeof a];
-			const bValue = b[key as keyof typeof b];
+			const aValue = a[sortKey.value as keyof typeof a];
+			const bValue = b[sortKey.value as keyof typeof b];
 
 			const aStr = (aValue || '').toString().toLowerCase();
 			const bStr = (bValue || '').toString().toLowerCase();
@@ -95,24 +142,8 @@
 				? collator.compare(aStr, bStr)
 				: collator.compare(bStr, aStr);
 		});
+		updateDisplayedData();
 	};
-
-	const filteredData = computed(() => {
-		if (!props.searchQuery || !tableData.value) return tableData.value;
-
-		const lowerCaseSearch = props.searchQuery.toLowerCase();
-
-		return tableData.value.filter((row) => {
-			const firstNameMatches = row.firstName
-				?.toLowerCase()
-				.includes(lowerCaseSearch);
-			const lastNameMatches = row.lastName
-				?.toLowerCase()
-				.includes(lowerCaseSearch);
-			const emailMatches = row.email?.toLowerCase().includes(lowerCaseSearch);
-			return firstNameMatches || lastNameMatches || emailMatches;
-		});
-	});
 
 	const getUsers = () => {
 		try {
@@ -126,6 +157,20 @@
 		}
 	};
 
+	const handleScroll = () => {
+		if (!tableContainer.value || isLoading.value) return;
+
+		const { scrollTop, scrollHeight, clientHeight } = tableContainer.value;
+		const isBottom = scrollTop + clientHeight >= scrollHeight - 50;
+
+		if (isBottom && loadedCount.value < filteredData.value.length) {
+			isLoading.value = true;
+
+			loadedCount.value += itemsPerPage;
+			isLoading.value = false;
+		}
+	};
+
 	onMounted(() => {
 		getUsers();
 	});
@@ -135,4 +180,6 @@
 			getUsers();
 		}
 	});
+
+	watch([filteredData, loadedCount], updateDisplayedData, { immediate: true });
 </script>

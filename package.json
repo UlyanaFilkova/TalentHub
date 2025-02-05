@@ -24,6 +24,7 @@
     "vue": "latest",
     "vue-router": "latest",
     "vue-tsc": "^2.1.10",
+    "vue-virtual-scroller": "^2.0.0-beta.8",
     "vue3-toastify": "^0.2.8"
   },
   "devDependencies": {

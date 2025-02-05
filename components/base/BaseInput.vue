@@ -52,5 +52,3 @@
 	};
 	const isFocused = ref(false);
 </script>
-
-<style scoped></style>

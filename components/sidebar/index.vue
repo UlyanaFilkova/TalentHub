@@ -32,6 +32,7 @@
 	import IconsSkills from '~/components/icons/Skills.vue';
 
 	const router = useRouter();
+	const route = useRoute();
 
 	const items = reactive([
 		{
@@ -72,13 +73,10 @@
 		isCollapsed.value = !isCollapsed.value;
 	};
 	const logout = () => {
-		console.log('logout clicked');
 		router.push('/auth/login');
 		localStorage.removeItem('refresh');
 		localStorage.removeItem('access');
 	};
-
-	const route = useRoute();
 
 	const updateActiveTab = () => {
 		items.forEach((item) => {

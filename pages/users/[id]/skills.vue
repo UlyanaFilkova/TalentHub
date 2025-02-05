@@ -433,5 +433,3 @@
 		}
 	};
 </script>
-
-<style scoped></style>

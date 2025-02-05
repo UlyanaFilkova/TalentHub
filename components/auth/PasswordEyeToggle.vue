@@ -34,5 +34,3 @@
 		emit('update:passwordVisibility', isPasswordVisible.value);
 	};
 </script>
-
-<style scoped></style>
