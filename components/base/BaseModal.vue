@@ -5,11 +5,11 @@
 			class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
 			@mousedown="handleBackdropClick"
 		>
-			<div class="bg-dark-1 w-full max-w-[600px] rounded p-6" @mousedown.stop>
+			<div class="w-full max-w-[600px] rounded bg-dark-1 p-6" @mousedown.stop>
 				<div class="mb-6 flex items-center justify-between">
 					<h2 class="text-xl font-normal text-white">{{ title }}</h2>
 					<button
-						class="hover:bg-dark-4 -right-5 -top-5 flex h-10 w-10 items-center justify-center rounded-full text-3xl text-white transition duration-300"
+						class="-right-5 -top-5 flex h-10 w-10 items-center justify-center rounded-full text-3xl text-white transition duration-300 hover:bg-dark-4"
 						@click="handleCancel"
 					>
 						<span

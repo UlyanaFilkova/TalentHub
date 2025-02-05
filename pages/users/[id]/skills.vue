@@ -4,123 +4,133 @@
 			<div v-if="isLoading" class="flex flex-col items-center gap-16">
 				Loading
 			</div>
-			<div v-else class="mx-auto flex w-full max-w-[900px] flex-col gap-8">
-				<div
-					v-for="category in categoriesWithSkills"
-					:key="category.id"
-					class="flex flex-col gap-4"
-				>
-					<h3 class="text-m font-light text-white">{{ category.name }}</h3>
-					<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-						<ButtonsProgressButton
-							v-for="skill in getSkillsByCategory(category.id)"
-							:key="skill.name"
-							:progress="getSkillButtonProps(skill).progress"
-							:class="getSkillButtonProps(skill).class"
-							variant="text"
-							color="secondary"
-							@click="handleSkillClick(skill)"
-						>
-							{{ skill.name }}
-						</ButtonsProgressButton>
+
+			<div v-else class="relative mx-auto flex w-full max-w-[900px] flex-col">
+				<div class="flex flex-col gap-8 pb-5">
+					<div
+						v-for="category in categoriesWithSkills"
+						:key="category.id"
+						class="flex flex-col gap-4"
+					>
+						<h3 class="text-m font-light text-white">{{ category.name }}</h3>
+						<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+							<ButtonsProgressButton
+								v-for="skill in getSkillsByCategory(category.id)"
+								:key="skill.name"
+								:progress="getSkillButtonProps(skill).progress"
+								:class="getSkillButtonProps(skill).class"
+								variant="text"
+								color="secondary"
+								@click="handleSkillClick(skill)"
+							>
+								{{ skill.name }}
+							</ButtonsProgressButton>
+						</div>
 					</div>
 				</div>
-				<BaseModal
-					v-model:is-open="isUpdateSkillModalOpen"
-					title="Update Skill"
-					confirm-text="CONFIRM"
-					:has-changes="hasChanges"
-					@confirm="handleUpdateSkillConfirm"
-				>
-					<BaseDropdown
-						id="skill-name"
-						v-model="selectedSkillOption"
-						label="Skill"
-						:options="[
-							{
-								value: selectedSkill?.name ?? '',
-								label: selectedSkill?.name ?? '',
-							},
-						]"
-						disabled
-					/>
-					<BaseDropdown
-						id="skill-level"
-						v-model="selectedLevelOption"
-						label="Skill Level"
-						:options="skillLevelOptions"
-					/>
-				</BaseModal>
-				<BaseModal
-					v-model:is-open="isAddSkillModalOpen"
-					title="Add Skill"
-					confirm-text="ADD"
-					:has-changes="!!(newSelectedSkill && newSelectedLevel)"
-					@confirm="handleAddSkillConfirm"
-				>
-					<BaseDropdown
-						id="new-skill-name"
-						v-model="newSkillOption"
-						label="Skill"
-						:options="skillOptions"
-					/>
-					<BaseDropdown
-						id="new-skill-level"
-						v-model="newLevelOption"
-						label="Skill Level"
-						:options="skillLevelOptions"
-					/>
-				</BaseModal>
+
+				<div class="sticky bottom-0 bg-dark-1 py-2">
+					<div class="flex justify-end gap-4 px-2">
+						<template v-if="!isRemovalMode">
+							<BaseButton
+								class="max-w-[220px]"
+								variant="text"
+								color="secondary"
+								@click="handleAddSkill"
+							>
+								<div class="flex items-center justify-center gap-3">
+									<PlusIcon color="var(--color-gray-7)" width="24" />
+									ADD SKILL
+								</div>
+							</BaseButton>
+							<BaseButton
+								v-if="skills.length > 0"
+								class="max-w-[220px]"
+								variant="text"
+								color="primary"
+								@click="handleRemoveSkill"
+							>
+								<div class="flex items-center justify-center gap-3">
+									<TrashBin color="var(--color-red-1)" width="24" />
+									REMOVE SKILLS
+								</div>
+							</BaseButton>
+						</template>
+						<template v-else>
+							<BaseButton
+								class="max-w-[220px]"
+								variant="outlined"
+								color="secondary"
+								@click="handleCancelRemoval"
+							>
+								CANCEL
+							</BaseButton>
+							<BaseButton
+								class="max-w-[220px]"
+								variant="contained"
+								color="primary"
+								:disabled="
+									selectedSkillsToRemove.size === 0 || isDeletingSkills
+								"
+								@click="handleDeleteSkills"
+							>
+								<div class="flex items-center justify-center gap-3">
+									DELETE
+									<div class="w-2">{{ selectedSkillsToRemove.size }}</div>
+								</div>
+							</BaseButton>
+						</template>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="mx-auto flex w-full max-w-[900px] justify-end gap-4 px-2">
-			<template v-if="!isRemovalMode">
-				<BaseButton
-					class="max-w-[220px]"
-					variant="text"
-					color="secondary"
-					@click="handleAddSkill"
-				>
-					<div class="flex items-center justify-center gap-3">
-						<PlusIcon color="var(--color-gray-7)" width="24" />
-						ADD SKILL
-					</div>
-				</BaseButton>
-				<BaseButton
-					class="max-w-[220px]"
-					variant="text"
-					color="primary"
-					@click="handleRemoveSkill"
-				>
-					<div class="flex items-center justify-center gap-3">
-						<TrashBin color="var(--color-red-1)" width="24" />
-						REMOVE SKILLS
-					</div>
-				</BaseButton>
-			</template>
-			<template v-else>
-				<BaseButton
-					class="max-w-[220px]"
-					variant="outlined"
-					color="secondary"
-					@click="handleCancelRemoval"
-				>
-					CANCEL
-				</BaseButton>
-				<BaseButton
-					class="max-w-[220px]"
-					variant="contained"
-					color="primary"
-					:disabled="selectedSkillsToRemove.size === 0 || isDeletingSkills"
-					@click="handleDeleteSkills"
-				>
-					<div class="flex items-center justify-center gap-3">
-						DELETE
-						<div class="w-2">{{ selectedSkillsToRemove.size }}</div>
-					</div>
-				</BaseButton>
-			</template>
-		</div>
+
+		<BaseModal
+			v-model:is-open="isUpdateSkillModalOpen"
+			title="Update Skill"
+			confirm-text="CONFIRM"
+			:has-changes="hasChanges"
+			@confirm="handleUpdateSkillConfirm"
+		>
+			<BaseDropdown
+				id="skill-name"
+				v-model="selectedSkillOption"
+				label="Skill"
+				:options="[
+					{
+						value: selectedSkill?.name ?? '',
+						label: selectedSkill?.name ?? '',
+					},
+				]"
+				disabled
+			/>
+			<BaseDropdown
+				id="skill-level"
+				v-model="selectedLevelOption"
+				label="Skill Level"
+				:options="skillLevelOptions"
+			/>
+		</BaseModal>
+		<BaseModal
+			v-model:is-open="isAddSkillModalOpen"
+			title="Add Skill"
+			confirm-text="ADD"
+			:has-changes="!!(newSelectedSkill && newSelectedLevel)"
+			@confirm="handleAddSkillConfirm"
+		>
+			<BaseDropdown
+				id="new-skill-name"
+				v-model="newSkillOption"
+				label="Skill"
+				:options="skillOptions"
+			/>
+			<BaseDropdown
+				id="new-skill-level"
+				v-model="newLevelOption"
+				label="Skill Level"
+				:options="skillLevelOptions"
+			/>
+		</BaseModal>
 	</div>
 </template>
 
@@ -308,6 +318,14 @@
 	const handleAddSkillConfirm = async () => {
 		if (!newSelectedSkill.value || !newSelectedLevel.value) return;
 
+		const newSkill = {
+			name: newSelectedSkill.value.name,
+			categoryId: newSelectedSkill.value.category.id,
+			mastery: newSelectedLevel.value,
+		};
+
+		skills.value = [...skills.value, newSkill];
+
 		try {
 			const { executeAdd } = addProfileSkill({
 				userId: userId.value,
@@ -319,8 +337,9 @@
 			await executeAdd();
 			showSuccessToast('Skill added successfully');
 			isAddSkillModalOpen.value = false;
-			await refetchSkills.value();
 		} catch (error) {
+			skills.value = skills.value.filter((s) => s.name !== newSkill.name);
+
 			console.error('Error adding skill:', error);
 		}
 	};

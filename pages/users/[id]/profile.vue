@@ -3,18 +3,18 @@
 		Loading
 	</div>
 	<div v-else class="flex flex-col items-center gap-16">
-		<div class="bg-dark-1 flex flex-row justify-center gap-14">
+		<div class="flex flex-row justify-center gap-14 bg-dark-1">
 			<div class="relative">
 				<BaseUserPic
 					:key="fullName"
-					:class="'bg-gray-4 h-[120px] w-[120px] text-4xl'"
+					:class="'h-[120px] w-[120px] bg-gray-4 text-4xl'"
 					:name="fullName"
 					:photo="avatar"
 				/>
 				<button
 					v-if="avatar"
 					:disabled="isDeletingAvatar"
-					class="hover:bg-dark-4 absolute -right-5 -top-5 flex h-10 w-10 items-center justify-center rounded-full text-3xl text-white transition duration-300"
+					class="absolute -right-5 -top-5 flex h-10 w-10 items-center justify-center rounded-full text-3xl text-white transition duration-300 hover:bg-dark-4"
 					@click="handleDeleteAvatar"
 				>
 					<span
