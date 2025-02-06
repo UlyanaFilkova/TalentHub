@@ -5,14 +5,15 @@
 		@scroll="handleScroll"
 	>
 		<table v-if="isDataLoaded" class="w-full table-auto overflow-x-auto">
-			<UsersTableHead
+			<TableHead
 				:headers="headers"
 				:sort-key="sortKey"
 				:sort-order="sortOrder"
 				@sort="handleSort"
 			/>
 			<tbody>
-				<UsersTableRow
+				<component
+					:is="rowComponent"
 					v-for="row in displayedData"
 					:key="row.id"
 					:row="row"
@@ -24,10 +25,13 @@
 </template>
 
 <script setup lang="ts">
+	import TableCvRow from '@/components/table/CvRow.vue';
+	import TableUserRow from '@/components/table/UserRow.vue';
 	const props = defineProps<{
 		headers: { key: string; label: string; isSortable: boolean }[];
 		rowsData: Record<string, any>[];
 		searchQuery?: string;
+		rowComponent: 'TableUserRow' | 'TableCvRow';
 	}>();
 
 	const isDataLoaded = ref(false);
@@ -40,14 +44,14 @@
 
 	const displayedData = ref<Record<string, any>[]>([]);
 
-	const updateDisplayedData = () => {
-		displayedData.value = sortedData.value.slice(0, loadedCount.value);
-	};
-
-	const handleSort = async (key: string, order: 'asc' | 'desc') => {
-		sortKey.value = key;
-		sortOrder.value = order;
-	};
+	const rowComponent = computed(() => {
+		if (props.rowComponent === 'TableUserRow') {
+			return TableUserRow;
+		} else if (props.rowComponent === 'TableCvRow') {
+			return TableCvRow;
+		}
+		return null;
+	});
 
 	const sortedData = computed(() => {
 		if (!sortKey.value) return [...props.rowsData];
@@ -80,6 +84,15 @@
 				: collator.compare(bStr, aStr);
 		});
 	});
+
+	const updateDisplayedData = () => {
+		displayedData.value = sortedData.value.slice(0, loadedCount.value);
+	};
+
+	const handleSort = async (key: string, order: 'asc' | 'desc') => {
+		sortKey.value = key;
+		sortOrder.value = order;
+	};
 
 	const handleScroll = () => {
 		if (!tableContainer.value || isLoading.value) return;

@@ -8,6 +8,7 @@
 				:search-query="searchQuery"
 				:headers="headers"
 				:rows-data="filteredData"
+				row-component="TableUserRow"
 			/>
 		</div>
 	</div>
