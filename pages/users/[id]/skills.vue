@@ -1,11 +1,7 @@
 <template>
 	<div class="-mt-8 flex h-[calc(100vh-70px-2.5rem)] flex-col">
 		<div class="flex-1 overflow-y-auto pt-8">
-			<div v-if="isLoading" class="flex flex-col items-center gap-16">
-				Loading
-			</div>
-
-			<div v-else class="relative mx-auto flex w-full max-w-[900px] flex-col">
+			<div class="relative mx-auto flex w-full max-w-[900px] flex-col">
 				<div class="flex flex-col gap-8 pb-5">
 					<div
 						v-for="category in categoriesWithSkills"
@@ -48,7 +44,7 @@
 								class="max-w-[220px]"
 								variant="text"
 								color="primary"
-								@click="handleRemoveSkill"
+								@click="isRemovalMode = true"
 							>
 								<div class="flex items-center justify-center gap-3">
 									<TrashBin color="var(--color-red-1)" width="24" />
@@ -145,7 +141,7 @@
 		getSkillCategories,
 		updateProfileSkill,
 	} from '~/utils/graphql-services/user-service';
-	import { showSuccessToast } from '~/utils/toast/toast';
+	import { showErrorToast, showSuccessToast } from '~/utils/toast/toast';
 
 	definePageMeta({
 		layout: 'user-profile',
@@ -185,13 +181,73 @@
 		Expert: 100,
 	};
 
+	const categories = ref<SkillCategory[]>([]);
+	const skills = ref<Skill[]>([]);
+
 	const route = useRoute();
 	const userId = ref(route.params.id as string);
 
-	const categories = ref<SkillCategory[]>([]);
-	const skills = ref<Skill[]>([]);
-	const isLoading = ref(true);
-	const refetchSkills = ref();
+	const skillsDataKey = `skills-${userId.value}`;
+	const categoriesDataKey = 'skill-categories';
+	const allSkillsDataKey = 'all-skills';
+
+	const { data: skillsData } = useNuxtData(skillsDataKey);
+	const { data: categoriesData } = useNuxtData(categoriesDataKey);
+	const { data: allSkillsData } = useNuxtData(allSkillsDataKey);
+
+	const isAddSkillModalOpen = ref(false);
+	const allSkills = ref<SkillDefault[]>([]);
+	const newSelectedSkill = ref<SkillDefault | null>(null);
+	const newSelectedLevel = ref<Skill['mastery'] | null>(null);
+
+	if (!skillsData.value) {
+		const { data } = await useAsyncData(skillsDataKey, () =>
+			getProfileSkills(userId.value)
+		);
+		skillsData.value = data.value;
+	}
+
+	if (!categoriesData.value) {
+		const { data } = await useAsyncData(categoriesDataKey, () =>
+			getSkillCategories()
+		);
+		categoriesData.value = data.value;
+	}
+
+	if (!allSkillsData.value) {
+		const { data } = await useAsyncData(allSkillsDataKey, () => getAllSkills());
+		allSkillsData.value = data.value;
+	}
+
+	watch(
+		() => categoriesData.value?.categories,
+		(newCategories) => {
+			if (newCategories) {
+				categories.value = newCategories;
+			}
+		},
+		{ immediate: true }
+	);
+
+	watch(
+		() => skillsData.value?.skills,
+		(newSkills) => {
+			if (newSkills) {
+				skills.value = newSkills;
+			}
+		},
+		{ immediate: true }
+	);
+
+	watch(
+		() => allSkillsData.value?.skills,
+		(newSkills) => {
+			if (newSkills) {
+				allSkills.value = newSkills;
+			}
+		},
+		{ immediate: true }
+	);
 
 	const categoriesWithSkills = computed(() => {
 		return categories.value.filter((category) =>
@@ -203,63 +259,9 @@
 		return skillLevelToProgress[mastery];
 	};
 
-	onMounted(async () => {
-		const { skills: fetchedAllSkills, loading: allSkillsLoading } =
-			getAllSkills();
-
-		const { categories: fetchedCategories, loading: categoriesLoading } =
-			getSkillCategories();
-		const {
-			skills: fetchedSkills,
-			loading: skillsLoading,
-			refetch,
-		} = getProfileSkills(userId.value);
-
-		refetchSkills.value = refetch;
-
-		watchEffect(() => {
-			isLoading.value = categoriesLoading.value || skillsLoading.value;
-		});
-
-		watch(
-			fetchedCategories,
-			(newCategories) => {
-				if (newCategories) {
-					categories.value = newCategories;
-				}
-			},
-			{ immediate: true }
-		);
-
-		watch(
-			fetchedSkills,
-			(newSkills) => {
-				if (newSkills) {
-					skills.value = newSkills;
-				}
-			},
-			{ immediate: true }
-		);
-
-		watch(
-			fetchedAllSkills,
-			(newSkills) => {
-				if (newSkills) {
-					allSkills.value = newSkills;
-				}
-			},
-			{ immediate: true }
-		);
-	});
-
 	const getSkillsByCategory = (categoryId: string) => {
 		return skills.value.filter((skill) => skill.categoryId === categoryId);
 	};
-
-	const isAddSkillModalOpen = ref(false);
-	const allSkills = ref<SkillDefault[]>([]);
-	const newSelectedSkill = ref<SkillDefault | null>(null);
-	const newSelectedLevel = ref<Skill['mastery'] | null>(null);
 
 	const newSkillOption = computed({
 		get: () => ({
@@ -324,8 +326,6 @@
 			mastery: newSelectedLevel.value,
 		};
 
-		skills.value = [...skills.value, newSkill];
-
 		try {
 			const { executeAdd } = addProfileSkill({
 				userId: userId.value,
@@ -335,11 +335,13 @@
 			});
 
 			await executeAdd();
+			clearNuxtData(skillsDataKey);
+			skills.value = [...skills.value, newSkill];
+
 			showSuccessToast('Skill added successfully');
 			isAddSkillModalOpen.value = false;
 		} catch (error) {
-			skills.value = skills.value.filter((s) => s.name !== newSkill.name);
-
+			showErrorToast('Error adding skill');
 			console.error('Error adding skill:', error);
 		}
 	};
@@ -372,7 +374,13 @@
 		{ value: 'Proficient', label: 'Proficient' },
 		{ value: 'Expert', label: 'Expert' },
 	];
+
+	const isRemovalMode = ref(false);
+	const isDeletingSkills = ref(false);
+	const selectedSkillsToRemove = ref<Set<string>>(new Set());
+
 	const hasChanges = computed(() => selectedLevel.value !== initialLevel.value);
+
 	const handleSkillClick = (skill: Skill) => {
 		if (isRemovalMode.value) {
 			const skillName = skill.name;
@@ -402,23 +410,46 @@
 			});
 
 			await executeUpdate();
+			clearNuxtData(skillsDataKey);
+
+			skills.value = skills.value.map((skill) =>
+				skill.name === selectedSkill.value?.name
+					? { ...skill, mastery: selectedLevel.value! }
+					: skill
+			);
 			showSuccessToast('Skill updated successfully');
 		} catch (error) {
+			showErrorToast('Error updating skill');
 			console.error('Error updating skill:', error);
 		}
-	};
-
-	const isRemovalMode = ref(false);
-	const isDeletingSkills = ref(false);
-	const selectedSkillsToRemove = ref<Set<string>>(new Set());
-
-	const handleRemoveSkill = () => {
-		isRemovalMode.value = true;
 	};
 
 	const handleCancelRemoval = () => {
 		isRemovalMode.value = false;
 		selectedSkillsToRemove.value.clear();
+	};
+
+	const handleDeleteSkills = async () => {
+		isDeletingSkills.value = true;
+		try {
+			const { executeDelete } = deleteProfileSkill(
+				userId.value,
+				Array.from(selectedSkillsToRemove.value)
+			);
+			await executeDelete();
+			clearNuxtData(skillsDataKey);
+
+			skills.value = skills.value.filter(
+				(skill) => !selectedSkillsToRemove.value.has(skill.name)
+			);
+			showSuccessToast('Skills deleted successfully');
+			handleCancelRemoval();
+		} catch (error) {
+			showErrorToast('Error deleting skills');
+			console.error('Error deleting skills:', error);
+		} finally {
+			isDeletingSkills.value = false;
+		}
 	};
 
 	const getSkillButtonProps = (skill: Skill) => {
@@ -433,22 +464,5 @@
 			progress: getSkillProgress(skill.mastery),
 			class: '',
 		};
-	};
-
-	const handleDeleteSkills = async () => {
-		isDeletingSkills.value = true;
-		try {
-			const { executeDelete } = deleteProfileSkill(
-				userId.value,
-				Array.from(selectedSkillsToRemove.value)
-			);
-			await executeDelete();
-			showSuccessToast('Skills deleted successfully');
-			handleCancelRemoval();
-		} catch (error) {
-			console.error('Error deleting skills:', error);
-		} finally {
-			isDeletingSkills.value = false;
-		}
 	};
 </script>
