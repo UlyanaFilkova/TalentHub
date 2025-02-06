@@ -1,49 +1,38 @@
 <template>
-	<tr
-		class="w-full border-b border-low-contrast-color text-sm text-active-color"
-	>
-		<td class="py-4 pr-4">
-			<BaseUserPic
-				:name="`${row.firstName} ${row.lastName}`"
-				class="bg-profilepic-color"
-				:photo="row.photo"
-			/>
-		</td>
+	<tr class="w-full text-sm text-active-color">
 		<td
 			v-for="(item, key) in displayedFields"
 			:key="key"
-			:class="[
-				'custom-column py-4 pr-3 font-medium',
-				displayedFields[key].class,
-			]"
+			:class="['custom-column py-4 pr-8', displayedFields[key].class]"
 		>
 			{{ item.value }}
 		</td>
 		<td class="py-4 pr-2">
-			<template v-if="row.id === currentUserId">
-				<div
-					ref="optionsContainer"
-					class="relative"
-					@mouseenter="showOptions"
-					@mouseleave="hideOptions"
-				>
-					<ButtonsOptions is-toggled color="var(--color-active-text)" />
+			<div
+				ref="optionsContainer"
+				class="relative"
+				@mouseenter="showOptions"
+				@mouseleave="hideOptions"
+			>
+				<ButtonsOptions is-toggled color="var(--color-active-text)" />
 
-					<UsersTableOptions
-						v-if="optionsVisible"
-						class="absolute right-0 z-10 mt-2 w-28 rounded-lg border-options-backgroud bg-options-backgroud py-2 shadow-lg"
-						:class="optionsPosition"
-						@profile-click="openProfile"
-						@update-click="updateUser"
-						@delete-click="deleteUser"
-					/>
-				</div>
-			</template>
-			<template v-else>
-				<NuxtLink :to="`/users/${row.id}/profile`">
-					<ButtonsToggle is-toggled color="var(--color-inactive-text)" />
-				</NuxtLink>
-			</template>
+				<TableUserOptions
+					v-if="optionsVisible"
+					class="absolute right-0 z-10 mt-2 w-28 rounded-lg border-options-backgroud bg-options-backgroud py-2 shadow-lg"
+					:class="optionsPosition"
+					@profile-click="openProfile"
+					@update-click="updateUser"
+					@delete-click="deleteUser"
+				/>
+			</div>
+		</td>
+	</tr>
+	<tr
+		v-if="props.row.description"
+		class="w-full border-b border-low-contrast-color font-medium text-second-color"
+	>
+		<td colspan="4" class="pr-8">
+			<div class="description mb-4">{{ props.row.description }}</div>
 		</td>
 	</tr>
 </template>
@@ -53,18 +42,14 @@
 	const props = defineProps<{
 		row: {
 			id: number;
-			photo: string;
-			firstName: string;
-			lastName: string;
+			name: string;
+			education: string;
+			description: string;
 			email: string;
-			department: string;
-			position: string;
 			link: string;
 		};
 		tableContainer: HTMLElement | null;
 	}>();
-
-	const currentUserId = 1;
 
 	const optionsVisible = ref(false);
 	const optionsContainer = ref<HTMLElement | null>(null);
@@ -72,11 +57,9 @@
 
 	const displayedFields = computed(() => {
 		return {
-			firstName: { value: props.row.firstName, class: 'small-column' },
-			lastName: { value: props.row.lastName, class: 'medium-column' },
+			name: { value: props.row.name, class: 'small-column' },
+			education: { value: props.row.education, class: 'medium-column' },
 			email: { value: props.row.email, class: 'big-column' },
-			department: { value: props.row.department, class: 'small-column' },
-			position: { value: props.row.position, class: 'medium-column' },
 		};
 	});
 
@@ -123,5 +106,16 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+	}
+
+	.description {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		width: 100%;
+		word-wrap: break-word;
+		white-space: normal;
 	}
 </style>

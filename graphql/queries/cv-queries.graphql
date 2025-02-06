@@ -1,6 +1,18 @@
 query GetCvFullName($cvId: ID!) {
-    cv(cvId: $cvId) {
-        name
-    }
+	cv(cvId: $cvId) {
+		name
+	}
 }
 
+query GetAllCvs {
+	cvs {
+		id
+		name
+		education
+		description
+		user {
+			id
+			email
+		}
+	}
+}
