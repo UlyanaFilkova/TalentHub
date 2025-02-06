@@ -29,13 +29,18 @@
 				>
 					<ButtonsOptions is-toggled color="var(--color-active-text)" />
 
-					<UsersTableOptions
+					<TableOptions
 						v-if="optionsVisible"
 						class="absolute right-0 z-10 mt-2 w-28 rounded-lg border-options-backgroud bg-options-backgroud py-2 shadow-lg"
 						:class="optionsPosition"
-						@profile-click="openProfile"
-						@update-click="updateUser"
-						@delete-click="deleteUser"
+						:buttons="[
+							{ label: 'Profile', event: 'profileClick' },
+							{ label: 'Update user', event: 'updateClick' },
+							{ label: 'Delete user', event: 'deleteClick' },
+						]"
+						@profileClick="openProfile"
+						@updateClick="updateUser"
+						@deleteClick="deleteUser"
 					/>
 				</div>
 			</template>
@@ -108,11 +113,11 @@
 <style scoped>
 	.small-column {
 		min-width: 160px;
-		max-width: 200px;
+		max-width: 180px;
 	}
 	.medium-column {
 		min-width: 170px;
-		max-width: 200px;
+		max-width: 180px;
 	}
 	.big-column {
 		min-width: 255px;
