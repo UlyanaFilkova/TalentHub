@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@vue/apollo-composable';
+import { useApolloClient, useMutation, useQuery } from '@vue/apollo-composable';
 import { ref, watchEffect } from 'vue';
 import {
 	AddProfileSkill,
@@ -100,61 +100,77 @@ interface UploadAvatarInput {
 	type: string;
 }
 
-export const getUserById = (userId: string) => {
-	const { result, loading, error, refetch } = useQuery<{ user: User }>(
-		GetUserById,
-		{
-			userId,
-		}
-	);
-	const user = ref<User | null>(null);
+export const getUserById = async (userId: string, force = false) => {
+	const apolloClient = useApolloClient().client;
 
-	watchEffect(() => {
-		if (result.value) {
-			user.value = result.value.user;
-		}
-		if (error.value) {
-			console.error('Error fetching user by ID:', error.value);
-		}
-	});
+	try {
+		const { data } = await apolloClient.query({
+			query: GetUserById,
+			variables: { userId },
+			fetchPolicy: 'no-cache',
+		});
 
-	return { user, loading, error, refetch };
+		return {
+			user: data.user,
+			error: null,
+		};
+	} catch (error) {
+		console.error('Error fetching user by ID:', error);
+		return {
+			user: null,
+			error,
+		};
+	}
 };
 
-export const getAllDepartments = () => {
-	const { result, loading, error } = useQuery<{ departments: Department[] }>(
-		GetAllDepartments
+export const getAllDepartments = async () => {
+	console.log(
+		'getAllDepartments running on:',
+		import.meta.server ? 'server' : 'client'
 	);
-	const departments = ref<Department[]>([]);
 
-	watchEffect(() => {
-		if (result.value) {
-			departments.value = result.value.departments;
-		}
-		if (error.value) {
-			console.error('Error fetching departments:', error.value);
-		}
-	});
+	const apolloClient = useApolloClient().client;
 
-	return { departments, loading, error };
+	try {
+		console.log('Making GraphQL request...');
+
+		const { data } = await apolloClient.query({
+			query: GetAllDepartments,
+		});
+		console.log('GraphQL request completed');
+
+		return {
+			departments: data.departments,
+			error: null,
+		};
+	} catch (error) {
+		console.error('Error fetching departments:', error);
+		return {
+			departments: [],
+			error,
+		};
+	}
 };
 
-export const getAllPositions = () => {
-	const { result, loading, error } = useQuery<{ positions: Position[] }>(
-		GetAllPositions
-	);
-	const positions = ref<Position[]>([]);
+export const getAllPositions = async () => {
+	const apolloClient = useApolloClient().client;
 
-	watchEffect(() => {
-		if (result.value) {
-			positions.value = result.value.positions;
-		}
-		if (error.value) {
-			console.error('Error fetching positions:', error.value);
-		}
-	});
+	try {
+		const { data } = await apolloClient.query({
+			query: GetAllPositions,
+		});
 
-	return { positions, loading, error };
+		return {
+			positions: data.positions,
+			error: null,
+		};
+	} catch (error) {
+		console.error('Error fetching positions:', error);
+		return {
+			positions: [],
+			error,
+		};
+	}
 };
 
 export const updateUser = (user: UpdateUserInput) => {

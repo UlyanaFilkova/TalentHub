@@ -135,6 +135,8 @@
 </template>
 
 <script setup lang="ts">
+	import PlusIcon from '~/components/icons/PlusIcon.vue';
+	import TrashBin from '~/components/icons/TrashBin.vue';
 	import {
 		addProfileSkill,
 		deleteProfileSkill,
@@ -143,9 +145,7 @@
 		getSkillCategories,
 		updateProfileSkill,
 	} from '~/utils/graphql-services/user-service';
-
-	import PlusIcon from '~/components/icons/PlusIcon.vue';
-	import TrashBin from '~/components/icons/TrashBin.vue';
+	import { showSuccessToast } from '~/utils/toast/toast';
 
 	definePageMeta({
 		layout: 'user-profile',

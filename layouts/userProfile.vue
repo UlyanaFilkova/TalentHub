@@ -14,7 +14,7 @@
 
 			<div class="mt-8">
 				<KeepAlive>
-					<component :is="currentTab"></component>
+					<NuxtPage></NuxtPage>
 				</KeepAlive>
 			</div>
 		</template>
