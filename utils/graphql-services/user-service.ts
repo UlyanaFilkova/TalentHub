@@ -236,38 +236,66 @@ export const deleteAvatar = (userId: string) => {
 	};
 };
 
-export const getProfileSkills = (userId: string) => {
-	const { result, loading, error, refetch } = useQuery<{
-		profile: { id: string; skills: Skill[] };
-	}>(GetProfileSkills, {
-		userId,
-	});
+export const getProfileSkills = async (userId: string) => {
+	const apolloClient = useApolloClient().client;
 
-	const skills = ref<Skill[]>([]);
-
-	watchEffect(() => {
-		if (result.value?.profile) {
-			skills.value = result.value.profile.skills;
-		}
-	});
-
-	return { skills, loading, error, refetch };
+	try {
+		const { data } = await apolloClient.query({
+			query: GetProfileSkills,
+			variables: { userId },
+			fetchPolicy: 'no-cache',
+		});
+		return {
+			skills: data.profile.skills,
+			error: null,
+		};
+	} catch (error) {
+		console.error('Error fetching profile skills:', error);
+		return {
+			skills: [],
+			error,
+		};
+	}
 };
 
-export const getSkillCategories = () => {
-	const { result, loading, error } = useQuery<{
-		skillCategories: SkillCategory[];
-	}>(GetSkillCategories);
+export const getSkillCategories = async () => {
+	const apolloClient = useApolloClient().client;
 
-	const categories = ref<SkillCategory[]>([]);
+	try {
+		const { data } = await apolloClient.query({
+			query: GetSkillCategories,
+		});
+		return {
+			categories: data.skillCategories,
+			error: null,
+		};
+	} catch (error) {
+		console.error('Error fetching skill categories:', error);
+		return {
+			categories: [],
+			error,
+		};
+	}
+};
 
-	watchEffect(() => {
-		if (result.value) {
-			categories.value = result.value.skillCategories;
-		}
-	});
+export const getAllSkills = async () => {
+	const apolloClient = useApolloClient().client;
 
-	return { categories, loading, error };
+	try {
+		const { data } = await apolloClient.query({
+			query: GetAllSkills,
+		});
+		return {
+			skills: data.skills,
+			error: null,
+		};
+	} catch (error) {
+		console.error('Error fetching skills:', error);
+		return {
+			skills: [],
+			error,
+		};
+	}
 };
 
 export const updateProfileSkill = (skill: UpdateProfileSkillInput) => {
@@ -288,24 +316,6 @@ export const updateProfileSkill = (skill: UpdateProfileSkillInput) => {
 	};
 
 	return { executeUpdate, loading, error };
-};
-
-export const getAllSkills = () => {
-	const { result, loading, error } = useQuery<{ skills: SkillDefault[] }>(
-		GetAllSkills
-	);
-	const skills = ref<SkillDefault[]>([]);
-
-	watchEffect(() => {
-		if (result.value) {
-			skills.value = result.value.skills;
-		}
-		if (error.value) {
-			console.error('Error fetching skills:', error.value);
-		}
-	});
-
-	return { skills, loading, error };
 };
 
 export const addProfileSkill = (skill: UpdateProfileSkillInput) => {
