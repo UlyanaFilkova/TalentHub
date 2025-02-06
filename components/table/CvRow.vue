@@ -16,13 +16,16 @@
 			>
 				<ButtonsOptions is-toggled color="var(--color-active-text)" />
 
-				<TableUserOptions
+				<TableOptions
 					v-if="optionsVisible"
 					class="absolute right-0 z-10 mt-2 w-28 rounded-lg border-options-backgroud bg-options-backgroud py-2 shadow-lg"
 					:class="optionsPosition"
-					@profile-click="openProfile"
-					@update-click="updateUser"
-					@delete-click="deleteUser"
+					:buttons="[
+						{ label: 'Details', event: 'detailsClick' },
+						{ label: 'Delete CV', event: 'deleteClick' },
+					]"
+					@detailsClick="openDetails"
+					@deleteClick="deleteCV"
 				/>
 			</div>
 		</td>
@@ -79,13 +82,11 @@
 		optionsVisible.value = false;
 	};
 
-	const openProfile = () => {
-		router.push(`/users/${props.row.id}/profile`);
+	const openDetails = () => {
+		router.push(`/cvs/${props.row.id}/details`);
 	};
 
-	const updateUser = () => {};
-
-	const deleteUser = () => {};
+	const deleteCV = () => {};
 </script>
 
 <style scoped>

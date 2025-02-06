@@ -29,13 +29,18 @@
 				>
 					<ButtonsOptions is-toggled color="var(--color-active-text)" />
 
-					<TableUserOptions
+					<TableOptions
 						v-if="optionsVisible"
 						class="absolute right-0 z-10 mt-2 w-28 rounded-lg border-options-backgroud bg-options-backgroud py-2 shadow-lg"
 						:class="optionsPosition"
-						@profile-click="openProfile"
-						@update-click="updateUser"
-						@delete-click="deleteUser"
+						:buttons="[
+							{ label: 'Profile', event: 'profileClick' },
+							{ label: 'Update user', event: 'updateClick' },
+							{ label: 'Delete user', event: 'deleteClick' },
+						]"
+						@profileClick="openProfile"
+						@updateClick="updateUser"
+						@deleteClick="deleteUser"
 					/>
 				</div>
 			</template>
