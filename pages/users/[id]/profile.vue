@@ -79,7 +79,7 @@
 		getUserById,
 		updateProfile,
 		updateUser,
-	} from '~/services/user';
+	} from '~/utils/graphql-services/user-service';
 	import { showErrorToast, showSuccessToast } from '~/utils/toast/toast';
 	interface Option {
 		value: string;

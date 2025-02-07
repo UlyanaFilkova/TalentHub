@@ -13,8 +13,8 @@
 </template>
 
 <script setup lang="ts">
-	import { getCvFullname } from '~/services/cv';
-	import { getUserFullname } from '~/services/user';
+	import { getCvFullname } from '~/utils/graphql-services/cv-service';
+	import { getUserFullname } from '~/utils/graphql-services/user-service';
 	const route = useRoute();
 	const router = useRouter();
 

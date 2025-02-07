@@ -140,7 +140,7 @@
 		getProfileSkills,
 		getSkillCategories,
 		updateProfileSkill,
-	} from '~/services/user';
+	} from '~/utils/graphql-services/user-service';
 	import { showErrorToast, showSuccessToast } from '~/utils/toast/toast';
 
 	definePageMeta({
@@ -180,6 +180,7 @@
 		Proficient: 80,
 		Expert: 100,
 	};
+
 	const categories = ref<SkillCategory[]>([]);
 	const skills = ref<Skill[]>([]);
 
