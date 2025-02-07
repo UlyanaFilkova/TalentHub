@@ -1,6 +1,6 @@
 <template>
 	<button
-		class="hover:bg-dark-4 flex h-10 w-10 items-center justify-center rounded-[20px] transition duration-300 ease-in-out"
+		class="flex h-10 w-10 items-center justify-center rounded-[20px] transition duration-300 ease-in-out hover:bg-dark-4"
 		@click="onClick"
 	>
 		<IconsOptions :color="color" width="22px" />

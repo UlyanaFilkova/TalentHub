@@ -16,10 +16,7 @@
 					@click="handleAddCV"
 				>
 					<div class="flex items-center justify-center gap-3">
-						<PlusIcon
-							color="var(--color-button-primary-text-text)"
-							width="24"
-						/>
+						<PlusIcon color="var(--color-red-1)" width="24" />
 						CREATE CV
 					</div>
 				</BaseButton>
