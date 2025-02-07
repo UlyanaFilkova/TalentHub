@@ -8,7 +8,7 @@ import {
 	UpdateProfileSkill,
 	UpdateUser,
 	UploadAvatar,
-} from '~/graphql/mutations/user.graphql';
+} from '~/graphql/mutations/user-mutations.graphql';
 import {
 	GetAllDepartments,
 	GetAllPositions,
@@ -18,7 +18,7 @@ import {
 	GetSkillCategories,
 	GetUserById,
 	GetUserFullName,
-} from '~/graphql/queries/user.graphql';
+} from '~/graphql/queries/user-queries.graphql';
 
 interface User {
 	id: string;

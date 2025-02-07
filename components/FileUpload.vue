@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-	import { uploadAvatar } from '~/services/user';
+	import { uploadAvatar } from '~/utils/graphql-services/user-service';
 	import { showErrorToast } from '~/utils/toast/toast';
 	import Upload from './icons/UploadIcon.vue';
 	const props = defineProps<{
