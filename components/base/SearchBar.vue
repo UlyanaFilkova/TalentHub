@@ -1,14 +1,14 @@
 <template>
 	<div
 		class="search-bar flex w-80 items-center gap-3 rounded-full border px-3 py-2"
-		:class="isFocused ? 'border-active-color' : 'border-low-contrast-color'"
+		:class="isFocused ? 'border-white' : 'border-gray-5'"
 	>
-		<IconsSearch width="24px" color="var(--color-active-text)" />
+		<IconsSearch width="24px" color="var(--color-white)" />
 		<input
 			v-model="searchQuery"
 			type="text"
 			:placeholder="placeholder"
-			class="flex-grow-1 block w-full border-none bg-transparent text-inactive-color placeholder-inactive-color outline-none focus:ring-0"
+			class="flex-grow-1 text-gray-1 placeholder-gray-1 block w-full border-none bg-transparent outline-none focus:ring-0"
 			@input="onInput"
 			@focus="onFocus"
 			@blur="onBlur"

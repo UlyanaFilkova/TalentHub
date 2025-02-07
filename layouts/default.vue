@@ -1,5 +1,5 @@
 <template>
-	<div class="flex min-h-screen flex-col bg-background">
+	<div class="bg-dark-1 flex min-h-screen flex-col">
 		<div class="flex flex-1 items-stretch gap-6 pr-3">
 			<Sidebar class="pt-12" />
 
