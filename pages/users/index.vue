@@ -76,12 +76,11 @@
 
 	const getUsers = () => {
 		try {
-			const { users: usersData } = getAllUsers();
-
-			users.value = usersData.value;
-			isDataLoaded.value = true;
+			const { users: data } = getAllUsers();
+			users.value = data.value;
 		} catch (error) {
 			console.error('Error loading users:', error);
+		} finally {
 			isDataLoaded.value = true;
 		}
 	};

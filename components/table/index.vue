@@ -4,7 +4,7 @@
 		class="max-h-[calc(100vh-0.75rem-90px)] w-full overflow-y-auto"
 		@scroll="handleScroll"
 	>
-		<table v-if="isDataLoaded" class="w-full table-auto overflow-x-auto">
+		<table class="w-full table-auto overflow-x-auto">
 			<TableHead
 				:headers="headers"
 				:sort-key="sortKey"
@@ -27,22 +27,41 @@
 <script setup lang="ts">
 	import TableCvRow from '@/components/table/CvRow.vue';
 	import TableUserRow from '@/components/table/UserRow.vue';
+
+	type UserRow = {
+		id: number;
+		photo: string;
+		firstName: string;
+		lastName: string;
+		email: string;
+		department: string;
+		position: string;
+		link: string;
+	};
+
+	type CvRow = {
+		id: number;
+		name: string;
+		education: string;
+		description: string;
+		email: string;
+		link: string;
+	};
+
 	const props = defineProps<{
 		headers: { key: string; label: string; isSortable: boolean }[];
-		rowsData: Record<string, any>[];
+		rowsData: Array<UserRow | CvRow>;
 		searchQuery?: string;
 		rowComponent: 'TableUserRow' | 'TableCvRow';
 	}>();
 
-	const isDataLoaded = ref(false);
 	const tableContainer = ref<HTMLElement | null>(null);
 	const sortKey = ref<string | null>(null);
 	const sortOrder = ref<'asc' | 'desc'>('asc');
 	const itemsPerPage = 10;
 	const loadedCount = ref(itemsPerPage);
 	const isLoading = ref(false);
-
-	const displayedData = ref<Record<string, any>[]>([]);
+	const displayedData = ref<(UserRow | CvRow)[]>([]);
 
 	const rowComponent = computed(() => {
 		if (props.rowComponent === 'TableUserRow') {
@@ -54,13 +73,21 @@
 	});
 
 	const sortedData = computed(() => {
-		if (!sortKey.value) return [...props.rowsData];
+		if (!sortKey.value) return props.rowsData;
 
+		return sortRows([...props.rowsData], sortKey.value, sortOrder.value);
+	});
+
+	const sortRows = (
+		array: (UserRow | CvRow)[],
+		key: string,
+		order: 'asc' | 'desc'
+	) => {
 		const collator = new Intl.Collator('en', { sensitivity: 'base' });
 
-		return [...props.rowsData].sort((a, b) => {
-			const aValue = a[sortKey.value as keyof typeof a];
-			const bValue = b[sortKey.value as keyof typeof b];
+		return array.sort((a, b) => {
+			const aValue = a[key as keyof typeof a];
+			const bValue = b[key as keyof typeof b];
 
 			const aStr = (aValue || '').toString().toLowerCase();
 			const bStr = (bValue || '').toString().toLowerCase();
@@ -79,11 +106,11 @@
 				return -1;
 			}
 
-			return sortOrder.value === 'asc'
+			return order === 'asc'
 				? collator.compare(aStr, bStr)
 				: collator.compare(bStr, aStr);
 		});
-	});
+	};
 
 	const updateDisplayedData = () => {
 		displayedData.value = sortedData.value.slice(0, loadedCount.value);
@@ -106,10 +133,6 @@
 			isLoading.value = false;
 		}
 	};
-
-	onMounted(() => {
-		isDataLoaded.value = true;
-	});
 
 	watch([sortedData, loadedCount], updateDisplayedData, { immediate: true });
 </script>

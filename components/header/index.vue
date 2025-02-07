@@ -1,5 +1,5 @@
 <template>
-	<header class="flex items-center text-inactive-color">
+	<header class="text-gray-1 flex items-center">
 		<ol class="flex items-center">
 			<HeaderItem
 				v-for="(breadcrumb, index) in breadcrumbs"
@@ -72,7 +72,7 @@
 				break;
 			}
 			case 'cvs': {
-				elemFullname = getCvFullname(id.value).fullname.value;
+				elemFullname = getCvFullname(id.value).fullname;
 				break;
 			}
 			default: {

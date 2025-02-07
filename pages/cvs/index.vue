@@ -126,14 +126,14 @@
 		});
 	});
 
-	const getCvs = () => {
+	const getCvs = async () => {
 		try {
-			const { cvs: cvsData } = getAllCvs();
+			const { cvs: data } = await getAllCvs();
 
-			cvs.value = cvsData.value;
-			isDataLoaded.value = true;
+			cvs.value = data?.cvs ?? [];
 		} catch (error) {
 			console.error('Error loading CVs:', error);
+		} finally {
 			isDataLoaded.value = true;
 		}
 	};

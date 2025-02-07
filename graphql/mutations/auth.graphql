@@ -1,30 +1,25 @@
 mutation SignUp($auth: AuthInput!) {
-    signup(auth: $auth) {
-        user {
-            id
-            email
-        }
-        access_token
-        refresh_token
-    }
+	signup(auth: $auth) {
+		user {
+			id
+			email
+		}
+		access_token
+		refresh_token
+	}
 }
 
 mutation ResetPassword($auth: ResetPasswordInput!) {
-    resetPassword(auth: $auth)
+	resetPassword(auth: $auth)
 }
 
 mutation UpdateToken {
-    updateToken {
-        access_token
-        refresh_token
-    }
+	updateToken {
+		access_token
+		refresh_token
+	}
 }
 
 mutation ForgotPassword($auth: ForgotPasswordInput!) {
-    forgotPassword(auth: $auth)
+	forgotPassword(auth: $auth)
 }
-
-
-
-
-

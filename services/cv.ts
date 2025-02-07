@@ -26,37 +26,21 @@ export const getCvFullname = (cvId: string) => {
 		cv: { name: string };
 	}>(GetCvFullName, { cvId });
 
-	const fullname = ref('');
+	let fullname = '';
 
-	watchEffect(() => {
-		if (result.value) {
-			fullname.value = result.value.cv.name || '';
-		}
-
-		if (error.value) {
-			console.error('Error fetching CV name:', error.value);
-		}
-	});
+	if (result.value) {
+		fullname = result.value.cv.name || '';
+	}
 
 	return { fullname, loading, error };
 };
 
-export const getAllCvs = () => {
+export const getAllCvs = async () => {
 	const { result, loading, error, refetch } = useQuery<{ cvs: CV[] }>(
 		GetAllCvs
 	);
-	const cvs = ref<CV[]>([]);
 
-	watchEffect(() => {
-		if (result.value) {
-			cvs.value = result.value.cvs;
-		}
-		if (error.value) {
-			console.error('Error fetching CVs:', error.value);
-		}
-	});
-
-	return { cvs, loading, error, refetch };
+	return { cvs: result.value, loading, error, refetch };
 };
 
 export const createCV = async (cv: CreateCV) => {
