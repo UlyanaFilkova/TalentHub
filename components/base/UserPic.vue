@@ -10,7 +10,7 @@
 		/>
 		<div
 			v-else
-			class="flex h-full w-full items-center justify-center text-xl text-background"
+			class="text-dark-1 flex h-full w-full items-center justify-center text-xl"
 		>
 			{{ firstLetter }}
 		</div>

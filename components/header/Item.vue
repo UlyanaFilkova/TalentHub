@@ -4,21 +4,21 @@
 			<a
 				:href="breadcrumb.link"
 				class="hover:underline"
-				:class="{ 'text-accent-color': index === 1 }"
+				:class="{ 'text-red-1': index === 1 }"
 			>
 				<p>{{ breadcrumb.label }}</p>
 			</a>
 			<span aria-hidden="true" class="mx-2">
 				<IconsBackArrow
 					:is-toggled="true"
-					color="var(--color-second-text)"
+					color="var(--color-gray-3)"
 					width="14px"
 				/>
 			</span>
 		</template>
 
 		<template v-else>
-			<p :class="{ 'text-accent-color': index === 1 }">
+			<p :class="{ 'text-red-1': index === 1 }">
 				{{ breadcrumb.label }}
 			</p>
 		</template>
