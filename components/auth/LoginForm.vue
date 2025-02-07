@@ -75,7 +75,7 @@
 	import { useRouter } from '#app';
 	import { ref } from 'vue';
 	import { useAuthValidation } from '~/composables/useAuthValidation';
-	import { login } from '~/utils/graphql-services/auth-service';
+	import { login } from '~/services/auth';
 
 	const router = useRouter();
 	const isPasswordVisible = ref(false);

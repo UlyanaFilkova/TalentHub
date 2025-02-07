@@ -1,6 +1,7 @@
-import { useQuery } from '@vue/apollo-composable';
+import { useMutation, useQuery } from '@vue/apollo-composable';
 import { ref, watchEffect } from 'vue';
-import { GetAllCvs, GetCvFullName } from '~/graphql/queries/cv-queries.graphql';
+import { CreateCV } from '~/graphql/mutations/cv.graphql';
+import { GetAllCvs, GetCvFullName } from '~/graphql/queries/cv.graphql';
 
 interface CV {
 	id: string;
@@ -11,6 +12,13 @@ interface CV {
 		id: string;
 		email: string;
 	};
+}
+
+interface CreateCV {
+	description: string;
+	education: string;
+	name: string;
+	userId: string;
 }
 
 export const getCvFullname = (cvId: string) => {
@@ -49,4 +57,18 @@ export const getAllCvs = () => {
 	});
 
 	return { cvs, loading, error, refetch };
+};
+
+export const createCV = async (cv: CreateCV) => {
+	const { mutate } = useMutation(CreateCV, {
+		variables: {
+			cv: {
+				userId: cv.userId,
+				name: cv.name,
+				education: cv.education,
+				description: cv.description,
+			},
+		},
+	});
+	return await mutate({ cv });
 };

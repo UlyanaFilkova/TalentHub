@@ -4,8 +4,8 @@ import {
 	ForgotPassword,
 	ResetPassword,
 	SignUp,
-} from '~/graphql/mutations/auth-mutations.graphql';
-import Login from '~/graphql/queries/auth-queries.graphql';
+} from '~/graphql/mutations/auth.graphql';
+import Login from '~/graphql/queries/auth.graphql';
 import { currentUserIdVar } from '~/plugins/apollo-client';
 
 export const signUp = async (auth: { email: string; password: string }) => {
@@ -57,7 +57,6 @@ export const forgotPassword = async (email: string) => {
 };
 
 export const resetPassword = async (newPassword: string, token: string) => {
-	console.log(token);
 	const { mutate } = useMutation(ResetPassword, {
 		context: {
 			headers: {

@@ -135,10 +135,11 @@
 		getProfileSkills,
 		getSkillCategories,
 		updateProfileSkill,
-	} from '~/utils/graphql-services/user-service';
+	} from '~/services/user';
 
 	import PlusIcon from '~/components/icons/PlusIcon.vue';
 	import TrashBin from '~/components/icons/TrashBin.vue';
+	import { showSuccessToast } from '~/utils/toast/toast';
 
 	definePageMeta({
 		layout: 'user-profile',

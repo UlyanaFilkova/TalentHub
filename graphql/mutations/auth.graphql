@@ -21,7 +21,7 @@ mutation UpdateToken {
 }
 
 mutation ForgotPassword($auth: ForgotPasswordInput!) {
-forgotPassword(auth: $auth)
+    forgotPassword(auth: $auth)
 }
 
 
