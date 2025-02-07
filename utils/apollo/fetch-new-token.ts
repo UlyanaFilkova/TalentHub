@@ -4,12 +4,12 @@ import {
 	InMemoryCache,
 } from '@apollo/client/core';
 import type { UpdateTokenResult } from 'cv-graphql';
-import { UpdateToken } from '~/graphql/mutations/auth-mutations.graphql';
+import { UpdateToken } from '~/graphql/mutations/auth.graphql';
 
 export const apolloCache = new InMemoryCache();
 
 const newInstance = new ApolloClient({
-	link: createHttpLink({ uri: 'https://cv-project-js.inno.ws/api/graphql' }),
+	link: createHttpLink({ uri: import.meta.env.VITE_GRAPHQL_URI }),
 	cache: apolloCache,
 	credentials: 'include',
 });

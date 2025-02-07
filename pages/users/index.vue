@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-	import { getAllUsers } from '~/utils/graphql-services/user-service';
+	import { getAllUsers } from '~/services/user';
 
 	interface User {
 		id: string | number;

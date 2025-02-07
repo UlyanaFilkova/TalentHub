@@ -48,7 +48,7 @@
 <script lang="ts" setup>
 	import { useRouter } from '#app';
 	import { ref } from 'vue';
-	import { forgotPassword } from '~/utils/graphql-services/auth-service';
+	import { forgotPassword } from '~/services/auth';
 
 	const email = ref('');
 	const isSubmitting = ref(false);

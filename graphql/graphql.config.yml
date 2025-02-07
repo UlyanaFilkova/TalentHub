@@ -1,2 +1,2 @@
-schema: https://cv-project-js.inno.ws/api/graphql
+schema: import.meta.env.VITE_GRAPHQL_URI
 documents: '**/*.graphql'

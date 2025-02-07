@@ -15,5 +15,5 @@ export const authMiddleware = new ApolloLink((operation, forward) => {
 });
 
 export const httpLink = new HttpLink({
-	uri: 'https://cv-project-js.inno.ws/api/graphql',
+	uri: import.meta.env.VITE_GRAPHQL_URI,
 });
