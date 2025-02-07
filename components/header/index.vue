@@ -15,6 +15,7 @@
 <script setup lang="ts">
 	import { getCvFullname } from '~/services/cv';
 	import { getUserFullname } from '~/services/user';
+
 	const route = useRoute();
 	const router = useRouter();
 

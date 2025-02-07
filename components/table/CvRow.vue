@@ -1,5 +1,5 @@
 <template>
-	<tr class="w-full text-sm text-active-color">
+	<tr class="w-full text-sm text-white">
 		<td
 			v-for="(item, key) in displayedFields"
 			:key="key"
@@ -14,28 +14,28 @@
 				@mouseenter="showOptions"
 				@mouseleave="hideOptions"
 			>
-				<ButtonsOptions is-toggled color="var(--color-active-text)" />
+				<ButtonsOptions is-toggled color="var(--color-white)" />
 
 				<TableOptions
 					v-if="optionsVisible"
-					class="absolute right-0 z-10 mt-2 w-28 rounded-lg border-options-backgroud bg-options-backgroud py-2 shadow-lg"
+					class="absolute right-0 z-10 mt-2 w-28 rounded-lg border-dark-4 bg-dark-4 py-2 shadow-lg"
 					:class="optionsPosition"
 					:buttons="[
 						{ label: 'Details', event: 'detailsClick' },
 						{ label: 'Delete CV', event: 'deleteClick' },
 					]"
-					@detailsClick="openDetails"
-					@deleteClick="deleteCV"
+					@details-click="openDetails"
+					@delete-click="deleteCV"
 				/>
 			</div>
 		</td>
 	</tr>
 	<tr
 		v-if="props.row.description"
-		class="w-full border-b border-low-contrast-color font-medium text-second-color"
+		class="w-full border-b border-gray-8 font-medium text-gray-3"
 	>
 		<td colspan="4" class="pr-8">
-			<div class="description mb-4">{{ props.row.description }}</div>
+			<div class="description mb-3">{{ props.row.description }}</div>
 		</td>
 	</tr>
 </template>
@@ -94,10 +94,12 @@
 		min-width: 160px;
 		max-width: 200px;
 	}
+
 	.medium-column {
 		min-width: 170px;
 		max-width: 200px;
 	}
+
 	.big-column {
 		min-width: 255px;
 		max-width: 260px;

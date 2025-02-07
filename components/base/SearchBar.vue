@@ -8,7 +8,7 @@
 			v-model="searchQuery"
 			type="text"
 			:placeholder="placeholder"
-			class="flex-grow-1 text-gray-1 placeholder-gray-1 block w-full border-none bg-transparent outline-none focus:ring-0"
+			class="flex-grow-1 block w-full border-none bg-transparent text-gray-1 placeholder-gray-1 outline-none focus:ring-0"
 			@input="onInput"
 			@focus="onFocus"
 			@blur="onBlur"

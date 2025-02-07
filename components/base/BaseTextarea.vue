@@ -4,7 +4,7 @@
 			:id="id"
 			ref="textareaRef"
 			v-model="enteredValue"
-			class="peer h-auto w-full min-w-[220px] resize-none overflow-hidden border border-input-border bg-input-background p-3 text-input-text transition-all duration-200 hover:border-input-borderHover focus:border-input-borderFocus focus:outline-none"
+			class="peer h-auto w-full min-w-[220px] resize-none overflow-hidden border border-gray-6 bg-dark-1 p-3 text-white transition-all duration-200 hover:border-white focus:border-red-5 focus:outline-none"
 			:placeholder="enteredValue || isFocused ? placeholder : ''"
 			:label="label"
 			:rows="rows"
@@ -14,9 +14,9 @@
 		></textarea>
 		<label
 			:class="[
-				'pointer-events-none absolute left-0 top-0 text-input-label transition-all duration-200 peer-focus:bg-input-labelBackground peer-focus:text-input-labelFocus',
+				'pointer-events-none absolute left-0 top-0 text-gray-2 transition-all duration-200 peer-focus:bg-dark-1 peer-focus:text-red-5',
 				enteredValue
-					? '-translate-x-0 -translate-y-4 scale-75 bg-input-labelBackground p-1'
+					? '-translate-x-0 -translate-y-4 scale-75 bg-dark-1 p-1'
 					: 'translate-y-0 p-3 peer-focus:-translate-x-0 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:p-1',
 			]"
 		>

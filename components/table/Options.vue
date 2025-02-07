@@ -3,7 +3,7 @@
 		<button
 			v-for="(button, index) in buttons"
 			:key="index"
-			class="w-full cursor-pointer px-4 py-2 hover:bg-options-backgroud-hover"
+			class="w-full cursor-pointer px-4 py-2 hover:bg-dark-3"
 			@click="handleClick(button.event)"
 		>
 			{{ button.label }}
