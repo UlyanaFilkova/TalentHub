@@ -72,7 +72,7 @@
 				break;
 			}
 			case 'cvs': {
-				elemFullname = getCvFullname(id.value).fullname.value;
+				elemFullname = getCvFullname(id.value).fullname;
 				break;
 			}
 			default: {
