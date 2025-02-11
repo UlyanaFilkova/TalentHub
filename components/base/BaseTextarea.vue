@@ -39,9 +39,9 @@
 	const textareaRef = ref<HTMLTextAreaElement | null>(null);
 
 	const autoResize = () => {
-		if (textareaRef.value) {
-			textareaRef.value.style.height = `${textareaRef.value.scrollHeight}px`;
-		}
+		const textarea = event.target as HTMLTextAreaElement;
+		textarea.style.height = 'auto'; // Сброс высоты перед измерением
+		textarea.style.height = `${textarea.scrollHeight}px`; // Устанавливаем новую высоту
 	};
 
 	watch(enteredValue, () => {

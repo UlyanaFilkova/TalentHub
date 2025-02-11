@@ -16,3 +16,11 @@ query GetAllCvs {
 		}
 	}
 }
+
+query GetCvById($cvId: ID!) {
+	cv(cvId: $cvId) {
+		name
+		education
+		description
+	}
+}

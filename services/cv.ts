@@ -1,7 +1,10 @@
-import { useMutation, useQuery } from '@vue/apollo-composable';
-import { ref, watchEffect } from 'vue';
-import { CreateCV } from '~/graphql/mutations/cv.graphql';
-import { GetAllCvs, GetCvFullName } from '~/graphql/queries/cv.graphql';
+import { useApolloClient, useMutation, useQuery } from '@vue/apollo-composable';
+import { CreateCV, DeleteCV } from '~/graphql/mutations/cv.graphql';
+import {
+	GetAllCvs,
+	GetCvById,
+	GetCvFullName,
+} from '~/graphql/queries/cv.graphql';
 
 interface CV {
 	id: string;
@@ -35,6 +38,29 @@ export const getCvFullname = (cvId: string) => {
 	return { fullname, loading, error };
 };
 
+export const getCvById = async (cvId: string, force = false) => {
+	const apolloClient = useApolloClient().client;
+
+	try {
+		const { data } = await apolloClient.query({
+			query: GetCvById,
+			variables: { cvId },
+			fetchPolicy: 'no-cache',
+		});
+
+		return {
+			cv: data.cv,
+			error: null,
+		};
+	} catch (error) {
+		console.error('Error fetching cv by ID:', error);
+		return {
+			cv: null,
+			error,
+		};
+	}
+};
+
 export const getAllCvs = async () => {
 	const { result, loading, error, refetch } = useQuery<{ cvs: CV[] }>(
 		GetAllCvs
@@ -43,7 +69,7 @@ export const getAllCvs = async () => {
 	return { cvs: result.value, loading, error, refetch };
 };
 
-export const createCV = async (cv: CreateCV) => {
+export const createCv = async (cv: CreateCV) => {
 	const { mutate } = useMutation(CreateCV, {
 		variables: {
 			cv: {
@@ -55,4 +81,11 @@ export const createCV = async (cv: CreateCV) => {
 		},
 	});
 	return await mutate({ cv });
+};
+
+export const deleteCv = async (cvId: string) => {
+	const { mutate } = useMutation(DeleteCV);
+	await mutate({
+		cv: { cvId },
+	});
 };

@@ -58,7 +58,7 @@
 <script setup lang="ts">
 	import { useRouter } from '#app';
 	import PlusIcon from '~/components/icons/PlusIcon.vue';
-	import { createCV, getAllCvs } from '~/services/cv';
+	import { createCv, getAllCvs } from '~/services/cv';
 	import { showErrorToast, showSuccessToast } from '~/utils/toast/toast';
 
 	interface Cv {
@@ -151,10 +151,11 @@
 				education: education.value,
 				description: description.value,
 			};
-			const data = await createCV(cv);
+			const data = await createCv(cv);
 			console.log(data);
 			if (data) {
 				isAddCVModalOpen.value = false;
+				await getCvs();
 				router.push(`/cvs/${data.data.createCv.id}/details`);
 				showSuccessToast('CV create successfully');
 			}

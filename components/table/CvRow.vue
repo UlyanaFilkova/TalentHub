@@ -11,7 +11,7 @@
 			<div
 				ref="optionsContainer"
 				class="relative"
-				@mouseenter="showOptions"
+				@click="showOptions"
 				@mouseleave="hideOptions"
 			>
 				<ButtonsOptions is-toggled color="var(--color-white)" />
@@ -25,8 +25,22 @@
 						{ label: 'Delete CV', event: 'deleteClick' },
 					]"
 					@details-click="openDetails"
-					@delete-click="deleteCV"
+					@delete-click="openDeleteCVModal"
 				/>
+				<BaseModal
+					v-model:is-open="isDeleteCVModalOpen"
+					confirm-text="CONFIRM"
+					cancel-text="CANCEL"
+					title="Delete CV"
+					:has-changes="isDeleteCVModalOpen"
+					@confirm="deleteCV"
+				>
+					<p class="text-white">
+						Are you sure you want to delete CV
+						<b>{{ props.row.name }}</b>
+						?
+					</p>
+				</BaseModal>
 			</div>
 		</td>
 	</tr>
@@ -41,10 +55,13 @@
 </template>
 
 <script setup lang="ts">
+	import { deleteCv } from '~/services/cv';
+	import { showErrorToast, showSuccessToast } from '~/utils/toast/toast';
+
 	const router = useRouter();
 	const props = defineProps<{
 		row: {
-			id: number;
+			id: string;
 			name: string;
 			education: string;
 			description: string;
@@ -54,9 +71,12 @@
 		tableContainer: HTMLElement | null;
 	}>();
 
+	const emit = defineEmits(['cv-deleted']);
+
 	const optionsVisible = ref(false);
 	const optionsContainer = ref<HTMLElement | null>(null);
 	const optionsPosition = ref('top-0');
+	const isDeleteCVModalOpen = ref(false);
 
 	const displayedFields = computed(() => {
 		return {
@@ -86,7 +106,20 @@
 		router.push(`/cvs/${props.row.id}/details`);
 	};
 
-	const deleteCV = () => {};
+	const openDeleteCVModal = () => {
+		isDeleteCVModalOpen.value = true;
+	};
+
+	const deleteCV = async () => {
+		try {
+			await deleteCv(props.row.id);
+			showSuccessToast('CV deleted successfully');
+			isDeleteCVModalOpen.value = false;
+		} catch (error) {
+			showErrorToast('Error deleting CV');
+			isDeleteCVModalOpen.value = false;
+		}
+	};
 </script>
 
 <style scoped>
