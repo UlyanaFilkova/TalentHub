@@ -6,3 +6,9 @@ mutation CreateCV($cv: CreateCvInput!) {
         description
     }
 }
+
+mutation DeleteCV($cv: DeleteCvInput!) {
+    deleteCv(cv: $cv){
+        affected
+    }
+}

@@ -81,6 +81,7 @@
 		updateUser,
 	} from '~/services/user';
 	import { showErrorToast, showSuccessToast } from '~/utils/toast/toast';
+
 	interface Option {
 		value: string;
 		label: string;
